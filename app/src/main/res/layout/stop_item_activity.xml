@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    >
+    <!-- 当内部有Button的获得事件，父容器无法货的点击事件的处理  途径按钮  focusable= false -->
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    >
+
+        <FrameLayout
+            android:id="@+id/stop_icon_state"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+
+            >
+            <View
+                android:id="@+id/line_imageview"
+                android:layout_width="2dp"
+                android:layout_height="72dp"
+                android:layout_gravity="center"
+                android:background="@color/gray_shape"
+
+                />
+            <ImageView
+                android:id="@+id/live_icon_imageview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/route_detail_icon_bus"
+
+                android:visibility="gone"
+                />
+
+
+            <TextView
+            android:id="@+id/stop_seq_state_shape"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center"
+            android:background="@drawable/stop_state_shop"
+            android:gravity="center"
+            android:text="1"
+                android:textSize="12sp"
+                android:textColor="@color/white_text"
+
+            ></TextView>
+
+        </FrameLayout>
+
+
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/stop_icon_state"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/stop_title_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:textColor="@color/stop_nearby_name"
+            android:textSize="18sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            />
+            <LinearLayout
+                android:id="@+id/adv_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:layout_marginRight="2dp"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/shop_icon_loc"
+                    />
+            <TextView
+                android:id="@+id/adv_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="一元看电影"
+                android:textColor="@color/red"
+
+                />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/stop_detail_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            >
+            <ImageView
+                android:id="@+id/wifi_4g_imageview"
+
+                android:layout_width="15dp"
+                android:layout_height="15dp" android:layout_marginRight="3dp"/>
+        <TextView
+            android:id="@+id/stop_detail_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:textColor="@color/stop_real_tip"
+            android:textSize="13sp"
+            android:visibility="gone"
+            android:text="距离还有几站"
+            />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/howmany_stops_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="最近一班车还有"
+                android:textColor="@color/stop_real_tip"
+                />
+            <TextView
+                android:id="@+id/howmany_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:textSize="15sp"
+                android:textColor="@color/red"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="站到达此站"
+                android:textSize="13sp"
+                android:textColor="@color/stop_real_tip"
+
+                />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/stop_end_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="今日已经结束运营，谢谢使用。"
+            android:visibility="gone"
+            />
+        <Button
+            android:id="@+id/stop_to_station"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_margin="5dp"
+            android:text="途径公交线路"
+            android:background="@drawable/route_station_btn"
+            android:textColor="@color/stop_real_tip"
+            android:textSize="13sp"
+            android:visibility="gone"
+            android:focusable="false"
+            />
+    </LinearLayout>
+    <ImageView
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_centerVertical="true"
+        android:src="@drawable/item_arrow_r"
+        android:visibility="gone"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="0dp"
+        android:layout_toRightOf="@+id/stop_icon_state"
+        android:layout_alignParentBottom="true"
+        android:background="@color/stop_border"
+        ></View>
+
+</RelativeLayout>
+
+</LinearLayout>

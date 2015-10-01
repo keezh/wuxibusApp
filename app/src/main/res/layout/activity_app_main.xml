@@ -1,0 +1,138 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@color/stop_detail_bg"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:id="@+id/adv_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/launchimage"
+        android:visibility="visible"
+        >
+        <com.wuxibus.app.customerView.SmartImageView
+            android:id="@+id/adv_imageview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/launch_ad"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+        <TextView
+            android:id="@+id/jump_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/text_normal"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:textColor="@color/white_text"
+            android:text="3 跳过"
+            android:textSize="16sp"
+            />
+        </LinearLayout>
+
+        </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fra_main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
+        android:visibility="gone"
+        />
+
+    <RelativeLayout
+        android:id="@+id/tab_container"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        >
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/tab_line"
+            ></View>
+        <RadioGroup
+            android:id="@+id/rg_home_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="49.5dp"
+            android:orientation="horizontal"
+            android:layout_below="@+id/line"
+            >
+
+            <RadioButton
+                android:id="@+id/home_btn"
+                style="@style/tab_bar_item"
+                android:layout_weight="1"
+                android:checked="true"
+                android:drawableTop="@drawable/check_home"
+                android:textColor="@color/color_radiobutton"
+                android:text="首页"
+                />
+
+            <RadioButton
+                android:id="@+id/route_btn"
+                style="@style/tab_bar_item"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/check_route"
+                android:textColor="@color/color_radiobutton"
+                android:text="线路"
+                />
+            <RadioButton
+                android:id="@+id/station_btn"
+                style="@style/tab_bar_item"
+
+                android:layout_weight="1"
+                android:drawableTop="@drawable/check_station"
+                android:textColor="@color/color_radiobutton"
+                android:text="站台"
+
+                />
+            <!--android:drawableTop="@drawable/"-->
+            <!--android:text="站台"-->
+            <!--<RadioButton-->
+                <!--android:id="@+id/interchange_btn"-->
+                <!--style="@style/tab_bar_item"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:drawableTop="@drawable/check_interchange"-->
+                <!--android:textColor="@color/color_radiobutton"-->
+
+                <!--android:text="换乘"-->
+
+                <!--/>-->
+            <!--android:drawableTop="@drawable/"-->
+            <!--android:text="换乘"-->
+            <RadioButton
+                android:id="@+id/my_btn"
+                style="@style/tab_bar_item"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/check_my"
+                android:textColor="@color/color_radiobutton"
+
+                android:text="我的"
+                />
+            <!--android:drawableTop="@drawable/"-->
+            <!--android:text="我的"-->
+        </RadioGroup>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

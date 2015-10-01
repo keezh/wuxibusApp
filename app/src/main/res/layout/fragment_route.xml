@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <github.chenupt.dragtoplayout.DragTopLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/drag_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
+            android:id="@+id/top_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+
+        <RelativeLayout
+            android:id="@+id/fra_main_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/route_header"
+            >
+
+
+                <TextView
+                    android:id="@+id/search_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="90dp"
+
+
+                    android:text="请输入线路名称"
+                    android:background="@drawable/search_textfield"
+                    />
+            <View android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_below="@id/search_button"
+                />
+
+
+        </RelativeLayout>
+
+
+    <android.support.v4.view.ViewPager
+        android:layout_marginTop="0dp"
+        android:id="@+id/advertise_viewpage"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:visibility="visible"
+        />
+
+        </LinearLayout>
+
+        <!--content view-->
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/drag_content_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <com.wuxibus.app.customerView.PagerSlidingTabStrip
+            android:layout_marginTop="0dp"
+            android:background="@color/home_bg"
+            style="@style/page_order_item"
+            android:id="@+id/sliding_tabs"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            app:pstsDividerColor="@android:color/transparent"
+            app:pstsDividerPadding="10dp"
+            app:pstsIndicatorColor="@color/actionbar_txt_color"
+            app:pstsIndicatorHeight="2dp"
+            app:pstsShouldExpand="true"
+            app:pstsTextAllCaps="true"
+            />
+    <android.support.v4.view.ViewPager
+        android:layout_marginTop="0dp"
+        android:id="@+id/vp_main_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </github.chenupt.dragtoplayout.DragTopLayout>
+
+
+
+</LinearLayout>

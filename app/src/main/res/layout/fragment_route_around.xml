@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.wuxibus.app.customerView.ScrollSwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe_refresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white_bg"
+    >
+
+
+    <ListView
+        android:id="@+id/line_around_listview"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <LinearLayout
+        android:id="@+id/route_none_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+        <com.wuxibus.app.customerView.SmartImageView
+            android:layout_width="302dp"
+            android:layout_height="200dp"
+            android:src="@drawable/route_tip_geo"
+            />
+        <Button
+            android:id="@+id/refresh_gps_btn"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
+            android:text="重新获取"
+            android:textAlignment="center"
+            android:textColor="@color/white_text"
+            android:textSize="16sp"
+            android:background="@drawable/route_around_none_btn"
+            />
+    </LinearLayout>
+
+</FrameLayout>
+    </com.wuxibus.app.customerView.ScrollSwipeRefreshLayout>

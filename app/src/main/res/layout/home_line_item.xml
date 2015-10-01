@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="80dp"
+    android:layout_height="match_parent"
+    android:background="@drawable/home_tile"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--<View-->
+            <!--android:id="@+id/right_border"-->
+            <!--android:layout_width="2dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:background="@color/white_bg"-->
+            <!-- -->
+            <!--></View>-->
+        <ImageView
+            android:id="@+id/home_line_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="3dp"
+            android:src="@drawable/home_icon_fav"
+            />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/title_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="11"
+        android:textSize="32sp"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/white_text"
+        android:layout_gravity="center_horizontal"
+        />
+
+
+        <LinearLayout
+            android:id="@+id/line_first_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:src="@drawable/home_icon_bus"
+                />
+            <TextView
+                android:id="@+id/line_distance"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white_bg"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="加载中..."
+                android:textSize="12sp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/line_second_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:src="@drawable/home_icon_direction"
+                />
+            <TextView
+                android:id="@+id/line_end_textview"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white_bg"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="12sp"
+                android:text="中南分公司"
+                />
+        </LinearLayout>
+    <TextView
+        android:id="@+id/line_not_here"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="不在附近"
+        android:textColor="@color/white_text"
+        android:textSize="12sp"
+        android:visibility="gone"
+        />
+
+
+
+</LinearLayout>

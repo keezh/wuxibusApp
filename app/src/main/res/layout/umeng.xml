@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        >
+        
+        <Button 
+            android:id="@+id/getConfigBtn"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="onlineconfig"
+        	/>
+        
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <EditText
+                android:id="@+id/appkeyEdt"
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"          
+                android:hint="appkey"
+                />
+            <EditText
+                android:id="@+id/channelEdt"
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="channel"
+                />
+            <Button 
+            	android:id="@+id/getConfigBtn1"
+        		android:layout_width="0sp"
+                android:layout_weight="1"
+        		android:layout_height="wrap_content"
+        		android:text="onlineconfig"
+        		/>
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <EditText
+                android:id="@+id/keyEdt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="key"
+                />
+            <EditText
+                android:id="@+id/valueEdt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="value"
+                />
+            <Button 
+                android:id="@+id/getKeyBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="get"
+                />
+        </LinearLayout>
+        
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        >
+        <CheckBox
+            android:id="@+id/listenCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="listener"
+            android:checked="true"     
+            />
+	    <TextView 
+	        android:id="@+id/dataTxv"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:hint="listen_data"
+	        />
+    </LinearLayout>
+    
+</RelativeLayout>

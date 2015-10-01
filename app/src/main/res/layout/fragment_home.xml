@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.wuxibus.app.customerView.ScrollSwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe_refresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<RelativeLayout
+    android:id="@+id/contentViewGroup"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@color/home_bg">
+
+
+
+    <com.wuxibus.app.customerView.MyScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:fillViewport="true"
+
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            <com.wuxibus.app.customerView.CustomViewPager
+                android:id="@+id/advertise_viewpage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                >
+            </com.wuxibus.app.customerView.CustomViewPager>
+
+                <LinearLayout
+                    android:id="@+id/viewGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="bottom"
+                    android:orientation="horizontal"
+                    >
+                </LinearLayout>
+
+            </FrameLayout>
+            <LinearLayout
+                android:id="@+id/home_tip_geo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white_bg"
+                android:gravity="center"
+                android:visibility="gone"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/home_tip_geo"
+                    android:visibility="visible"
+
+                    />
+            </LinearLayout>
+
+            <com.wuxibus.app.customerView.HorizontalListView
+                android:id="@+id/route_listview"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:layout_marginTop="10dp"
+                android:divider="@color/white_bg"
+                app:dividerWidth="1dp"
+                android:visibility="gone"
+                ></com.wuxibus.app.customerView.HorizontalListView>
+            <com.wuxibus.app.customerView.MyGridView
+                android:id="@+id/class_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:numColumns="4"
+                android:verticalSpacing="0.5dp"
+                android:horizontalSpacing="0.5dp"
+                android:background="@color/gray_back"
+                >
+
+            </com.wuxibus.app.customerView.MyGridView>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+            <com.wuxibus.app.customerView.CustomViewPager
+                android:id="@+id/news_viewpage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/stop_detail_bg"
+                ></com.wuxibus.app.customerView.CustomViewPager>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="5dp"
+                    >
+                    <TextView
+                        android:id="@+id/news_title_textview"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/text_black_color"
+                        />
+                <LinearLayout
+                    android:id="@+id/newsPageControls"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_vertical"
+                    >
+                </LinearLayout>
+                </LinearLayout>
+
+
+            </FrameLayout>
+            <com.wuxibus.app.customerView.MyListView
+                android:id="@+id/news_listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/news_divide"
+                ></com.wuxibus.app.customerView.MyListView>
+
+        </LinearLayout>
+    </com.wuxibus.app.customerView.MyScrollView>
+
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:id="@+id/search_textview"
+                android:layout_width="0dp"
+                android:layout_height="34dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:background="@drawable/search_textfield"
+                android:text="搜索无锡公交线路、站点"
+                android:textSize="14sp"
+                android:textColor="@color/search_history_item"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="0dp"
+                >
+                <TextView
+                    android:id="@+id/weather_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="22sp"
+                    android:textColor="@color/white_text"
+
+                    />
+                <LinearLayout
+                    android:padding="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/temperature_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="17"
+                    android:textSize="12sp"
+                    android:textColor="@color/white_text"
+                    />
+                    <TextView
+                        android:id="@+id/temp_char"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textColor="@color/white_text"
+
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+
+
+</RelativeLayout>
+</com.wuxibus.app.customerView.ScrollSwipeRefreshLayout>

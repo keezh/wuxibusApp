@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="text_white_color">#FFFFFFFF</color>
+    <color name="actionbar_bg_color">#DC4545</color>
+    <color name="org_text">#FFFDA500</color>
+    <color name="text_grey_color">#FF5A5A5A</color>
+    <color name="actionbar_txt_color">#DC4545</color>
+    <color name="left_menu_color">#FF354248</color>
+    <color name="title_color">#FFCCCCCC</color>
+    <color name="title_color_un">#60CCCCCC</color>
+    <color name="view_bg_color">#FFF5F5F5</color>
+    <color name="left_menu_check">#FF273541</color>
+    <color name="about_bg_color">#F0FFFFFF</color>
+    <color name="phone_color">#FF4876FF</color>
+    <color name="text_black_color">#FF000000</color>
+    <color name="text_black_level1_color">#FF272727</color>
+    <color name="text_whitecache_color">#96FCFCFC</color>
+    <color name="brief_txt_color">#FF6C6C6C</color>
+
+    <color name="background_tab_pressed">#6633B5E5</color>
+    <color name="gray_bg">#EBEBEB</color>
+    <color name="shopcart_bg">#F5F5F5</color>
+    <color name="gray_shape">#A9A9A9</color>
+    <color name="gray_home">#E4E4E4</color>
+    <color name="white_bg">#ffffff</color>
+    <color name="text_normal">#666666</color>
+    <color name="black">#000000</color>
+    <color name="orange_bg">#FF845B</color>
+    <color name="orange_normal">#FF8000</color>
+    <color name="green_bg">#5EAB2B</color>
+    <color name="orgin_bg">#5EAB2B</color>
+    <color name="green_bg_01">#417439</color>
+    <color name="green_check">#014526</color>
+    <color name="text_shopcart">#5A5A5A</color>
+    <color name="result_view">#b0000000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="possible_result_points">#c0ffff00</color>
+    <color name="white_text">#ffffff</color>
+    <color name="orange_coupon">#FF845B</color>
+    <color name="text_buy_title">#ff1a1a1a</color>
+    <color name="text_buy_normal">#ffaea59d</color>
+    <color name="text_price_red">#fffa5555</color>
+    <color name="product_bg">#E4F2F5</color>
+    <color name="gray_back">#EBEBEB</color>
+    <color name="news_divide">#dddddd</color>
+    <color name="tab_line">#B2B2B2</color>
+    <color name="gray_dialog_text">#818181</color>
+    <color name="gray_home_title">#F5F5F5</color>
+    <color name="red">#DC4545</color>
+    <color name="viewpager_bg">#555555</color>
+    <color name="stop_detail_bg">#f1f0f5</color>
+    <color name="red_bg">#f10433</color>
+    <color name="home_bg">#f3f3f3</color>
+    <color name="text_color_class">#797979</color>
+    <color name="home_news_title">#1E1E1E</color>
+    <color name="route_tab_title">#666666</color>
+    <color name="route_tab_title_selected">#DC4545</color>
+    <color name="stop_nearby_title">#333333</color>
+    <color name="stop_nearby_name">#FF787878</color>
+    <color name="search_title">#eeeeee</color>
+    <color name="search_history">#999999</color>
+    <color name="search_history_item">#888888</color>
+    <color name="search_line_title">#333333</color>
+    <color name="radio_button_selected_color">#DC4545</color>
+    <color name="radio_button_unselected_color">@android:color/transparent</color>
+    <color name="toolbar_red">#DC4545</color>
+    <color name="stop_border">#DDDDDD</color>
+    <color name="stop_real_tip">#AAAAAA</color>
+    <color name="splash_bg">#FCFCFC</color>
+
+
+
+    <!-- (240,55,72) -->
+</resources>

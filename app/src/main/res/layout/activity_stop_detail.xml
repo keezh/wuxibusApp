@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/stop_detail_bg"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/red"
+        >
+        <ImageView
+            android:id="@+id/back_imageview"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/toolbar_icon_back"
+            android:layout_alignParentLeft="true"
+
+            />
+        <TextView
+            android:id="@+id/title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="南禅寺（朝阳广场）"
+            android:textSize="@dimen/text_size_xh"
+            android:textColor="@color/white_text"
+            android:layout_centerInParent="true"
+            />
+        <TextView
+            android:id="@+id/map_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="10dp"
+            android:text="地图"
+            android:textColor="@color/white_text"
+            android:textSize="@dimen/text_size_xh"
+            />
+
+    </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/ad_viewpage"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/viewpager_bg"
+                ></android.support.v4.view.ViewPager>
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="36dp"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:background="@color/white_bg"-->
+                <!-->-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:gravity="center"-->
+                    <!-->-->
+                    <!--<ImageView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:src="@drawable/station_icon_start"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="设为起点"-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+                <!--<View-->
+                    <!--android:layout_width="5dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@color/stop_detail_bg"-->
+                    <!--></View>-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:gravity="center"-->
+                    <!-->-->
+                    <!--<ImageView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:src="@drawable/station_icon_end"-->
+                        <!--/>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="设为终点"-->
+                        <!--/>-->
+                <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
+
+            <com.wuxibus.app.customerView.MyGridView
+                android:layout_marginTop="5dp"
+                android:id="@+id/stop_lines_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="4"
+                android:verticalSpacing="2dp"
+                android:horizontalSpacing="2dp"
+                android:background="@color/stop_detail_bg"
+                >
+
+            </com.wuxibus.app.customerView.MyGridView>
+            <TextView
+                android:id="@+id/around_shop_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="周边商家"
+                />
+            <com.wuxibus.app.customerView.MyListView
+                android:id="@+id/shop_listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.wuxibus.app.customerView.MyListView>
+
+        </LinearLayout>
+
+
+
+        
+    </ScrollView>
+
+
+</LinearLayout>

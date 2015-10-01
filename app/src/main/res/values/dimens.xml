@@ -1,0 +1,39 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">0dp</dimen>
+    <dimen name="activity_vertical_margin">0dp</dimen>
+
+
+    <!-- 下拉刷新组件 -->
+    <dimen name="indicator_right_padding">10dp</dimen>
+    <dimen name="indicator_corner_radius">12dp</dimen>
+    <dimen name="indicator_internal_padding">4dp</dimen>
+    <dimen name="header_footer_left_right_padding">24dp</dimen>
+    <dimen name="header_footer_top_bottom_padding">12dp</dimen>
+    <!-- 标签页一般的空隙距离 -->
+    <dimen name="marginTopNext">9dp</dimen>
+    <!-- 字体大小 -->
+    <dimen name="text_size_xh">18sp</dimen>
+    <dimen name="text_size_h">16sp</dimen>
+    <dimen name="text_size_m">15sp</dimen>
+    <dimen name="text_size_l">12sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <!-- 图标的大小 -->
+    <dimen name="imgdp">8sp</dimen>
+
+
+    <!-- body content -->
+    <dimen name="body_padding_medium">10dp</dimen>
+    <dimen name="body_padding_large">10dp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_medium">18sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="text_size_xlarge">18sp</dimen>
+    <dimen name="speaker_image_size">36dp</dimen>
+    <dimen name="speaker_image_padding">8dp</dimen>
+    <dimen name="vendor_image_size">100dp</dimen>
+
+    <dimen name="actionbar_height">45dip</dimen>
+    <dimen name="actionbar_item_height">45dip</dimen>
+    <dimen name="actionbar_item_width">45dip</dimen>
+</resources>

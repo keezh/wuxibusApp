@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_bg"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/red"
+        >
+        <ImageView
+            android:padding="10dp"
+            android:id="@+id/back_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/toolbar_icon_back"
+            />
+        <SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionSearch"
+            android:queryHint="请输入线路、站台、地点"
+            android:iconifiedByDefault="false"
+            android:inputType="textCapWords"
+
+
+            ></SearchView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/history_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white_bg"
+        >
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingLeft="10dp"-->
+            <!--android:padding="5dp"-->
+            <!--android:background="@color/search_title"-->
+            <!--android:text="搜索历史"-->
+            <!--android:textSize="16sp"-->
+            <!--/>-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/search_title"
+            >
+
+            <TextView
+                android:id="@+id/history_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:text="查询历史"
+                android:textSize="14sp"
+                android:textColor="@color/search_history"
+                />
+            <TextView
+                android:id="@+id/clear_history_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="12dp"
+                android:layout_alignParentRight="true"
+                android:textSize="14sp"
+                android:text="清除历史记录"
+                android:textColor="@color/search_history"
+                />
+        </RelativeLayout>
+        <com.wuxibus.app.customerView.MyListView
+            android:id="@+id/search_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></com.wuxibus.app.customerView.MyListView>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/search_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/home_bg"
+        android:visibility="gone"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+        <TextView
+            android:id="@+id/line_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="线路"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:background="@color/search_title"
+            />
+        <com.wuxibus.app.customerView.MyListView
+            android:id="@+id/line_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white_bg"
+            >
+
+        </com.wuxibus.app.customerView.MyListView>
+        <TextView
+            android:id="@+id/stop_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="站台"
+            android:textSize="18sp"
+            android:background="@color/search_title"
+            />
+        <com.wuxibus.app.customerView.MyListView
+            android:id="@+id/station_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white_bg"
+
+            ></com.wuxibus.app.customerView.MyListView>
+        <TextView
+            android:id="@+id/place_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="地点"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:background="@color/search_title"
+            />
+        <com.wuxibus.app.customerView.MyListView
+            android:id="@+id/place_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white_bg"
+
+            ></com.wuxibus.app.customerView.MyListView>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
