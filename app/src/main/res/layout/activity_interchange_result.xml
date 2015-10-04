@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/red"
+        >
+        <ImageView
+            android:id="@+id/back_imageview"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/toolbar_icon_back"
+            android:layout_alignParentLeft="true"
+            />
+        <TextView
+            android:id="@+id/title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="换乘方案"
+            android:textSize="@dimen/text_size_xh"
+            android:textColor="@color/white_text"
+            android:layout_centerInParent="true"
+            />
+
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:layout_marginTop="0dp"
+        android:id="@+id/advertise_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:visibility="visible"
+        android:background="@color/black"
+        /><!-- 广告 -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="0dp"
+        android:padding="10dp"
+        android:background="@color/home_bg"
+        >
+        <info.hoang8f.android.segmented.SegmentedGroup
+        xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/segmented2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        segmentedgroup:border_width="2dp"
+        segmentedgroup:corner_radius="5dp"
+        android:gravity="center_horizontal"
+        >
+
+             <RadioButton
+            android:id="@+id/around_btn"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:text="推荐"
+            android:checked="true"
+            style="@style/RadioButton" />
+
+            <RadioButton
+            android:id="@+id/history_btn"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:text="最快"
+            style="@style/RadioButton" />
+            <RadioButton
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:text="少换乘"
+                style="@style/RadioButton" />
+            <RadioButton
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:text="少步行"
+                style="@style/RadioButton" />
+        </info.hoang8f.android.segmented.SegmentedGroup>
+    </LinearLayout>
+
+</LinearLayout>

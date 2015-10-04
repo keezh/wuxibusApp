@@ -34,6 +34,7 @@ import com.wuxibus.app.R;
 import com.wuxibus.app.constants.AllConstants;
 import com.wuxibus.app.customerView.SmartImageView;
 import com.wuxibus.app.fragment.HomeFragment;
+import com.wuxibus.app.fragment.InterchangeFragment;
 import com.wuxibus.app.fragment.MyFragment;
 import com.wuxibus.app.fragment.RouteFragment;
 import com.wuxibus.app.fragment.StationFragment;
@@ -57,7 +58,7 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
     private RadioGroup rg_home_bottom;
     private HomeFragment homeFragment;
     private RouteFragment routeFragment;
-    //private InterchangeFragment interchangeFragment;
+    private InterchangeFragment interchangeFragment;
     private StationFragment stationFragment;
     private MyFragment myFragment;
 
@@ -354,15 +355,15 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
                             stationFragment);
                 }
                 break;
-//            case R.id.interchange_btn:
-//                if(interchangeFragment != null){
-//                    transaction.show(interchangeFragment);
-//                }else{
-//                    interchangeFragment = new InterchangeFragment();
-//                    transaction.add(R.id.fra_main_content,
-//                            interchangeFragment);
-//                }
-//                break;
+            case R.id.interchange_btn:
+                if(interchangeFragment != null){
+                    transaction.show(interchangeFragment);
+                }else{
+                    interchangeFragment = new InterchangeFragment();
+                    transaction.add(R.id.fra_main_content,
+                            interchangeFragment);
+                }
+                break;
             case R.id.my_btn:
                 if(myFragment != null){
                     transaction.show(myFragment);

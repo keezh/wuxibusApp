@@ -105,18 +105,18 @@
                 />
             <!--android:drawableTop="@drawable/"-->
             <!--android:text="站台"-->
-            <!--<RadioButton-->
-                <!--android:id="@+id/interchange_btn"-->
-                <!--style="@style/tab_bar_item"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_weight="1"-->
-                <!--android:drawableTop="@drawable/check_interchange"-->
-                <!--android:textColor="@color/color_radiobutton"-->
+            <RadioButton
+                android:id="@+id/interchange_btn"
+                style="@style/tab_bar_item"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/check_interchange"
+                android:textColor="@color/color_radiobutton"
 
-                <!--android:text="换乘"-->
+                android:text="换乘"
 
-                <!--/>-->
+                />
             <!--android:drawableTop="@drawable/"-->
             <!--android:text="换乘"-->
             <RadioButton

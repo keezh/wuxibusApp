@@ -815,17 +815,6 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
             toolbar.setBackgroundColor(Color.argb(alpha,220,69,69));
         }
 
-//        if(routeListView == view && motionEvent.getAction() == MotionEvent.ACTION_MOVE){
-//
-//            swipeRefreshLayout.setEnabled(false);
-//        }
-
-//        if(motionEvent.getAction() == MotionEvent.ACTION_MOVE){
-//            if(view.getScrollY() <= 0 || view.getTranslationY() <=0){
-//                toolbar.setBackgroundColor(Color.argb(0,220,69,69));
-//            }
-//
-//        }
         return false;
     }
 
