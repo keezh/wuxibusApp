@@ -196,25 +196,6 @@ public class LineMapActivity extends Activity implements OnGetPoiSearchResultLis
 
         drawLineInfo();
 
-
-
-
-//// 构造定位数据
-//        //31.565137, 120.288553
-//        MyLocationData locData = new MyLocationData.Builder()
-//                .accuracy(500)
-//                        // 此处设置开发者获取到的方向信息，顺时针0-360
-//                .direction(100).latitude(31.565137)
-//                .longitude(120.288553).build();
-//// 设置定位数据
-//        mapView.getMap().setMyLocationData(locData);
-//// 设置定位图层的配置（定位模式，是否允许方向信息，用户自定义定位图标）
-//        mCurrentMarker = BitmapDescriptorFactory
-//                .fromResource(R.drawable.icon_geo);
-//        MyLocationConfiguration config = new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker);
-//        mapView.getMap().setMyLocationConfiguration(config);
-//// 当不需要定位图层时关闭定位图层
-//        //mBaiduMap.setMyLocationEnabled(false);
     }
 
     @Override

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/red"
+        android:gravity="center"
+        >
+        <EditText
+            android:id="@+id/location_et"
+            android:layout_width="0dp"
+            android:layout_height="34dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:hint="请输入出发地"
+            android:background="@drawable/search_textfield"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="取消"
+            android:textSize="16sp"
+            android:textColor="@color/white_text"
+            />
+    </LinearLayout><!-- search header -->
+
+    <!-- 没有输入下的默认视图（4种方式） -->
+    <LinearLayout
+        android:id="@+id/no_search_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="0dp"
+        android:padding="12dp"
+        android:background="@color/history_bg"
+        >
+
+        <info.hoang8f.android.segmented.SegmentedGroup
+            xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/segmented2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            segmentedgroup:border_width="2dp"
+            segmentedgroup:corner_radius="5dp"
+            android:gravity="center_horizontal"
+            >
+
+            <RadioButton
+                android:id="@+id/history_btn"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:text="历史"
+                android:checked="true"
+                style="@style/RadioButton" />
+
+            <RadioButton
+                android:id="@+id/around_btn"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:text="附近"
+                style="@style/RadioButton" />
+            <RadioButton
+                android:id="@+id/store_btn"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:text="收藏"
+                style="@style/RadioButton" />
+            <RadioButton
+                android:id="@+id/mapview_btn"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:text="地图选点"
+                style="@style/RadioButton" />
+        </info.hoang8f.android.segmented.SegmentedGroup>
+    </LinearLayout>
+        <ListView
+            android:id="@+id/interchange_history_lv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            ></ListView>
+        <ListView
+            android:id="@+id/interchange_around_lv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            ></ListView>
+        <ListView
+            android:id="@+id/interchange_storage_lv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            ></ListView>
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/location_mapview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            ></com.baidu.mapapi.map.MapView>
+
+    </LinearLayout><!-- no search container-->
+    <!-- search result -->
+    <ListView
+        android:id="@+id/search_result_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        ></ListView>
+
+</LinearLayout>

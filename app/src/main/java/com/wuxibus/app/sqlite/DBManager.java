@@ -60,6 +60,42 @@ public class DBManager {
 	}
 
 	/**
+	 * 换乘搜索历史
+	 * @param name
+	 * @param latitude
+	 * @param longitude
+	 */
+	public void insertInterchangeSearchHistory(String name,String latitude,String longitude){
+		db.beginTransaction();
+		try{
+			//String sql = "select * from search_history";
+			//Cursor c = db.rawQuery(sql,null);
+
+			Cursor c = db.query("interchange_search_history", new String[]{"id","name"}, "name= ?", new String[]{name}, null, null, null, null);
+			if(c.moveToNext()){
+				int id = c.getInt(c.getColumnIndex("id"));
+				//ContentValues contentValues = new ContentValues();
+				//contentValues.pu
+				db.execSQL("update interchange_search_history set update_date = CURRENT_TIMESTAMP where id = ?",new Object[]{id});
+			}else{
+				db.execSQL("INSERT INTO interchange_search_history(name,latitude,longitude) VALUES(?,?,?)",
+						new Object[]{name,latitude,longitude});
+			}
+			//kee bug 必须设置此函数，否则保存不会同步到数据库中
+			db.setTransactionSuccessful();	//设置事务成功完成
+			c.close();
+
+
+		}catch (Exception e){
+			e.printStackTrace();
+
+		}finally {
+
+			db.endTransaction();
+		}
+	}
+
+	/**
 	 * 全局搜索历史记录
 	 * @return
 	 */

@@ -153,6 +153,8 @@
         </activity>
 
         <activity android:name=".activity.TestHistoryActivity"></activity>
+        <activity android:name=".activity.InterchangeResultActivity"></activity>
+        <activity android:name=".activity.InterchangeLocationActivity"></activity>
 
     </application>
 

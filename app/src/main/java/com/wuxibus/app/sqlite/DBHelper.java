@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = "line.db";
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5;
 	
 	public DBHelper(Context context) {
 		//CursorFactory设置为null,使用默认值
@@ -22,6 +22,9 @@ public class DBHelper extends SQLiteOpenHelper {
 				" varchar,start_end_time varchar)");
 		db.execSQL("create table if not exists search_history(id integer primary key autoincrement,line_name varchar,title varchar,start_stop varchar," +
 				"end_stop varchar,type integer,update_date DATETIME DEFAULT CURRENT_TIMESTAMP)");
+		//换乘搜索历史记录表
+		db.execSQL("create table if not exists interchange_search_history(id integer primary key autoincrement,name varchar,latitude varchar,longitude varchar," +
+				"update_date DATETIME DEFAULT CURRENT_TIMESTAMP)");
 		//db.execSQL("create table if not exists search_line_history(id integer primary key autoincrement,title varchar," +
 //				"type integer,create_date DATETIME DEFAULT CURRENT_TIMESTAMP)");
 //		db.execSQL("create table if not exists search_station_history(id integer primary key autoincrement,title varchar," +

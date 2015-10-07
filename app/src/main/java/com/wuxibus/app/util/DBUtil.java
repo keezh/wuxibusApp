@@ -46,5 +46,17 @@ public class DBUtil {
         dbManager.closeDB();
     }
 
+    /**
+     * 保存换乘历史
+     * @param name
+     * @param latitude
+     * @param longitude
+     */
+    public void insertInterchangeSearch(String name,String latitude,String longitude){
+        DBManager dbManager = new DBManager(context);
+        dbManager.insertInterchangeSearchHistory(name,latitude,longitude);
+        dbManager.closeDB();
+    }
+
 
 }

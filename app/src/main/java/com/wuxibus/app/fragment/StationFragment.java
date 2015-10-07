@@ -215,9 +215,6 @@ public class StationFragment extends Fragment implements View.OnClickListener,Ad
             history_listview.setVisibility(View.GONE);
 
         }else if(view == historyBtn){
-
-
-
             around_stops_listview.setVisibility(View.GONE);
             history_listview.setVisibility(View.VISIBLE);
         }

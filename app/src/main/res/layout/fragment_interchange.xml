@@ -2,11 +2,202 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="interchange fragment"
-        />
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <!-- header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/interchange_header"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="92dp"
+                android:layout_marginLeft="21dp"
+                android:layout_marginRight="21dp"
+                >
+                <ImageView
+                    android:id="@+id/reverse_iv"
+                    android:layout_width="40dp"
+                    android:layout_height="78dp"
+
+                    android:src="@drawable/interchange_search_reverse"
+                    />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="7dp"
+
+                    >
+                    <TextView
+                        android:id="@+id/orign_tv"
+                        android:layout_width="230dp"
+                        android:layout_height="34dp"
+                        android:text="我的位置"
+                        android:background="@drawable/interchange_search_textfield_from"
+                        />
+                    <TextView
+                        android:id="@+id/destination_tv"
+                        android:layout_width="230dp"
+                        android:layout_height="34dp"
+                        android:text="请输入目的地"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/interchange_search_textfield_to"
+                        />
+
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/submit_iv"
+                    android:layout_width="40dp"
+                    android:layout_height="78dp"
+                    android:src="@drawable/interchange_search_submit"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout><!-- header -->
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="106dp"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    >
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        >
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/address_icon_home"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="我要回家"
+                            android:textSize="14sp"
+                            android:textColor="@color/red"
+                            />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="40dp"
+                        android:gravity="center"
+                        >
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/address_icon_company"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="去上班"
+                            android:textSize="14sp"
+                            android:textColor="@color/red"
+                            />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="40dp"
+                        android:gravity="center"
+                        >
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/address_icon_setting"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="地点设置"
+                            android:textSize="14sp"
+                            android:textColor="@color/red"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout><!-- 3个图标 -->
+
+            <android.support.v4.view.ViewPager
+                android:layout_marginTop="0dp"
+                android:id="@+id/advertise_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="visible"
+                android:background="@color/red"
+                /><!-- 广告 -->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:background="@color/search_title"
+                >
+
+                <TextView
+                    android:id="@+id/history_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="21dp"
+                    android:layout_marginTop="12dp"
+                    android:text="查询历史"
+                    android:textSize="14sp"
+                    android:textColor="@color/search_history"
+                    />
+                <TextView
+                    android:id="@+id/clear_history_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="21dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_alignParentRight="true"
+                    android:textSize="14sp"
+                    android:text="清除历史记录"
+                    android:textColor="@color/search_history"
+                    />
+            </RelativeLayout>
+
+            <com.wuxibus.app.customerView.MyListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                ></com.wuxibus.app.customerView.MyListView>
+
+        </LinearLayout>
+    </ScrollView>
+
+
 
 </LinearLayout>

@@ -17,6 +17,8 @@ public class AllConstants {
     public static String AESKey = "1EXp6MhoWUNxPOIc";
     public static String IV = "0000000000000000";
     public static String ServerUrl = "http://api.wxbus.com.cn/api/";
+    public static String InterchangeUrl = "http://api.map.baidu.com/direction/v1";
+    public static String Baidu_ak = "RUC7z2D4GYlihrOhwwOC76w5";
     /* 线路搜索 */
     public static String RouteSearchUrl ="/?m=line_search&k=";
     //public static String
@@ -42,4 +44,5 @@ public class AllConstants {
 
     public static int Width;
     public static int Height;
+    public static String City = "无锡";
 }
