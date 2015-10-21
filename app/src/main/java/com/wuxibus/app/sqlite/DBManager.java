@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.wuxibus.app.entity.FavoriteRoute;
 import com.wuxibus.app.entity.FavoriteStop;
+import com.wuxibus.app.entity.InterchangeSearchHistory;
 import com.wuxibus.app.entity.Route;
 import com.wuxibus.app.entity.SearchHistory;
 
@@ -287,5 +288,28 @@ public class DBManager {
 	 */
 	public void closeDB() {
 		db.close();
+	}
+
+	public List<InterchangeSearchHistory> queryInterchangeSearchHistory() {
+		List<InterchangeSearchHistory> list = new ArrayList<InterchangeSearchHistory>();
+
+		Cursor c = db.rawQuery("SELECT * FROM interchange_search_history order by update_date desc", null);
+
+		//Cursor c = db.query("search_history",new String[]{"line_id","title","start_stop","end_stop"},null,null,null,null,null,null);
+		while (c.moveToNext()){
+			//int id = c.getInt(c.getColumnIndex("id"));
+			int id = c.getInt(c.getColumnIndex("id"));
+
+			String name = c.getString(c.getColumnIndex("name"));
+			String latitude = c.getString(c.getColumnIndex("latitude"));
+			String longitude = c.getString(c.getColumnIndex("longitude"));
+			InterchangeSearchHistory temp = new InterchangeSearchHistory(id,name,latitude,longitude);
+			list.add(temp);
+
+		}
+		c.close();
+		return list;
+
+
 	}
 }

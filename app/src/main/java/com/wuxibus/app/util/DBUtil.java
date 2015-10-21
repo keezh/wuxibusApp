@@ -2,6 +2,7 @@ package com.wuxibus.app.util;
 
 import android.content.Context;
 
+import com.wuxibus.app.entity.InterchangeSearchHistory;
 import com.wuxibus.app.entity.SearchHistory;
 import com.wuxibus.app.sqlite.DBManager;
 
@@ -56,6 +57,13 @@ public class DBUtil {
         DBManager dbManager = new DBManager(context);
         dbManager.insertInterchangeSearchHistory(name,latitude,longitude);
         dbManager.closeDB();
+    }
+
+    public List<InterchangeSearchHistory> queryInterchangeSearchHistory(){
+        DBManager dbManager = new DBManager(context);
+        List<InterchangeSearchHistory> list = dbManager.queryInterchangeSearchHistory();
+        dbManager.closeDB();
+        return list;
     }
 
 

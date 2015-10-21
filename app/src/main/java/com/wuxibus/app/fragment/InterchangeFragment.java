@@ -1,6 +1,8 @@
 package com.wuxibus.app.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,7 +16,10 @@ import com.wuxibus.app.R;
 import com.wuxibus.app.activity.InterchangeLocationActivity;
 import com.wuxibus.app.activity.InterchangeResultActivity;
 import com.wuxibus.app.activity.MainActivity;
+import com.wuxibus.app.constants.AllConstants;
 import com.wuxibus.app.entity.GPS;
+import com.wuxibus.app.entity.HomeCompanyLocation;
+import com.wuxibus.app.entity.InterchangeSearch;
 import com.wuxibus.app.util.Tools;
 
 /**
@@ -55,6 +60,49 @@ public class InterchangeFragment extends Fragment implements View.OnClickListene
         super.onResume();
         //重新获取GPS坐标，当前位置坐标为GPS class中
         ((MainActivity)InterchangeFragment.this.getActivity()).updateBaiduGps();
+
+        if(InterchangeSearch.sourceInfo != null){
+            orignTextView.setText(InterchangeSearch.sourceInfo.name);
+
+        }
+
+        if(InterchangeSearch.destinationInfo != null){
+            destinationTextView.setText(InterchangeSearch.destinationInfo.name);
+        }
+
+
+    }
+
+    public void saveBindDivice(){
+        //实例化SharedPreferences对象（第一步）
+        SharedPreferences mySharedPreferences= this.getActivity().getSharedPreferences(AllConstants.HomeCompanyXml,
+                Activity.MODE_PRIVATE);
+//实例化SharedPreferences.Editor对象（第二步）
+        SharedPreferences.Editor editor = mySharedPreferences.edit();
+//用putString的方法保存数据
+        editor.putString("homeAddress", HomeCompanyLocation.homeAddress);
+        editor.putString("homeLatitude", HomeCompanyLocation.homeLatitude);
+        editor.putString("homeLongitude", HomeCompanyLocation.homeLongitude);
+        editor.putString("companyAddress", HomeCompanyLocation.companyAddress);
+        editor.putString("companyLatitude", HomeCompanyLocation.companyLatitude);
+        editor.putString("companyLongitude", HomeCompanyLocation.companyLongitude);
+
+
+//提交当前数据
+        editor.commit();
+    }
+
+    public void readBindDevice(){
+
+        SharedPreferences sharedPreferences= this.getActivity().getSharedPreferences(AllConstants.HomeCompanyXml,
+                Activity.MODE_PRIVATE);
+// 使用getString方法获得value，注意第2个参数是value的默认值
+        HomeCompanyLocation.homeAddress =sharedPreferences.getString("homeAddress","");
+        HomeCompanyLocation.homeLatitude =sharedPreferences.getString("homeLatitude","");
+        HomeCompanyLocation.homeLongitude =sharedPreferences.getString("homeLongitude","");
+        HomeCompanyLocation.companyAddress =sharedPreferences.getString("companyAddress","");
+        HomeCompanyLocation.companyLatitude =sharedPreferences.getString("companyLatitude","");
+        HomeCompanyLocation.companyLongitude =sharedPreferences.getString("companyLongitude","");
 
     }
 

@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.wuxibus.app.R;
 import com.wuxibus.app.entity.NewsDetail;
 import com.wuxibus.app.volley.BitmapCache;
@@ -44,7 +46,7 @@ public class HomeNewsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
         if(view == null){
             viewHolder = new ViewHolder();
             view = View.inflate(context, R.layout.home_news_item,null);
@@ -60,6 +62,7 @@ public class HomeNewsAdapter extends BaseAdapter {
         viewHolder.url = list.get(i).getUrl();
         viewHolder.indexUrl = list.get(i).getIndex_pic();
         String indexUrl = viewHolder.indexUrl+"/200x150";
+        viewHolder.thumbnailImageView.setTag(indexUrl);
 
         boolean flag = BitmapCache.getInstern().getSDCardBitmap(indexUrl, viewHolder.thumbnailImageView,
                 new BitmapCache.CallBackSDcardImg() {
@@ -70,9 +73,27 @@ public class HomeNewsAdapter extends BaseAdapter {
             }
         });
         if (!flag) {
-            VolleyManager.loadImage(viewHolder.thumbnailImageView, indexUrl, R.drawable.background_img);
+            //VolleyManager.loadImage(viewHolder.thumbnailImageView, indexUrl, R.drawable.background_img);
+            VolleyManager.loadImage(viewHolder.thumbnailImageView, indexUrl, R.drawable.background_img, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
+
+                    Bitmap resBitmap =  imageContainer.getBitmap();
+                    String tag = (String)viewHolder.thumbnailImageView.getTag();
+                    if(tag.equals(imageContainer.getRequestUrl())){
+                        viewHolder.thumbnailImageView.setImageBitmap(resBitmap);
+                    }
+
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+
+                }
+            });
         }
-       // VolleyManager.loadImage(viewHolder.thumbnailImageView,indexUrl,R.drawable.class_default);
+
+
 
         return view;
     }

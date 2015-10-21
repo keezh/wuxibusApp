@@ -600,7 +600,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
     }
 
-    //新闻图片banner
+    //新闻图片banner,第二个banner
     public void initNewsTj(final List<NewsTj> newsTjList) {
         List<ImageView> list = new ArrayList<ImageView>();
         newsPageControlsList.clear();
@@ -634,7 +634,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
                 public void onClick(View view) {
                     Intent intent = new Intent(HomeFragment.this.getActivity(), WebViewActivity.class);
                     intent.putExtra("url",newsTjList.get(tempI).getUrl());
-                    intent.putExtra("title","公交动态");
+                    intent.putExtra("title","");//改标题服务端没有传递过来
                     startActivity(intent);
 
                 }
@@ -647,6 +647,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
         if(newsTjList!= null && newsTjList.size()>0){//title 初始化为第一个
             String title = newsTjList.get(0).getTitle();
             newsTitleTextView.setText(title);
+            newsTitleTextView.setTextColor(Color.WHITE);
         }
 
 

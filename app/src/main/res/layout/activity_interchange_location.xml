@@ -18,6 +18,7 @@
             android:background="@drawable/search_textfield"
             />
         <TextView
+            android:id="@+id/cancel_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
@@ -87,6 +88,7 @@
             android:id="@+id/interchange_history_lv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white_bg"
 
             ></ListView>
         <ListView
@@ -94,19 +96,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            android:background="@color/white_bg"
+
             ></ListView>
         <ListView
             android:id="@+id/interchange_storage_lv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            android:background="@color/white_bg"
             ></ListView>
+        <FrameLayout
+            android:id="@+id/map_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            >
         <com.baidu.mapapi.map.MapView
             android:id="@+id/location_mapview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             ></com.baidu.mapapi.map.MapView>
+            <include layout="@layout/interchange_baidumap_geocode"></include>
+
+        </FrameLayout>
 
     </LinearLayout><!-- no search container-->
     <!-- search result -->

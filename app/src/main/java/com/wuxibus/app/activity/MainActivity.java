@@ -355,6 +355,7 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
                             stationFragment);
                 }
                 break;
+            //换乘 注释
             case R.id.interchange_btn:
                 if(interchangeFragment != null){
                     transaction.show(interchangeFragment);
@@ -416,9 +417,10 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
         if (routeFragment != null) {
             transaction.hide(routeFragment);
         }
-//        if (interchangeFragment != null) {
-//            transaction.hide(interchangeFragment);
-//        }
+        //换乘 注释点
+        if (interchangeFragment != null) {
+            transaction.hide(interchangeFragment);
+        }
         if (stationFragment != null) {
             transaction.hide(stationFragment);
         }

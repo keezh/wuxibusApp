@@ -7,6 +7,7 @@ import com.wuxibus.app.adapter.InterchangeSearchAdapter;
  */
 public class InterchangeSearchHistory {
     private int id;
+    private String name;
     private String latitude;
     private String longitude;
 
@@ -14,8 +15,9 @@ public class InterchangeSearchHistory {
 
     }
 
-    public InterchangeSearchHistory(int id,String latitude,String longitude){
+    public InterchangeSearchHistory(int id,String name,String latitude,String longitude){
         this.id = id;
+        this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -26,6 +28,14 @@ public class InterchangeSearchHistory {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getLatitude() {

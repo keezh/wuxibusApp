@@ -113,9 +113,7 @@
                 android:layout_weight="1"
                 android:drawableTop="@drawable/check_interchange"
                 android:textColor="@color/color_radiobutton"
-
                 android:text="换乘"
-
                 />
             <!--android:drawableTop="@drawable/"-->
             <!--android:text="换乘"-->
