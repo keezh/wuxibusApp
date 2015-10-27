@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/red"
+        >
+        <ImageView
+            android:id="@+id/back_imageview"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/toolbar_icon_back"
+            android:layout_alignParentLeft="true"
+            />
+        <TextView
+            android:id="@+id/title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="常用地址设置"
+            android:textSize="@dimen/text_size_xh"
+            android:textColor="@color/white_text"
+            android:layout_centerInParent="true"
+            />
+
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/interchange_storage_lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_bg"
+        ></ListView>
+
+</LinearLayout>

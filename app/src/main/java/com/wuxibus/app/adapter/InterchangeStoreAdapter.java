@@ -17,7 +17,7 @@ import java.util.List;
  * Created by zhongkee on 15/10/15.
  */
 public class InterchangeStoreAdapter extends BaseAdapter {
-    List<PoiInfo> list = new ArrayList<PoiInfo>();
+   public List<PoiInfo> list = new ArrayList<PoiInfo>();
     Context context;
 
     public InterchangeStoreAdapter(Context context){

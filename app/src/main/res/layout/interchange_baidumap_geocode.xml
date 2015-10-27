@@ -5,9 +5,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_gravity="center"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="60dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
+
     >
 
 
@@ -25,7 +26,7 @@
         android:layout_height="wrap_content" 
         android:textColor="@color/white_text"
         android:textSize="15sp"
-        android:text="无锡市滨湖区金科米兰第六季拉近距离刘经理的就"
+        android:text="无锡市滨湖区金科米兰花园59栋"
         android:ellipsize="end"
 
         />
@@ -40,8 +41,8 @@
 </LinearLayout>
     <ImageView
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="36dp"
+        android:layout_height="50dp"
         android:src="@drawable/interchange_map_pin_from"
         />
 </LinearLayout>

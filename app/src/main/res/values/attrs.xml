@@ -30,5 +30,13 @@
             <attr name="title" format="string" localization="suggested" />
         </declare-styleable>
 
+    <!-- 自定义换行的线性布局参数 -->
+    <declare-styleable name="LineWrapLayout">
+        <attr name="horizontal_spacing" format="dimension" />
+        <attr name="vertical_spacing" format="dimension" />
+        <attr name="child_width" format="dimension" />
+        <attr name="child_height" format="dimension" />
+    </declare-styleable>
+
 
 </resources>

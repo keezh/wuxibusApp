@@ -12,6 +12,7 @@ public class HomeCompanyLocation {
     public static String homeLatitude="";
     public static String homeLongitude="";
 
+
     /**
      * 公司的地理位置信息
      */

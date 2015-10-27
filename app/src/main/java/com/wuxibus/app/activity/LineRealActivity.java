@@ -184,7 +184,7 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
         Map<String,String> paras = new HashMap<String,String>();
         paras.put("m","get_ad_list");
         paras.put("flag","line_list");
-        paras.put("k","");
+        paras.put("k",lineTitle);//bug fix
         //暂时使用不加密接口，服务器好像没有进行加密处理
         paras = AES7PaddingUtil.toAES7Padding(paras);
         VolleyManager.getJsonArray(url, paras, new Response.Listener<JSONArray>() {

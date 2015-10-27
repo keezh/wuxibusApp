@@ -6,6 +6,7 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.Response;
@@ -31,6 +33,11 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
 import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
@@ -62,7 +69,7 @@ import java.util.Map;
  * Created by zhongkee on 15/10/6.
  */
 public class InterchangeLocationActivity extends Activity implements AdapterView.OnItemClickListener,
-        View.OnClickListener,TextWatcher,BaiduMap.OnMarkerDragListener{
+        View.OnClickListener,TextWatcher{
     public EditText locationEditText;
 
     PoiSearch poiSearch = PoiSearch.newInstance();
@@ -83,6 +90,16 @@ public class InterchangeLocationActivity extends Activity implements AdapterView
     View noSearchContainer;
 
     TextView cancelTextView;
+    //map中心位置
+    TextView mapTitleTextView;
+    ImageView checkTitleImageView;
+    //地图选点，返回值
+    LatLng choosePoint;//地图选择的点
+    String chooseAddress;//
+
+    //初始化值
+
+    boolean isFromOrigin;//是否是从出发按钮点击跳转过来
 
 
     @Override
@@ -105,8 +122,16 @@ public class InterchangeLocationActivity extends Activity implements AdapterView
         searchResultListView = (ListView) findViewById(R.id.search_result_listview);
         searchResultListView.setOnItemClickListener(this);
         historyListView.setOnItemClickListener(this);
+        aroundListView.setOnItemClickListener(this);
 
         noSearchContainer = findViewById(R.id.no_search_container);
+
+        mapTitleTextView = (TextView) findViewById(R.id.title_tv);
+        checkTitleImageView = (ImageView) findViewById(R.id.check_address_iv);
+
+        checkTitleImageView.setOnClickListener(this);
+        storeListView.setOnItemClickListener(this);
+
 
         //locationEditText.setOnFocusChangeListener(this);
         locationEditText.addTextChangedListener(this);
@@ -118,18 +143,21 @@ public class InterchangeLocationActivity extends Activity implements AdapterView
         String locaiton = this.getIntent().getStringExtra("location");
         if(locaiton != null && locaiton.equals("origin")){
             locationEditText.setHint("请输入出发地");
+            isFromOrigin = true;
         }else if(locaiton !=null && locaiton.equals("destination")){
             locationEditText.setHint("请输入目的地");
+            isFromOrigin = false;
         }
 
         mBaiduMap = mapView.getMap();
 
-        mBaiduMap.setOnMarkerDragListener(this);
 
         //百度地图当前位置
         initCenter();
        // drawCurrentIcon();
 
+        //必须重新初始化改值
+        InterchangeSearch.isAroundStop = false;
 
     }
 
@@ -150,6 +178,82 @@ public class InterchangeLocationActivity extends Activity implements AdapterView
         InterchangeStoreAdapter storeAdapter = new InterchangeStoreAdapter(this);
         storeListView.setAdapter(storeAdapter);
 
+        mapChooseLocation();
+
+
+    }
+
+    /**
+     * 地图选择的点
+     */
+    public void mapChooseLocation(){
+        mBaiduMap.setOnMapStatusChangeListener(
+                new BaiduMap.OnMapStatusChangeListener(){
+
+                    @Override
+
+                    public void onMapStatusChangeStart(MapStatus mapStatus) {
+
+                    }
+
+                    @Override
+                    public void onMapStatusChange(MapStatus mapStatus) {
+
+                    }
+
+                    @Override
+                    public void onMapStatusChangeFinish(MapStatus mapStatus) {
+                        LatLng ll=mapStatus.target;
+                        choosePoint = ll;
+
+                        //Log.d("kee", "sts ch fs:" + ll.latitude + "," + ll.longitude + "");
+
+                        reverseGeoCode(ll);
+
+                    }
+                }
+        );
+    }
+
+    /**
+     * 解析当前地址
+     * @param ll
+     */
+    private void reverseGeoCode(LatLng ll) {
+        GeoCoder geoCoder = GeoCoder.newInstance();
+        //
+        OnGetGeoCoderResultListener listener = new OnGetGeoCoderResultListener() {
+            // 反地理编码查询结果回调函数
+            @Override
+            public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
+                if (result == null
+                        || result.error != SearchResult.ERRORNO.NO_ERROR) {
+                    // 没有检测到结果
+                    Toast.makeText(InterchangeLocationActivity.this, "抱歉，未能找到结果",
+                            Toast.LENGTH_LONG).show();
+                }
+//                                Toast.makeText(InterchangeLocationActivity.this,
+//                                        "位置：" + result.getAddress(), Toast.LENGTH_LONG)
+//                                        .show();
+
+                mapTitleTextView.setText(result.getAddress());
+                chooseAddress = result.getAddress();
+
+            }
+
+            // 地理编码查询结果回调函数
+            @Override
+            public void onGetGeoCodeResult(GeoCodeResult result) {
+                if (result == null
+                        || result.error != SearchResult.ERRORNO.NO_ERROR) {
+                    // 没有检测到结果
+                }
+            }
+        };
+        // 设置地理编码检索监听者
+        geoCoder.setOnGetGeoCodeResultListener(listener);
+        //
+        geoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(ll));
     }
 
     public void poiSearch(String keyword){
@@ -208,6 +312,9 @@ public class InterchangeLocationActivity extends Activity implements AdapterView
         MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
 //改变地图状态
         mapView.getMap().setMapStatus(mMapStatusUpdate);
+
+        reverseGeoCode(cenpt);//首次进入定位到当前地址信息
+        choosePoint = cenpt;
     }
 
     /**
@@ -270,12 +377,26 @@ public class InterchangeLocationActivity extends Activity implements AdapterView
             storeListView.setVisibility(View.GONE);
             mapContainer.setVisibility(View.VISIBLE);
 
-           // drawCurrentIcon();//地图选点
 
         }
 
         if(v == cancelTextView){
             this.finish();
+        }
+
+        if(v == checkTitleImageView){//map 确认选中的点
+            PoiInfo poiInfo = new PoiInfo();
+            poiInfo.location = choosePoint;
+            poiInfo.name = chooseAddress;
+            if(isFromOrigin){
+                InterchangeSearch.sourceInfo = poiInfo;
+            }else{
+                InterchangeSearch.destinationInfo = poiInfo;
+            }
+
+            this.finish();
+
+
         }
     }
 
@@ -315,7 +436,12 @@ public class InterchangeLocationActivity extends Activity implements AdapterView
             DBUtil dbUtil = new DBUtil(this);
             dbUtil.insertInterchangeSearch(poiInfo.name,poiInfo.location.latitude+"",poiInfo.location.longitude+"");
 
-            InterchangeSearch.sourceInfo = poiInfo;
+            if(isFromOrigin){
+                InterchangeSearch.sourceInfo = poiInfo;
+            }else{
+                InterchangeSearch.destinationInfo = poiInfo;
+            }
+
             this.finish();
 
         }else if(parent == historyListView){
@@ -332,7 +458,12 @@ public class InterchangeLocationActivity extends Activity implements AdapterView
             }
 
             poiInfo.location = latLng;
-            InterchangeSearch.sourceInfo = poiInfo;
+
+            if(isFromOrigin){
+                InterchangeSearch.sourceInfo = poiInfo;
+            }else{
+                InterchangeSearch.destinationInfo = poiInfo;
+            }
             this.finish();
 
         }else if(parent == storeListView){
@@ -341,9 +472,25 @@ public class InterchangeLocationActivity extends Activity implements AdapterView
             if(poiInfo.name.equals("未设定")){
                 return;
             }else {
-                InterchangeSearch.sourceInfo = poiInfo;
+                if(isFromOrigin){
+                    InterchangeSearch.sourceInfo = poiInfo;
+                }else{
+                    InterchangeSearch.destinationInfo = poiInfo;
+                }
                 this.finish();
             }
+
+        }else if(parent == aroundListView){
+            InterchangeAroundStopAdapter.ViewHolder viewHolder = (InterchangeAroundStopAdapter.ViewHolder) view.getTag();
+            PoiInfo poiInfo = new PoiInfo();
+            poiInfo.name = viewHolder.titleTextView.getText().toString();
+            if(isFromOrigin){
+                InterchangeSearch.sourceInfo = poiInfo;
+            }else{
+                InterchangeSearch.destinationInfo = poiInfo;
+            }
+            InterchangeSearch.isAroundStop = true;
+            this.finish();
 
         }
     }
@@ -381,18 +528,5 @@ public class InterchangeLocationActivity extends Activity implements AdapterView
         });
     }
 
-    @Override
-    public void onMarkerDrag(Marker marker) {
 
-    }
-
-    @Override
-    public void onMarkerDragEnd(Marker marker) {
-
-    }
-
-    @Override
-    public void onMarkerDragStart(Marker marker) {
-
-    }
 }

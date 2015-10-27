@@ -108,8 +108,8 @@
     <orderEntry type="library" exported="" name="palette-v7-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="android_api_1.1_forsdk" level="project" />
-    <orderEntry type="library" exported="" name="avoscloud-sdk-v3.7.4" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="avoscloud-sdk-v3.7.4" level="project" />
     <orderEntry type="library" exported="" name="avoscloud-statistics-v3.7.4" level="project" />
     <orderEntry type="library" exported="" name="bcprov-jdk16-146" level="project" />
     <orderEntry type="library" exported="" name="com.umeng.fb.5.4.0" level="project" />

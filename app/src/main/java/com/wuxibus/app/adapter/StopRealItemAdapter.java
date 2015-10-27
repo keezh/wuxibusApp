@@ -164,8 +164,6 @@ public class StopRealItemAdapter extends BaseAdapter {
                     context.startActivity(intent);
                 }
             });
-
-
         }
 
         //add adv show
@@ -186,10 +184,6 @@ public class StopRealItemAdapter extends BaseAdapter {
         }else{
             viewHolder.adContainer.setVisibility(View.GONE);
         }
-
-
-
-
 
         viewHolder.line_code = stopList.get(i).getLine_code();
         viewHolder.line_seq = stopList.get(i).getStop_seq();

@@ -70,6 +70,8 @@
     <color name="splash_bg">#FCFCFC</color>
     <color name="history_bg">#f4f4f4</color>
     <color name="my_location">#4AB7E2</color>
+    <color name="interchane_location">#eff2f5</color>
+    <color name="interchane_history">#e9ecee</color>
 
 
 
