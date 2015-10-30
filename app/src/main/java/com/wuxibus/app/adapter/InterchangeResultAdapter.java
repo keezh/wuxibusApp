@@ -1,7 +1,9 @@
 package com.wuxibus.app.adapter;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Color;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.wuxibus.app.R;
+import com.wuxibus.app.customerView.WrapLineLayout;
 import com.wuxibus.app.entity.InterchangeScheme;
 import com.wuxibus.app.entity.InterchangeStep;
 import com.wuxibus.app.entity.InterchangeVehicle;
@@ -81,6 +84,7 @@ public class InterchangeResultAdapter extends BaseAdapter {
             convertView = View.inflate(context, R.layout.interchange_result_item,null);
             viewHolder.titleContainer = (LinearLayout) convertView.findViewById(R.id.title_container);
             viewHolder.detailTextView = (TextView) convertView.findViewById(R.id.detail_tv);
+            viewHolder.wrapLineLayout = (WrapLineLayout) convertView.findViewById(R.id.line_wrap_container);
             convertView.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -98,13 +102,24 @@ public class InterchangeResultAdapter extends BaseAdapter {
         int nums = schemeList.get(position).totalStops;
         int meters = schemeList.get(position).totalMeters;
 
-        viewHolder.detailTextView.setText(time+" | "+nums+"站"+" | 步行"+meters+"米");
+        viewHolder.detailTextView.setText(getTimes(time)+"  |  "+nums+"站"+"  |  步行"+meters+"米");
 
         viewHolder.titleContainer.removeAllViews();
         layoutTitleContainer(steps, viewHolder.titleContainer);
 
+        viewHolder.wrapLineLayout.removeAllViews();
+        layoutStepDetail(steps, viewHolder.wrapLineLayout);
+
 
         return convertView;
+    }
+
+    public class ViewHolder{
+        public LinearLayout titleContainer;
+        public TextView detailTextView;//1小时15分钟|13站|不行1200米
+        public TextView stopInfoTextView;//已停运
+        public WrapLineLayout wrapLineLayout;//step详情
+
     }
 
     /**
@@ -197,11 +212,98 @@ public class InterchangeResultAdapter extends BaseAdapter {
         container.requestLayout();
     }
 
-    public class ViewHolder{
-       public LinearLayout titleContainer;
-        public TextView detailTextView;//1小时15分钟|13站|不行1200米
-        public TextView stopInfoTextView;//已停运
-        public ViewGroup lineWrapLayout;//step详情
+    /**
+     * 布局详情
+     * @param stepList
+     * @param container
+     */
+    public void layoutStepDetail(List<List<InterchangeStep>> stepList,WrapLineLayout container){
+        ImageView footImageView = new ImageView(context);
+        footImageView.setImageResource(R.drawable.interchange_plan_icon_walk);
+        ImageView nextImageView = new ImageView(context);
+        nextImageView.setImageResource(R.drawable.interchange_plan_icon_next);
+
+
+        int margin = DensityUtil.dip2px(context,5);//5dp
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(margin, 0, 0, 0);
+
+        LinearLayout.LayoutParams lpText = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lpText.setMargins(0, 0, 0, margin);
+        container.addView(footImageView);
+        container.addView(nextImageView);
+
+       // footImageView.setLayoutParams(lp);
+       // nextImageView.setLayoutParams(lp);
+
+        for (int i = 0; i < stepList.size(); i++) {
+            List<InterchangeStep> steps = stepList.get(i);
+
+            InterchangeVehicle vehicle = steps.get(0).getVehicle();
+            if (vehicle != null) {
+                ImageView upImageView = new ImageView(context);
+                upImageView.setImageResource(R.drawable.interchange_plan_icon_on);
+                ImageView downImageView = new ImageView(context);
+                downImageView.setImageResource(R.drawable.interchange_plan_icon_off);
+
+                //container.addView(upImageView);
+                LinearLayout linearLayout = new LinearLayout(context);
+                //linearLayout.setGravity(Gravity.CENTER_VERTICAL);
+
+                TextView start = new TextView(context);
+                start.setText(vehicle.getStart_name());
+                start.setLayoutParams(lp);
+                linearLayout.addView(upImageView);
+                linearLayout.addView(start);
+                container.addView(linearLayout);
+
+                ImageView next = new ImageView(context);
+                next.setImageResource(R.drawable.interchange_plan_icon_next);
+                container.addView(next);
+
+                //container.addView(downImageView);
+                LinearLayout linearLayout2 = new LinearLayout(context);
+                //linearLayout2.setGravity(Gravity.CENTER_VERTICAL);
+
+                TextView end = new TextView(context);
+                end.setText(vehicle.getEnd_name());
+                end.setLayoutParams(lp);
+                linearLayout2.addView(downImageView);
+                linearLayout2.addView(end);
+                container.addView(linearLayout2);
+
+                ImageView next2 = new ImageView(context);
+                next2.setImageResource(R.drawable.interchange_plan_icon_next);
+                container.addView(next2);
+
+                ImageView footImageView1 = new ImageView(context);
+                footImageView1.setImageResource(R.drawable.interchange_plan_icon_walk);
+                container.addView(footImageView1);
+
+                ImageView next3 = new ImageView(context);
+                next3.setImageResource(R.drawable.interchange_plan_icon_next);
+                container.addView(next3);
+
+                //upImageView.setLayoutParams(lp);
+                //start.setLayoutParams(lp);
+                //next.setLayoutParams(lp);
+                //downImageView.setLayoutParams(lp);
+                //next2.setLayoutParams(lp);
+
+            }
+        }
+
+        int size = container.getChildCount();
+
+        container.removeViewAt(size - 1);
+
+       // container.addView();
+
+//        ImageView footImageView2 = new ImageView(context);
+//        footImageView2.setImageResource(R.drawable.interchange_plan_icon_walk);
+//        container.addView(footImageView2);
 
     }
+
+
 }

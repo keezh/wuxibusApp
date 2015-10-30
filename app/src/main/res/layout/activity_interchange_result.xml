@@ -41,7 +41,7 @@
         android:gravity="center_horizontal"
         android:layout_marginTop="0dp"
         android:padding="10dp"
-        android:background="@color/home_bg"
+        android:background="@color/news_divide"
         >
         <info.hoang8f.android.segmented.SegmentedGroup
         xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
@@ -84,6 +84,7 @@
         android:id="@+id/recommend_lv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:divider="@color/news_divide"
         android:dividerHeight="10dp"
         ></ListView>
     <ListView

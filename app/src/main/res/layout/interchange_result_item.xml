@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:layout_marginTop="5dp"
             >
             <!--<TextView-->
                 <!-- -->
@@ -31,20 +32,20 @@
         </LinearLayout>
 
         <TextView
+            android:layout_marginTop="5dp"
             android:id="@+id/detail_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1小时15分钟|13站|步行1320米"
             />
         <TextView
+            android:layout_marginTop="5dp"
             android:id="@+id/stop_info_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="已停运"
             android:textColor="@color/red"
             />
-
-
 
     </LinearLayout>
         <ImageView
@@ -58,15 +59,17 @@
             />
     </RelativeLayout>
     <View
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/red"
+        android:background="@color/tab_line"
         ></View>
 
     <com.wuxibus.app.customerView.WrapLineLayout
         android:id="@+id/line_wrap_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
         <ImageView
             android:layout_width="18dp"
             android:layout_height="18dp"
