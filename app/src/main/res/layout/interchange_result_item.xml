@@ -22,12 +22,6 @@
             android:gravity="center_vertical"
             android:layout_marginTop="5dp"
             >
-            <!--<TextView-->
-                <!-- -->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="769路-&#45;&#45;756路"-->
-                <!--/>-->
 
         </LinearLayout>
 
@@ -69,6 +63,9 @@
         android:id="@+id/line_wrap_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="5dp"
         >
         <ImageView
             android:layout_width="18dp"

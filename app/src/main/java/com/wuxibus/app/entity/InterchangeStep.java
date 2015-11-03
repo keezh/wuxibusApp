@@ -37,7 +37,7 @@ package com.wuxibus.app.entity;
  *
  *
  */
-public class InterchangeStep {
+public class InterchangeStep implements Cloneable{
     private int distance;
     private int duration;
     private InterchangeStepLocation stepOriginLocation;
@@ -110,5 +110,10 @@ public class InterchangeStep {
 
     public void setStepInstruction(String stepInstruction) {
         this.stepInstruction = stepInstruction;
+    }
+
+    @Override
+    public InterchangeStep clone() throws CloneNotSupportedException {
+        return (InterchangeStep)super.clone();
     }
 }

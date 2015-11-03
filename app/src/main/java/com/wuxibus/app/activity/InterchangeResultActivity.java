@@ -7,32 +7,29 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.baidu.mapapi.search.core.PoiInfo;
-import com.baidu.mapapi.search.core.SearchResult;
-import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
-import com.baidu.mapapi.search.poi.PoiCitySearchOption;
-import com.baidu.mapapi.search.poi.PoiDetailResult;
-import com.baidu.mapapi.search.poi.PoiResult;
-import com.baidu.mapapi.search.poi.PoiSearch;
-import com.wuxibus.app.InitApplication;
+import com.baidu.mapapi.model.LatLng;
+import com.wuxibus.app.InterchangeModel;
 import com.wuxibus.app.R;
 import com.wuxibus.app.adapter.InterchangeResultAdapter;
 import com.wuxibus.app.adapter.MyViewPagerAdapter;
 import com.wuxibus.app.constants.AllConstants;
 import com.wuxibus.app.customerView.SmartImageView;
 import com.wuxibus.app.entity.AdvItem;
-import com.wuxibus.app.entity.InterchangeRoutes;
+import com.wuxibus.app.entity.InterchangeResultType;
 import com.wuxibus.app.entity.InterchangeScheme;
 import com.wuxibus.app.entity.InterchangeSearch;
 import com.wuxibus.app.entity.InterchangeStep;
 import com.wuxibus.app.entity.InterchangeStepLocation;
 import com.wuxibus.app.util.AES7PaddingUtil;
+import com.wuxibus.app.util.DBUtil;
 import com.wuxibus.app.util.DensityUtil;
 import com.wuxibus.app.volley.BitmapCache;
 import com.wuxibus.app.volley.VolleyManager;
@@ -62,18 +59,26 @@ import static android.view.View.*;
  *
  *
  */
-public class InterchangeResultActivity extends Activity implements OnClickListener{
+public class InterchangeResultActivity extends Activity implements OnClickListener,AdapterView.OnItemClickListener{
 
     private ImageView backImageView;
     List<AdvItem> list;
     ViewPager advertiseViewPager;
 
+    //推荐线路
     List<InterchangeScheme> schemeList = new ArrayList<InterchangeScheme>();
+    List<InterchangeScheme> sortList = new ArrayList<InterchangeScheme>();
+//    List<InterchangeScheme> lessInterchangeList = new ArrayList<InterchangeScheme>();
+//    List<InterchangeScheme> lessStepList = new ArrayList<InterchangeScheme>();
 
     ListView recommendListView;
     ListView fastListView;
     ListView lessChangeListView;
     ListView lessStepListView;
+    RadioButton recommentBtn;
+    RadioButton fastBtn;
+    RadioButton lessInterchangeBtn;
+    RadioButton lessStepBtn;
 
     /**
      * http://api.map.baidu.com/direction/v1?ak=RUC7z2D4GYlihrOhwwOC76w5&
@@ -96,35 +101,63 @@ public class InterchangeResultActivity extends Activity implements OnClickListen
         lessChangeListView = (ListView) findViewById(R.id.less_change_lv);
         lessStepListView = (ListView) findViewById(R.id.less_step_lv);
 
+        recommentBtn = (RadioButton) findViewById(R.id.comment_btn);
+        fastBtn = (RadioButton) findViewById(R.id.fast_btn);
+        lessInterchangeBtn = (RadioButton) findViewById(R.id.less_interchange_btn);
+        lessStepBtn = (RadioButton) findViewById(R.id.less_step_btn);
+
+        recommentBtn.setOnClickListener(this);
+        fastBtn.setOnClickListener(this);
+        lessInterchangeBtn.setOnClickListener(this);
+        lessStepBtn.setOnClickListener(this);
+
+        recommendListView.setOnItemClickListener(this);
+        fastListView.setOnItemClickListener(this);
+        lessChangeListView.setOnItemClickListener(this);
+        lessStepListView.setOnItemClickListener(this);
+
         queryAdvList();//广告接口
-        queryRoutes();//
+//        if(InterchangeSearch.isAroundStopByDest || InterchangeSearch.isAroundStopBySource){
+//            queryRoutesByStopName();
+//        }else{
+            queryRoutes();//
+//        }
     }
 
 
+
     public void queryRoutes(){
-        Map<String,String> params = new HashMap<String,String>();
-        params.put("ak","RUC7z2D4GYlihrOhwwOC76w5");
-        params.put("destination","无锡东站");
-        params.put("mode","transit");
-        params.put("origin","金科米兰花园");
-        params.put("output","json");
-        params.put("region","无锡");
         String url = "";
         try {
-       // String orign = URLEncoder.encode("金科米兰花园","UTF-8");
-       // String destination = URLEncoder.encode("无锡东站","UTF-8");
         String region = URLEncoder.encode("无锡","UTF-8");
 
-//            url = AllConstants.InterchangeUrl+"?ak="+AllConstants.Baidu_ak+"&origin="+orign+
-//                "&destination="+destination+"&mode=transit&output=json&region="+region;
-        String orignLatLng = InterchangeSearch.sourceInfo.location.latitude + ","+ InterchangeSearch.sourceInfo.location.longitude;
-        String destinationLatLng = InterchangeSearch.destinationInfo.location.latitude + ","+InterchangeSearch.destinationInfo.location.longitude;
-        orignLatLng = URLEncoder.encode(orignLatLng,"UTF-8");
-        destinationLatLng = URLEncoder.encode(destinationLatLng,"UTF-8");
-            url = AllConstants.InterchangeUrl+"?ak="+AllConstants.Baidu_ak+"&destination="+destinationLatLng+
-                    "&origin="+orignLatLng+"&mode=transit&output=json&region="+region;
+            //当是从附近站台查询过来，只能使用地点名称查询，比较麻烦
+            String sourceOrign = "";
+            String dest = "";
+            if (InterchangeSearch.isAroundStopBySource){
+                sourceOrign = URLEncoder.encode(InterchangeSearch.sourceInfo.name,"UTF-8");
+            }else{
+                sourceOrign = InterchangeSearch.sourceInfo.location.latitude + ","+ InterchangeSearch.sourceInfo.location.longitude;
+            }
 
-            //url = URLEncoder.encode(url, "UTF-8");
+            if (InterchangeSearch.isAroundStopByDest){
+                dest = URLEncoder.encode(InterchangeSearch.destinationInfo.name,"UTF-8");
+            }else{
+                dest = InterchangeSearch.destinationInfo.location.latitude + ","+InterchangeSearch.destinationInfo.location.longitude;
+            }
+
+            if(InterchangeSearch.isAroundStopByDest || InterchangeSearch.isAroundStopBySource){
+                url = AllConstants.InterchangeUrl+"?ak="+AllConstants.Baidu_ak+"&destination="+dest+
+                        "&origin="+sourceOrign+"&mode=transit&output=json&region="+region;
+            }else{
+                String orignLatLng = InterchangeSearch.sourceInfo.location.latitude + ","+ InterchangeSearch.sourceInfo.location.longitude;
+                String destinationLatLng = InterchangeSearch.destinationInfo.location.latitude + ","+InterchangeSearch.destinationInfo.location.longitude;
+                orignLatLng = URLEncoder.encode(orignLatLng,"UTF-8");
+                destinationLatLng = URLEncoder.encode(destinationLatLng,"UTF-8");
+                url = AllConstants.InterchangeUrl+"?ak="+AllConstants.Baidu_ak+"&destination="+destinationLatLng+
+                        "&origin="+orignLatLng+"&mode=transit&output=json&region="+region;
+            }
+
         }catch (UnsupportedEncodingException e){
 
         }
@@ -156,12 +189,31 @@ public class InterchangeResultActivity extends Activity implements OnClickListen
 
                         }
 
+
+
                         //推荐UI
-                        InterchangeResultAdapter adapter = new InterchangeResultAdapter(InterchangeResultActivity.this,schemeList);
+                        InterchangeResultAdapter adapter = new InterchangeResultAdapter(InterchangeResultActivity.this,
+                                schemeList, InterchangeResultType.Default);
+                        adapter.initTotalParameters();//计算
                         recommendListView.setAdapter(adapter);
 
+                        sortList = deepCopyArray(schemeList);
 
-                        //InitApplication.appLog.i(schemes.size());
+                        //保存该引用
+                        InterchangeModel.getInstance().schemeList = schemeList;
+                        InterchangeModel.getInstance().sortList = sortList;
+
+                        //保存搜索历史记录
+                        if (schemeList != null && schemeList.size() > 0){
+                            double srcLat = jsonObject.getJSONObject("result").getJSONObject("origin").getJSONObject("originPt").getDouble("lat");
+                            double srcLng = jsonObject.getJSONObject("result").getJSONObject("origin").getJSONObject("originPt").getDouble("lng");
+                            double destLat = jsonObject.getJSONObject("result").getJSONObject("destination").getJSONObject("destinationPt").getDouble("lat");
+                            double destLng = jsonObject.getJSONObject("result").getJSONObject("destination").getJSONObject("destinationPt").getDouble("lng");
+                            InterchangeSearch.sourceInfo.location = new LatLng(srcLat,srcLng);
+                            InterchangeSearch.destinationInfo.location = new LatLng(destLat,destLng);
+
+                            saveSearchFullHistory();
+                        }
 
                     }
                 }catch (Exception e){
@@ -170,6 +222,39 @@ public class InterchangeResultActivity extends Activity implements OnClickListen
 
             }
         },null);
+    }
+
+    public void saveSearchFullHistory(){
+
+        DBUtil dbUtil = new DBUtil(this);
+        String sourceName = InterchangeSearch.sourceInfo.name;
+        String sourceLatitude = "";
+        String sourceLongitude = "";
+        String destLatitude = "";
+        String destLongitude = "";
+
+        if (InterchangeSearch.sourceInfo.location != null){
+            sourceLatitude = InterchangeSearch.sourceInfo.location.latitude+"";
+            sourceLongitude = InterchangeSearch.sourceInfo.location.longitude+"";
+        }
+
+        String destName = InterchangeSearch.destinationInfo.name;
+        if (InterchangeSearch.destinationInfo.location != null){
+            destLatitude = InterchangeSearch.destinationInfo.location.latitude+"";
+            destLongitude = InterchangeSearch.destinationInfo.location.longitude+"";
+        }
+
+        dbUtil.insertInterchangeSearchFull(sourceName,sourceLatitude,sourceLongitude,destName,destLatitude,destLongitude);
+
+    }
+
+    public List<InterchangeScheme> deepCopyArray(List<InterchangeScheme> list){
+        List<InterchangeScheme> resultList = new ArrayList<InterchangeScheme>();
+        for (int i = 0; list!= null &&i < list.size(); i++) {
+            InterchangeScheme scheme = list.get(i).clone();
+            resultList.add(scheme);
+        }
+        return resultList;
     }
 
     /**
@@ -208,6 +293,55 @@ public class InterchangeResultActivity extends Activity implements OnClickListen
     public void onClick(View v) {
         if(v == backImageView){
             finish();
+        }else if(v == recommentBtn){
+            showView(InterchangeResultType.Default);
+        }else if(v == fastBtn){
+            showView(InterchangeResultType.Fast);
+        }else if(v == lessInterchangeBtn){
+            showView(InterchangeResultType.LessInterchange);
+        }else if(v == lessStepBtn){
+            showView(InterchangeResultType.LessStep);
+        }
+    }
+
+    public void showView(int type){
+        if(type == InterchangeResultType.Default){
+            recommendListView.setVisibility(VISIBLE);
+            fastListView.setVisibility(GONE);
+            lessChangeListView.setVisibility(GONE);
+            lessStepListView.setVisibility(GONE);
+        }else if(type == InterchangeResultType.Fast){
+            InterchangeResultAdapter fastAdapter = new InterchangeResultAdapter(InterchangeResultActivity.this,
+                    sortList, InterchangeResultType.Fast);
+            fastAdapter.sort();
+            fastListView.setAdapter(fastAdapter);
+
+            fastListView.setVisibility(VISIBLE);
+            recommendListView.setVisibility(GONE);
+            lessChangeListView.setVisibility(GONE);
+            lessStepListView.setVisibility(GONE);
+
+        }else if(type == InterchangeResultType.LessInterchange){
+            InterchangeResultAdapter lessInterchangeAdapter = new InterchangeResultAdapter(InterchangeResultActivity.this,
+                    sortList, InterchangeResultType.LessInterchange);
+            lessInterchangeAdapter.sort();
+            lessChangeListView.setAdapter(lessInterchangeAdapter);
+
+            lessChangeListView.setVisibility(VISIBLE);
+            fastListView.setVisibility(GONE);
+            recommendListView.setVisibility(GONE);
+            lessStepListView.setVisibility(GONE);
+        }else if(type == InterchangeResultType.LessStep){
+            InterchangeResultAdapter lessStepAdapter = new InterchangeResultAdapter(InterchangeResultActivity.this,
+                    sortList, InterchangeResultType.LessStep);
+            lessStepAdapter.sort();
+            lessStepListView.setAdapter(lessStepAdapter);
+
+            lessStepListView.setVisibility(VISIBLE);
+            lessChangeListView.setVisibility(GONE);
+            fastListView.setVisibility(GONE);
+            recommendListView.setVisibility(GONE);
+
         }
     }
 
@@ -283,5 +417,20 @@ public class InterchangeResultActivity extends Activity implements OnClickListen
 
             }
         });
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        if(parent == recommendListView){
+            Intent intent = new Intent(this,InterchangeResultDetailActivity.class);
+            intent.putExtra("isRecommend",true);
+            startActivity(intent);
+        }else if(parent == fastListView || parent == lessChangeListView || parent == lessStepListView){
+            Intent intent = new Intent(this,InterchangeResultDetailActivity.class);
+            intent.putExtra("isRecommend",false);
+            startActivity(intent);
+        }
+
     }
 }

@@ -13,12 +13,12 @@ public class WrapLineLayout extends ViewGroup {
 
 	public WrapLineLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		VIEW_MARGIN = DensityUtil.dip2px(context,5);
+		VIEW_MARGIN = DensityUtil.dip2px(context,10);
 	}
 
 	public WrapLineLayout(Context context) {
 		super(context);
-		VIEW_MARGIN = DensityUtil.dip2px(context,5);
+		VIEW_MARGIN = DensityUtil.dip2px(context,10);
 	}
 
 

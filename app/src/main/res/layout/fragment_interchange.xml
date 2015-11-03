@@ -199,10 +199,11 @@
             </RelativeLayout>
 
             <com.wuxibus.app.customerView.MyListView
+                android:id="@+id/history_listview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white_bg"
-                ></com.wuxibus.app.customerView.MyListView>
+                />
 
         </LinearLayout>
     </ScrollView>

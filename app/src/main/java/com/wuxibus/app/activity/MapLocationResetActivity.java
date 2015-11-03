@@ -198,16 +198,10 @@ public class MapLocationResetActivity extends Activity implements View.OnClickLi
             poiInfo.location = choosePoint;
             poiInfo.name = chooseAddress;
             if(position.equals("0")){//家
-//                HomeCompanyLocation.homeLatitude = choosePoint.latitude+"";
-//                HomeCompanyLocation.homeLongitude = choosePoint.longitude+"";
-//                HomeCompanyLocation.homeAddress = chooseAddress;
 
                 InterchangeSearch.homePoiInfo = poiInfo;
 
             }else if(position.equals("1")){
-//                HomeCompanyLocation.companyLatitude = choosePoint.latitude+"";
-//                HomeCompanyLocation.companyLongitude = choosePoint.longitude+"";
-//                HomeCompanyLocation.companyLongitude = chooseAddress;
                 InterchangeSearch.companyInfo = poiInfo;
             }
 

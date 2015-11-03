@@ -11,19 +11,24 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.PoiInfo;
 import com.wuxibus.app.R;
 import com.wuxibus.app.activity.InterchangeLocationActivity;
 import com.wuxibus.app.activity.InterchangeLocationResetActivity;
 import com.wuxibus.app.activity.InterchangeResultActivity;
 import com.wuxibus.app.activity.MainActivity;
 import com.wuxibus.app.activity.WebViewActivity;
+import com.wuxibus.app.adapter.InterchangeSearchFullHistoryAdapter;
 import com.wuxibus.app.adapter.MyViewPagerAdapter;
 import com.wuxibus.app.constants.AllConstants;
 import com.wuxibus.app.customerView.SmartImageView;
@@ -31,7 +36,9 @@ import com.wuxibus.app.entity.AdvItem;
 import com.wuxibus.app.entity.GPS;
 import com.wuxibus.app.entity.HomeCompanyLocation;
 import com.wuxibus.app.entity.InterchangeSearch;
+import com.wuxibus.app.entity.InterchangeSearchFullHistory;
 import com.wuxibus.app.util.AES7PaddingUtil;
+import com.wuxibus.app.util.DBUtil;
 import com.wuxibus.app.util.DensityUtil;
 import com.wuxibus.app.util.StorageUtil;
 import com.wuxibus.app.util.Tools;
@@ -48,7 +55,7 @@ import java.util.Map;
 /**
  * Created by zhongkee on 15/6/16.
  */
-public class InterchangeFragment extends Fragment implements View.OnClickListener{
+public class InterchangeFragment extends Fragment implements View.OnClickListener,AdapterView.OnItemClickListener{
 
     /**
      * 起始位置
@@ -74,6 +81,10 @@ public class InterchangeFragment extends Fragment implements View.OnClickListene
     List<AdvItem> list;
     ViewPager advertiseViewPager;
 
+    ListView historyListView;
+    TextView clearHistoryTextView;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_interchange,null);
@@ -88,6 +99,11 @@ public class InterchangeFragment extends Fragment implements View.OnClickListene
         companyImageView = (ImageView) view.findViewById(R.id.company_iv);
         companyTextView = (TextView) view.findViewById(R.id.company_tv);
         advertiseViewPager = (ViewPager) view.findViewById(R.id.adv_viewpage);
+        historyListView = (ListView) view.findViewById(R.id.history_listview);
+        clearHistoryTextView = (TextView) view.findViewById(R.id.clear_history_textview);
+        clearHistoryTextView.setOnClickListener(this);
+
+        historyListView.setOnItemClickListener(this);
 
         homeImageView.setOnClickListener(this);
         homeTextView.setOnClickListener(this);
@@ -104,8 +120,17 @@ public class InterchangeFragment extends Fragment implements View.OnClickListene
 
         //查询广告
         queryAdvList();
+        initMyLocation();
 
         return view;
+    }
+
+    public void initMyLocation(){
+        PoiInfo poiInfo = new PoiInfo();
+        poiInfo.name = "我的位置";
+        LatLng myLoc = new LatLng(GPS.latitude,GPS.longitude);
+        poiInfo.location = myLoc;
+        InterchangeSearch.sourceInfo =  poiInfo;
     }
 
 
@@ -127,10 +152,12 @@ public class InterchangeFragment extends Fragment implements View.OnClickListene
 
         StorageUtil.readBindDevice(this.getActivity());
 
-
+        //查询搜索历史
+        DBUtil dbUtil = new DBUtil(getActivity());
+        List<InterchangeSearchFullHistory> list = dbUtil.queryInterchangeSearchFullHistory();
+        InterchangeSearchFullHistoryAdapter adapter = new InterchangeSearchFullHistoryAdapter(this.getActivity(),list);
+        historyListView.setAdapter(adapter);
     }
-
-
 
 
     @Override
@@ -147,6 +174,16 @@ public class InterchangeFragment extends Fragment implements View.OnClickListene
 
         } else if(v == reverseImageView){
 
+            if(InterchangeSearch.sourceInfo != null && InterchangeSearch.destinationInfo !=null){
+                PoiInfo temp = InterchangeSearch.sourceInfo;
+                InterchangeSearch.sourceInfo = InterchangeSearch.destinationInfo;
+                InterchangeSearch.destinationInfo = temp;
+
+                orignTextView.setText(InterchangeSearch.sourceInfo.name);
+                destinationTextView.setText(InterchangeSearch.destinationInfo.name);
+            }
+
+
         }else if(v == submitImageView){
             String orignTemp = orignTextView.getText().toString().trim();
             String destinationTemp = destinationTextView.getText().toString().trim();
@@ -155,11 +192,11 @@ public class InterchangeFragment extends Fragment implements View.OnClickListene
                 orignTemp = orign;
 
             }
-            if(destinationTemp == null || destinationTemp.trim().equals("")){
+            if(InterchangeSearch.destinationInfo == null || destinationTemp.trim().equals("")){
                 Tools.showToast(this.getActivity(),"目的地不能为空", Toast.LENGTH_SHORT);
+                return;
             }
 
-            //Bundle bundle = new Bundle();
             Intent intent = new Intent(this.getActivity(), InterchangeResultActivity.class);
             intent.putExtra("orign", orignTemp);
             intent.putExtra("destination",destinationTemp);
@@ -176,6 +213,11 @@ public class InterchangeFragment extends Fragment implements View.OnClickListene
                 startActivity(intent);
             }else{//是否跳转换乘查询页面
 
+                Intent intent = new Intent(this.getActivity(), InterchangeResultActivity.class);
+
+                InterchangeSearch.destinationInfo = InterchangeSearch.homePoiInfo;
+
+                startActivity(intent);
             }
 
         }else if(v == companyImageView || v == companyTextView){
@@ -183,10 +225,26 @@ public class InterchangeFragment extends Fragment implements View.OnClickListene
                 Intent intent = new Intent(this.getActivity(), InterchangeLocationResetActivity.class);
                 startActivity(intent);
             }else{//
+                Intent intent = new Intent(this.getActivity(), InterchangeResultActivity.class);
+
+                InterchangeSearch.destinationInfo = InterchangeSearch.companyInfo;
+
+                startActivity(intent);
 
             }
 
+        }else if(v == clearHistoryTextView){
+            DBUtil dbUtil = new DBUtil(getActivity());
+            dbUtil.clearSearchFullHistory();
+            List<InterchangeSearchFullHistory> list = dbUtil.queryInterchangeSearchFullHistory();
+            InterchangeSearchFullHistoryAdapter adapter = new InterchangeSearchFullHistoryAdapter(this.getActivity(),list);
+            historyListView.setAdapter(adapter);
         }
+    }
+
+
+    public void goToResultActivity(){
+
     }
 
     public void queryAdvList(){
@@ -261,5 +319,34 @@ public class InterchangeFragment extends Fragment implements View.OnClickListene
 
             }
         });
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if(parent == historyListView){
+            InterchangeSearchFullHistoryAdapter.ViewHolder viewHolder = (InterchangeSearchFullHistoryAdapter.ViewHolder) view.getTag();
+            String sourceName = viewHolder.sourceName;
+            String soureLatitude = viewHolder.sourceLatitude;
+            String sourceLongitude = viewHolder.sourceLongitude;
+            String destName = viewHolder.destName;
+            String destLatitude = viewHolder.destLatitude;
+            String destLongitude = viewHolder.destLongitude;
+
+            PoiInfo sourcePoi = new PoiInfo();
+            sourcePoi.name = sourceName;
+            sourcePoi.location = new LatLng(Double.parseDouble(soureLatitude),Double.parseDouble(sourceLongitude));
+            InterchangeSearch.sourceInfo = sourcePoi;
+
+            PoiInfo destPoi = new PoiInfo();
+            destPoi.name = destName;
+            destPoi.location = new LatLng(Double.parseDouble(destLatitude),Double.parseDouble(destLongitude));
+            InterchangeSearch.destinationInfo = destPoi;
+
+            Intent intent = new Intent(this.getActivity(), InterchangeResultActivity.class);
+
+            startActivity(intent);
+
+
+        }
     }
 }

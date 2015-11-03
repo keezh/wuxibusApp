@@ -156,8 +156,9 @@ public class InterchangeLocationActivity extends Activity implements AdapterView
         initCenter();
        // drawCurrentIcon();
 
-        //必须重新初始化改值
-        InterchangeSearch.isAroundStop = false;
+        //必须重新初始化该值
+        //InterchangeSearch.isAroundStopBySource = false;
+        //InterchangeSearch.isAroundStopByDest = false;
 
     }
 
@@ -486,10 +487,11 @@ public class InterchangeLocationActivity extends Activity implements AdapterView
             poiInfo.name = viewHolder.titleTextView.getText().toString();
             if(isFromOrigin){
                 InterchangeSearch.sourceInfo = poiInfo;
+                InterchangeSearch.isAroundStopBySource = true;
             }else{
                 InterchangeSearch.destinationInfo = poiInfo;
+                InterchangeSearch.isAroundStopByDest = true;
             }
-            InterchangeSearch.isAroundStop = true;
             this.finish();
 
         }

@@ -58,6 +58,9 @@ public class MyViewPagerAdapter extends PagerAdapter {
 
 
         //对ViewPager页号求模取出View列表中要显示的项
+        if(mImageViews.size() == 0){
+            return null;
+        }
         position %= mImageViews.size();
         if (position<0){
             position = mImageViews.size()+position;

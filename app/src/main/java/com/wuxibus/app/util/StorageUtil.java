@@ -60,21 +60,27 @@ public class StorageUtil {
         String companyAddress =sharedPreferences.getString("companyAddress","");
         String companyLatitude =sharedPreferences.getString("companyLatitude","");
         String companyLongitude =sharedPreferences.getString("companyLongitude","");
-        if(homeAddress.equals("") || companyAddress.equals("")){
+        if(homeAddress.equals("")){
             InterchangeSearch.homePoiInfo = null;
-            InterchangeSearch.companyInfo = null;
-            return;
+
+        }else{
+            PoiInfo poiInfo = new PoiInfo();
+            poiInfo.location = new LatLng(Double.parseDouble(homeLatitude),Double.parseDouble(homeLongitude));
+            poiInfo.name = homeAddress;
+            InterchangeSearch.homePoiInfo = poiInfo;
         }
 
-        PoiInfo poiInfo = new PoiInfo();
-        poiInfo.location = new LatLng(Double.parseDouble(homeLatitude),Double.parseDouble(homeLongitude));
-        poiInfo.name = homeAddress;
-        InterchangeSearch.homePoiInfo = poiInfo;
+        if(companyAddress.equals("")){
+            InterchangeSearch.companyInfo = null;
+        }else{
+            PoiInfo companyPoiInfo = new PoiInfo();
+            companyPoiInfo.location = new LatLng(Double.parseDouble(companyLatitude),Double.parseDouble(companyLongitude));
+            companyPoiInfo.name = companyAddress;
+            InterchangeSearch.companyInfo = companyPoiInfo;
+        }
 
-        PoiInfo companyPoiInfo = new PoiInfo();
-        companyPoiInfo.location = new LatLng(Double.parseDouble(companyLatitude),Double.parseDouble(companyLongitude));
-        companyPoiInfo.name = companyAddress;
-        InterchangeSearch.companyInfo = companyPoiInfo;
+
+
 
     }
 }

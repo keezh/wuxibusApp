@@ -1,0 +1,303 @@
+package com.wuxibus.app.activity;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ActionMenuView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.wuxibus.app.InterchangeModel;
+import com.wuxibus.app.R;
+import com.wuxibus.app.adapter.InterchangeViewPagerAdapter;
+import com.wuxibus.app.entity.InterchangeScheme;
+import com.wuxibus.app.entity.InterchangeSearch;
+import com.wuxibus.app.entity.InterchangeStep;
+import com.wuxibus.app.entity.InterchangeVehicle;
+import com.wuxibus.app.util.DensityUtil;
+import com.wuxibus.app.util.Tools;
+
+import org.apache.http.params.CoreConnectionPNames;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by zhongkee on 15/11/1.
+ */
+public class InterchangeResultDetailActivity extends Activity implements View.OnClickListener{
+
+    ViewPager detailViewPager;
+    List<View> pageViews = new ArrayList<View>();
+    ImageView backImageView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.interchange_result_detail);
+        detailViewPager = (ViewPager) findViewById(R.id.detail_viewPager);
+        backImageView = (ImageView) findViewById(R.id.back_imageview);
+        backImageView.setOnClickListener(this);
+
+        initPageView();
+
+        InterchangeViewPagerAdapter adapter = new InterchangeViewPagerAdapter(pageViews);
+        detailViewPager.setAdapter(adapter);
+    }
+
+    public void initPageView(){
+        List<InterchangeScheme> schemeList = InterchangeModel.getInstance().schemeList;
+        for (int i = 0; i < schemeList.size(); i++) {
+            View view = View.inflate(this,R.layout.interchange_detail_page,null);
+            LinearLayout container = (LinearLayout) view.findViewById(R.id.title_container);
+            TextView detailTextView = (TextView) view.findViewById(R.id.detail_tv);
+            List<List<InterchangeStep>> steps = schemeList.get(i).getSteps();
+            layoutTitleContainer(steps,container);
+
+            int time = schemeList.get(i).totalTime;
+            int nums = schemeList.get(i).totalStops;
+            int meters = schemeList.get(i).totalMeters;
+
+            detailTextView.setText(Tools.getTimes(time)+"  |  "+nums+"站"+"  |  步行"+meters+"米");
+
+            LinearLayout stepLayout = (LinearLayout) view.findViewById(R.id.step_layout);
+            layoutStepDetail(steps,stepLayout);
+
+            pageViews.add(view);
+
+
+        }
+
+    }
+
+    /**
+     * 使用线性布局
+     * @param stepList
+     * @param container
+     */
+    public void layoutStepDetail(List<List<InterchangeStep>> stepList,LinearLayout container){
+
+        boolean isBeginStop = true;//
+
+        int lineWidth = DensityUtil.dip2px(this,2);
+
+
+        for (int i = 0; i <stepList.size(); i++) {
+
+            InterchangeStep step = stepList.get(i).get(0);//
+
+            int fontSize = 16;
+
+           // if(i == 0){
+                LinearLayout lineContainer = new LinearLayout(this);
+                lineContainer.setOrientation(LinearLayout.HORIZONTAL);
+                LinearLayout leftContainer = new LinearLayout(this);
+                int width = DensityUtil.dip2px(this,65);
+                int height = DensityUtil.dip2px(this,62);
+
+                LinearLayout.LayoutParams lineParams = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        height));
+                lineContainer.setLayoutParams(lineParams);
+                LinearLayout.LayoutParams leftParams = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(width,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+                leftContainer.setLayoutParams(leftParams);
+                LinearLayout.LayoutParams rightParams = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
+                rightParams.gravity = Gravity.CENTER_VERTICAL;
+                LinearLayout rightContainer = new LinearLayout(this);
+                rightContainer.setLayoutParams(rightParams);
+
+                leftContainer.setOrientation(LinearLayout.VERTICAL);
+                leftContainer.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                lineContainer.addView(leftContainer);
+                lineContainer.addView(rightContainer);
+                container.addView(lineContainer);
+
+
+
+
+
+            if(i == 0) {
+
+
+                View leftView = View.inflate(this, R.layout.interchange_detail_left_start, null);
+                leftContainer.addView(leftView);
+
+                TextView textView = new TextView(this);
+                textView.setText(step.getStepInstruction());
+                textView.setTextSize(16);
+                rightContainer.addView(textView);
+
+            }else if(step.getType() == 3) {//起点，或终点
+                if (step.getVehicle() != null) {
+                    TextView startName = new TextView(this);
+                    TextView endName = new TextView(this);
+                    TextView lineName = new TextView(this);
+                    TextView upTip = new TextView(this);
+                    // TextView stopNum = new TextView(this);
+                    TextView time = new TextView(this);
+                    TextView toDirection = new TextView(this);
+
+                    upTip.setText("  上车");
+                    upTip.setTextSize(fontSize);
+                    lineName.setText(step.getVehicle().getName());
+                    lineName.setTextColor(Color.argb(255, 220, 69, 69));
+                    startName.setText(step.getVehicle().getStart_name());
+                    startName.setTextSize(fontSize);
+
+                    startName.setTextColor(Color.BLACK);
+                    toDirection.setText("  往 " + step.getVehicle().getEnd_name() + "  途径" +
+                            step.getVehicle().getStop_num() + "站");
+                    endName.setText(step.getVehicle().getEnd_name());
+                    // stopNum.setText(step.getVehicle().getStop_num());
+                    time.setText("首 " + step.getVehicle().getStart_time() + "   末 " + step.getVehicle().getEnd_time());
+
+                    LinearLayout upContainer = new LinearLayout(this);
+                    upContainer.setOrientation(LinearLayout.VERTICAL);
+                    LinearLayout firstLine = new LinearLayout(this);
+                    firstLine.setOrientation(LinearLayout.HORIZONTAL);
+                    firstLine.addView(startName);
+                    firstLine.addView(upTip);
+                    LinearLayout secondLine = new LinearLayout(this);
+                    secondLine.setOrientation(LinearLayout.HORIZONTAL);
+
+                    secondLine.addView(lineName);
+                    secondLine.addView(toDirection);
+
+                    upContainer.addView(firstLine);
+                    upContainer.addView(secondLine);
+                    upContainer.addView(time);
+
+                    View leftView = View.inflate(this, R.layout.interchange_detail_left, null);
+                    ImageView icon = (ImageView) leftView.findViewById(R.id.icon_iv);
+                    icon.setImageResource(R.drawable.interchange_detail_icon_on);
+                    leftContainer.addView(leftView);
+                    rightContainer.addView(upContainer);
+
+                    //下车view
+                    LinearLayout downContainer = new LinearLayout(this);
+                    downContainer.setOrientation(LinearLayout.HORIZONTAL);
+                    downContainer.setLayoutParams(rightParams);
+                    downContainer.addView(endName);
+                    endName.setTextColor(Color.BLACK);
+                    endName.setTextSize(fontSize);
+
+                    TextView downTip = new TextView(this);
+                    downTip.setText("  下车");
+                    downContainer.addView(downTip);
+
+                    View leftDownView = View.inflate(this, R.layout.interchange_detail_left, null);
+                    ImageView iconDown = (ImageView) leftDownView.findViewById(R.id.icon_iv);
+                    iconDown.setImageResource(R.drawable.interchange_detail_icon_off);
+                    LinearLayout downLineContainer = new LinearLayout(this);
+                    downLineContainer.setLayoutParams(lineParams);
+                    LinearLayout leftDownContainer = new LinearLayout(this);
+                    // LinearLayout.LayoutParams tempParams = new LinearLayout.LayoutParams(width,height);
+                    leftDownContainer.setLayoutParams(leftParams);
+                    //leftParams.gravity = Gravity.CENTER_HORIZONTAL;
+                    leftDownContainer.addView(leftDownView);
+                    leftDownContainer.setGravity(Gravity.CENTER_HORIZONTAL);
+                    downLineContainer.addView(leftDownContainer);
+                    downLineContainer.addView(downContainer);
+
+                    container.addView(downLineContainer);
+                }
+
+            }else if(step.getType() == 5){//步行,一般最后一项
+
+                        TextView downStop = new TextView(this);
+                        downStop.setText(step.getStepInstruction());
+                        downStop.setTextSize(fontSize);
+
+                        View leftView = View.inflate(this,R.layout.interchange_detail_left,null);
+                        ImageView icon = (ImageView) leftView.findViewById(R.id.icon_iv);
+                        icon.setImageResource(R.drawable.interchange_detail_icon_walk);
+                        leftContainer.addView(leftView);
+                        rightContainer.addView(downStop);
+
+            }
+
+            if(i == stepList.size() - 1){//最后项，添加重点名称,需要重新构建视图
+                View leftView = View.inflate(this,R.layout.interchange_detail_end,null);
+                //leftContainer.addView(leftView);
+
+                TextView endPostion = new TextView(this);
+                endPostion.setText(InterchangeSearch.destinationInfo.name);
+                endPostion.setTextSize(fontSize);
+                //rightContainer.addView(endPostion);
+
+                LinearLayout lastContainer = new LinearLayout(this);
+                lastContainer.setLayoutParams(lineParams);
+                LinearLayout lastLeftContainer = new LinearLayout(this);
+                lastLeftContainer.setLayoutParams(leftParams);
+                lastLeftContainer.setGravity(Gravity.CENTER_HORIZONTAL);
+                LinearLayout lastRightContainer = new LinearLayout(this);
+                lastRightContainer.setLayoutParams(rightParams);
+
+                lastContainer.addView(lastLeftContainer);
+                lastContainer.addView(lastRightContainer);
+
+                container.addView(lastContainer);
+
+                lastLeftContainer.addView(leftView);
+                lastRightContainer.addView(endPostion);
+
+
+
+            }
+
+        }
+
+
+    }
+
+    /**
+     * 动态添加头
+     * @param stepList
+     * @param container
+     */
+    public void layoutTitleContainer(List<List<InterchangeStep>> stepList,LinearLayout container){
+
+        TextView nextImageView = null;
+        int margin = DensityUtil.dip2px(this, 5);//5dp
+
+        for (int i = 0; i < stepList.size(); i++) {
+            List<InterchangeStep> steps = stepList.get(i);
+
+            InterchangeVehicle vehicle = steps.get(0).getVehicle();
+            if(vehicle != null){
+                TextView titleView = new TextView(this);
+                titleView.setTextColor(Color.BLACK);
+                titleView.setTextSize(18);
+                titleView.setText(vehicle.getName());
+                nextImageView = new TextView(this);
+                nextImageView.setTextSize(18);
+                nextImageView.setText(" → ");
+               // nextImageView.setImageResource(R.drawable.interchange_plan_icon_next);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(margin, margin, margin, margin);
+                nextImageView.setLayoutParams(lp);
+                container.addView(titleView);
+                container.addView(nextImageView);
+            }
+        }
+        //移除最后一个view
+        container.removeView(nextImageView);
+        container.requestLayout();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v == backImageView){
+            finish();
+        }
+    }
+}

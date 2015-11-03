@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.wuxibus.app.entity.FavoriteRoute;
 import com.wuxibus.app.entity.FavoriteStop;
+import com.wuxibus.app.entity.InterchangeSearchFullHistory;
 import com.wuxibus.app.entity.InterchangeSearchHistory;
 import com.wuxibus.app.entity.Route;
 import com.wuxibus.app.entity.SearchHistory;
@@ -33,14 +34,10 @@ public class DBManager {
 	public void insertSearchHistory(String lineName,String title,String startStop,String endStop,int type){
 		db.beginTransaction();
 		try{
-			//String sql = "select * from search_history";
-			//Cursor c = db.rawQuery(sql,null);
 
 			Cursor c = db.query("search_history", new String[]{"id","line_name"}, "type = ? and line_name= ?", new String[]{type + "", lineName}, null, null, null, null);
 			if(c.moveToNext()){
 				int id = c.getInt(c.getColumnIndex("id"));
-				//ContentValues contentValues = new ContentValues();
-				//contentValues.pu
 				db.execSQL("update search_history set update_date = CURRENT_TIMESTAMP where id = ?",new Object[]{id});
 			}else{
 				db.execSQL("INSERT INTO search_history(line_name,title,start_stop,end_stop,type) VALUES(?,?,?,?,?)",
@@ -60,6 +57,30 @@ public class DBManager {
 		}
 	}
 
+	public void insertInterchangeSearchFullHistory(String sourceName,String sourceLatitude,String sourceLongitude,String destinationName
+													,String destinationLatitude,String destinationLongitude){
+		db.beginTransaction();
+		try{
+			Cursor c = db.query("interchange_search_full_history",new String[]{"id","source_name","destination_name"},
+					"source_name = ? and destination_name = ?",new String[]{sourceName,destinationName},null,null,null,null);
+			if(c.moveToNext()){
+				int id = c.getInt(c.getColumnIndex("id"));
+				db.execSQL("update interchange_search_full_history set update_date = CURRENT_TIMESTAMP where id = ?",new Object[]{id});
+
+			}else{
+				db.execSQL("insert into interchange_search_full_history(source_name,source_latitude,source_longitude,destination_name," +
+						"destination_latitude,destination_longitude) values(?,?,?,?,?,?)",new Object[]{sourceName,sourceLatitude,sourceLongitude,
+				destinationName,destinationLatitude,destinationLongitude});
+			}
+			db.setTransactionSuccessful();
+			c.close();
+		}catch (Exception e){
+			e.printStackTrace();
+		}finally {
+			db.endTransaction();
+		}
+	}
+
 	/**
 	 * 换乘搜索历史
 	 * @param name
@@ -69,14 +90,9 @@ public class DBManager {
 	public void insertInterchangeSearchHistory(String name,String latitude,String longitude){
 		db.beginTransaction();
 		try{
-			//String sql = "select * from search_history";
-			//Cursor c = db.rawQuery(sql,null);
-
 			Cursor c = db.query("interchange_search_history", new String[]{"id","name"}, "name= ?", new String[]{name}, null, null, null, null);
 			if(c.moveToNext()){
 				int id = c.getInt(c.getColumnIndex("id"));
-				//ContentValues contentValues = new ContentValues();
-				//contentValues.pu
 				db.execSQL("update interchange_search_history set update_date = CURRENT_TIMESTAMP where id = ?",new Object[]{id});
 			}else{
 				db.execSQL("INSERT INTO interchange_search_history(name,latitude,longitude) VALUES(?,?,?)",
@@ -86,12 +102,10 @@ public class DBManager {
 			db.setTransactionSuccessful();	//设置事务成功完成
 			c.close();
 
-
 		}catch (Exception e){
 			e.printStackTrace();
 
 		}finally {
-
 			db.endTransaction();
 		}
 	}
@@ -290,6 +304,11 @@ public class DBManager {
 		db.close();
 	}
 
+
+	/**
+	 * 查询搜索历史，百度坐标
+	 * @return
+	 */
 	public List<InterchangeSearchHistory> queryInterchangeSearchHistory() {
 		List<InterchangeSearchHistory> list = new ArrayList<InterchangeSearchHistory>();
 
@@ -310,6 +329,44 @@ public class DBManager {
 		c.close();
 		return list;
 
+
+	}
+
+	/**
+	 * 首页的历史记录，包含起点，终点坐标
+	 * @return
+	 */
+	public List<InterchangeSearchFullHistory> queryInterchangeSearchFullHistory() {
+		List<InterchangeSearchFullHistory> list = new ArrayList<InterchangeSearchFullHistory>();
+
+		Cursor c = db.rawQuery("SELECT * FROM interchange_search_full_history order by update_date desc", null);
+		while (c.moveToNext()){
+			//int id = c.getInt(c.getColumnIndex("id"));
+			int id = c.getInt(c.getColumnIndex("id"));
+
+			String sourceName = c.getString(c.getColumnIndex("source_name"));
+			String sourceLatitude = c.getString(c.getColumnIndex("source_latitude"));
+			String sourceLongitude = c.getString(c.getColumnIndex("source_longitude"));
+			String destinationName = c.getString(c.getColumnIndex("destination_name"));
+			String destinationLatitude = c.getString(c.getColumnIndex("destination_latitude"));
+			String destinationLongitude = c.getString(c.getColumnIndex("destination_longitude"));
+
+			InterchangeSearchFullHistory temp = new InterchangeSearchFullHistory(id,sourceName,sourceLatitude,sourceLongitude,
+					destinationName,destinationLatitude,destinationLongitude);
+			list.add(temp);
+
+		}
+		c.close();
+		return list;
+	}
+
+	/**
+	 * 删除换乘记录
+	 */
+	public void clearInterchangeSearchFullHistory(){
+
+		db.delete("interchange_search_full_history","id > ?",new String[]{0+""});
+		db.close();
 
 	}
 }

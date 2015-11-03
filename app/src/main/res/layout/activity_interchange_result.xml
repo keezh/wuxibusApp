@@ -55,7 +55,7 @@
         >
 
              <RadioButton
-            android:id="@+id/around_btn"
+            android:id="@+id/comment_btn"
             android:layout_width="80dp"
             android:layout_height="30dp"
             android:text="推荐"
@@ -63,17 +63,19 @@
             style="@style/RadioButton" />
 
             <RadioButton
-            android:id="@+id/history_btn"
+            android:id="@+id/fast_btn"
             android:layout_width="80dp"
             android:layout_height="30dp"
             android:text="最快"
             style="@style/RadioButton" />
             <RadioButton
+                android:id="@+id/less_interchange_btn"
                 android:layout_width="80dp"
                 android:layout_height="30dp"
                 android:text="少换乘"
                 style="@style/RadioButton" />
             <RadioButton
+                android:id="@+id/less_step_btn"
                 android:layout_width="80dp"
                 android:layout_height="30dp"
                 android:text="少步行"

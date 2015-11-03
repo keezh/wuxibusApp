@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <!-- 第一行 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="0dp"
+                android:layout_marginBottom="10dp"
+                android:paddingBottom="5dp"
+                android:background="@color/white_bg"
+                >
+                <LinearLayout
+                    android:id="@+id/title_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="16dp"
+
+                    >
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="756路"-->
+                        <!--/>-->
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_marginTop="12dp"
+                    android:id="@+id/detail_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1小时15分钟|13站|步行1320米"
+                    android:textColor="@color/search_history"
+                    android:textSize="14sp"
+                    android:layout_marginLeft="16dp"
+
+                    />
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/stop_info_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="已停运"
+                    android:textColor="@color/red"
+                    android:layout_marginLeft="16dp"
+
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/step_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:background="@color/white_bg"
+                >
+
+
+            </LinearLayout>
+
+            <!--<ListView-->
+                <!--android:id="@+id/step_listview"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:divider="@null"-->
+                <!--android:stackFromBottom="true"-->
+                <!--></ListView>-->
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

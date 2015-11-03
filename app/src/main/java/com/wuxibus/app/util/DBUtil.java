@@ -2,6 +2,7 @@ package com.wuxibus.app.util;
 
 import android.content.Context;
 
+import com.wuxibus.app.entity.InterchangeSearchFullHistory;
 import com.wuxibus.app.entity.InterchangeSearchHistory;
 import com.wuxibus.app.entity.SearchHistory;
 import com.wuxibus.app.sqlite.DBManager;
@@ -64,6 +65,34 @@ public class DBUtil {
         List<InterchangeSearchHistory> list = dbManager.queryInterchangeSearchHistory();
         dbManager.closeDB();
         return list;
+    }
+
+    /**
+     * 查询搜索历史
+     * @param sourceName
+     * @param sourceLatitude
+     * @param sourceLongitude
+     * @param destinationName
+     * @param destinationLatitude
+     * @param destinationLongitude
+     */
+    public void insertInterchangeSearchFull(String sourceName,String sourceLatitude,String sourceLongitude,String destinationName,
+                                            String destinationLatitude,String destinationLongitude){
+        DBManager dbManager = new DBManager(context);
+        dbManager.insertInterchangeSearchFullHistory(sourceName,sourceLatitude,sourceLongitude,destinationName,destinationLatitude,destinationLongitude);
+        dbManager.closeDB();
+
+    }
+
+    public List<InterchangeSearchFullHistory> queryInterchangeSearchFullHistory(){
+        DBManager dbManager = new DBManager(context);
+        List<InterchangeSearchFullHistory> list = dbManager.queryInterchangeSearchFullHistory();
+        return list;
+    }
+
+    public void clearSearchFullHistory(){
+        DBManager dbManager = new DBManager(context);
+        dbManager.clearInterchangeSearchFullHistory();
     }
 
 

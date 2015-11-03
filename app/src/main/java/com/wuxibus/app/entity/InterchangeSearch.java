@@ -24,9 +24,13 @@ public class InterchangeSearch {
 
     public static PoiInfo homePoiInfo;
 
+    /**
+     * 公司信息
+     */
     public static PoiInfo companyInfo;
 
-    public static boolean isAroundStop;//是否是从附近站台点击过来
+    public static boolean isAroundStopBySource;//是否是从附近站台点击过来
+    public static boolean isAroundStopByDest;//是否是从附近站台点击过来
 
    // public static List<PoiInfo> homeCompanyInfoList = null;
 }

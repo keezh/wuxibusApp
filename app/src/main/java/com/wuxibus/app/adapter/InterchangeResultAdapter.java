@@ -3,6 +3,8 @@ package com.wuxibus.app.adapter;
 import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import com.wuxibus.app.R;
 import com.wuxibus.app.customerView.WrapLineLayout;
+import com.wuxibus.app.entity.InterchangeResultType;
 import com.wuxibus.app.entity.InterchangeScheme;
 import com.wuxibus.app.entity.InterchangeStep;
 import com.wuxibus.app.entity.InterchangeVehicle;
@@ -31,11 +34,10 @@ public class InterchangeResultAdapter extends BaseAdapter {
 
     public int type;
 
-    public InterchangeResultAdapter(Context context,List<InterchangeScheme> schemeList){
+    public InterchangeResultAdapter(Context context,List<InterchangeScheme> schemeList,int type){
         this.context = context;
         this.schemeList = schemeList;
-
-        initTotalParameters();
+        this.type = type;
 
     }
 
@@ -85,6 +87,7 @@ public class InterchangeResultAdapter extends BaseAdapter {
             viewHolder.titleContainer = (LinearLayout) convertView.findViewById(R.id.title_container);
             viewHolder.detailTextView = (TextView) convertView.findViewById(R.id.detail_tv);
             viewHolder.wrapLineLayout = (WrapLineLayout) convertView.findViewById(R.id.line_wrap_container);
+            viewHolder.stopInfoTextView = (TextView) convertView.findViewById(R.id.stop_info_tv);
             convertView.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -110,8 +113,47 @@ public class InterchangeResultAdapter extends BaseAdapter {
         viewHolder.wrapLineLayout.removeAllViews();
         layoutStepDetail(steps, viewHolder.wrapLineLayout);
 
+        String tip_text = schemeList.get(position).getTip_text();
+        if( tip_text!= null){
+            Spanned s = Html.fromHtml(tip_text);
+            if (s != null)
+                viewHolder.stopInfoTextView.setText(s);
+        }else {
+            viewHolder.stopInfoTextView.setVisibility(View.GONE);
+        }
 
         return convertView;
+    }
+
+    /**
+     * 排序
+     */
+    public void sort() {
+            for (int i = 0; schemeList != null && i < schemeList.size(); i++) {
+                for (int j = 0; j <schemeList.size() -1 ; j++) {
+                    InterchangeScheme before = schemeList.get(j);
+                    InterchangeScheme after = schemeList.get(j+1);
+
+                    if(type == InterchangeResultType.Fast){
+                        if (before.totalTime > after.totalTime){
+                            schemeList.set(j,after);
+                            schemeList.set(j+1,before);
+                        }
+                    }else if (type == InterchangeResultType.LessInterchange){
+                        if(before.getSteps().size() > after.getSteps().size()){
+                            schemeList.set(j,after);
+                            schemeList.set(j+1,before);
+                        }
+                    }else if(type == InterchangeResultType.LessStep){
+                        if(before.totalMeters > after.totalMeters){
+                            schemeList.set(j,after);
+                            schemeList.set(j+1,before);
+                        }
+                    }
+
+                }
+
+            }
     }
 
     public class ViewHolder{
@@ -186,7 +228,7 @@ public class InterchangeResultAdapter extends BaseAdapter {
      */
     public void layoutTitleContainer(List<List<InterchangeStep>> stepList,LinearLayout container){
 
-        ImageView nextImageView = null;
+        TextView nextImageView = null;
         int margin = DensityUtil.dip2px(context,5);//5dp
 
         for (int i = 0; i < stepList.size(); i++) {
@@ -198,8 +240,10 @@ public class InterchangeResultAdapter extends BaseAdapter {
                 titleView.setTextColor(Color.BLACK);
                 titleView.setTextSize(18);
                 titleView.setText(vehicle.getName());
-                nextImageView = new ImageView(context);
-                nextImageView.setImageResource(R.drawable.interchange_plan_icon_next);
+                nextImageView = new TextView(context);
+                nextImageView.setTextSize(18);
+                nextImageView.setText(" → ");
+                //nextImageView.setImageResource(R.drawable.interchange_plan_icon_next);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 lp.setMargins(margin, margin, margin, margin);
                 nextImageView.setLayoutParams(lp);

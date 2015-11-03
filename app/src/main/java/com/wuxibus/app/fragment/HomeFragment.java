@@ -73,8 +73,6 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
         View.OnClickListener,AdapterView.OnItemClickListener,View.OnTouchListener,MyScrollView.ScrollViewListener
         ,HorizontalListView.OnScrollStateChangedListener{
 
-
-
     //下拉刷新控件
     ScrollSwipeRefreshLayout swipeRefreshLayout;
     MyScrollView scrollView;

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by zhongkee on 15/10/25.
  */
-public class InterchangeScheme {
+public class InterchangeScheme implements Cloneable {
     private int distance;
     private int duration;
     /**
@@ -17,7 +17,7 @@ public class InterchangeScheme {
     private List<List<InterchangeStep>> steps;
     private String tip_text;
 
-    public int totalTime;
+    public int totalTime;//总时间
     public int totalStops;//总站数
     public int totalMeters;//总步行数
 
@@ -55,5 +55,17 @@ public class InterchangeScheme {
 
     public void setTip_text(String tip_text) {
         this.tip_text = tip_text;
+    }
+
+    @Override
+    public InterchangeScheme clone() {
+        try{
+            return (InterchangeScheme)super.clone();
+        }catch (CloneNotSupportedException e){
+
+        }
+
+        return null;
+
     }
 }

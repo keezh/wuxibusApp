@@ -19,6 +19,7 @@ public class InterchangeLocationResetActivity extends Activity implements View.O
 
     ListView locationListView;
     ImageView backImageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,8 +30,7 @@ public class InterchangeLocationResetActivity extends Activity implements View.O
 
         locationListView.setOnItemClickListener(this);
 
-        //读入本地xml文件，地址信息，信息存在在InterchangeSearch  homeInfo,CompanyInfo
-        StorageUtil.readBindDevice(this);
+
     }
 
     @Override
@@ -44,6 +44,9 @@ public class InterchangeLocationResetActivity extends Activity implements View.O
     @Override
     protected void onResume() {
         super.onResume();
+        //读入本地xml文件，地址信息，信息存在在InterchangeSearch  homeInfo,CompanyInfo
+        StorageUtil.readBindDevice(this);
+
         InterchangeStoreAdapter storeAdapter = new InterchangeStoreAdapter(this);
         locationListView.setAdapter(storeAdapter);
     }
