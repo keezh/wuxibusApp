@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,13 @@ public class InterchangeResultDetailActivity extends Activity implements View.On
         for (int i = 0; i < schemeList.size(); i++) {
             View view = View.inflate(this,R.layout.interchange_detail_page,null);
             LinearLayout container = (LinearLayout) view.findViewById(R.id.title_container);
+            TextView tipText = (TextView) view.findViewById(R.id.stop_info_tv);
+            String tipHtml = schemeList.get(i).getTip_text();
+            if(tipHtml != null && !tipHtml.equals("")){
+                tipText.setText(Html.fromHtml(tipHtml));
+            }else{
+                tipText.setVisibility(View.GONE);
+            }
             TextView detailTextView = (TextView) view.findViewById(R.id.detail_tv);
             List<List<InterchangeStep>> steps = schemeList.get(i).getSteps();
             layoutTitleContainer(steps,container);
