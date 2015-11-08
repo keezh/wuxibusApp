@@ -180,20 +180,6 @@ public class SearchStopResultActivity extends Activity implements View.OnClickLi
         });
     }
 
-//    public void queryNearbyShops(){
-//
-//        //test data
-//        List<Shop> shopList = new ArrayList<Shop>();
-//        shopList.add(new Shop());
-//        shopList.add(new Shop());
-//        shopList.add(new Shop());
-//        shopList.add(new Shop());
-//        shopList.add(new Shop());
-//
-//        AroundShopAdapter aroundShopAdapter = new AroundShopAdapter(this,shopList);
-//        shopListView.setAdapter(aroundShopAdapter);
-//
-//    }
 
     @Override
     public void onClick(View view) {

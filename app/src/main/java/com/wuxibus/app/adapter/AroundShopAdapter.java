@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.wuxibus.app.R;
 import com.wuxibus.app.entity.Shop;
 import com.wuxibus.app.volley.BitmapCache;
@@ -47,7 +49,7 @@ public class AroundShopAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
         if(view == null){
             viewHolder = new ViewHolder();
             view = View.inflate(context, R.layout.stop_around_shop,null);
@@ -71,6 +73,7 @@ public class AroundShopAdapter extends BaseAdapter {
         viewHolder.flagsTextView.setText(flags);
 
         String index_pic = shopList.get(i).getIndex_pic() + "/200x150";
+        viewHolder.thumbnailImageView.setTag(index_pic);
 
         boolean flag = BitmapCache.getInstern().getSDCardBitmap(index_pic, viewHolder.thumbnailImageView, new BitmapCache.CallBackSDcardImg() {
             @Override
@@ -80,7 +83,21 @@ public class AroundShopAdapter extends BaseAdapter {
             }
         });
         if (!flag) {
-            VolleyManager.loadImage(viewHolder.thumbnailImageView, index_pic, R.drawable.background_img);
+            VolleyManager.loadImage(viewHolder.thumbnailImageView, index_pic, R.drawable.background_img, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
+                    Bitmap resBitmap =  imageContainer.getBitmap();
+                    String tag = (String)viewHolder.thumbnailImageView.getTag();
+                    if(tag.equals(imageContainer.getRequestUrl())){
+                        viewHolder.thumbnailImageView.setImageBitmap(resBitmap);
+                    }
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+
+                }
+            });
         }
 
        // VolleyManager.loadImage(viewHolder.thumbnailImageView,index_pic,R.drawable.background_img);

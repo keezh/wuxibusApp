@@ -149,7 +149,8 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
         titleTextView.setText(bundle.getString("line_title"));
         startTextView.setText(bundle.getString("stop_start"));
         endTextView.setText(bundle.getString("stop_end"));
-        startEndTextView.setText(bundle.getString("time_start_end"));
+//        startEndTextView.setText(bundle.getString("time_start_end"));
+ //       startEndTextView.setText(routeList.get(routeIndex).getTime_start_end());
         lineId = bundle.getString("line_id");
         direction = bundle.getString("direction");
         stopName = bundle.getString("stopName");
@@ -288,6 +289,7 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
                             routeList = JSON.parseArray(strMap.get("result"),Route.class);
 
                             if(routeList!= null && routeList.size()>0){
+                                startEndTextView.setText(routeList.get(routeIndex).getTime_start_end());//add by kee
                                 stopList = routeList.get(routeIndex).getStops();
                                 StopRealItemAdapter stopItemAdapter = new StopRealItemAdapter(LineRealActivity.this,stopInfo,stopList,-1);
                                 stopListView.setAdapter(stopItemAdapter);

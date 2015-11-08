@@ -80,6 +80,9 @@ public class InterchangeResultActivity extends Activity implements OnClickListen
     RadioButton lessInterchangeBtn;
     RadioButton lessStepBtn;
 
+    View hasRoutesContainer;
+    View noRoutesTip;
+
     /**
      * http://api.map.baidu.com/direction/v1?ak=RUC7z2D4GYlihrOhwwOC76w5&
      * destination=%E6%97%A0%E9%94%A1%E4%B8%9C%E7%AB%99&mode=transit&
@@ -115,6 +118,9 @@ public class InterchangeResultActivity extends Activity implements OnClickListen
         fastListView.setOnItemClickListener(this);
         lessChangeListView.setOnItemClickListener(this);
         lessStepListView.setOnItemClickListener(this);
+
+        hasRoutesContainer = findViewById(R.id.hasRoutesContainer);
+        noRoutesTip = findViewById(R.id.noRoutesTip);
 
         queryAdvList();//广告接口
 //        if(InterchangeSearch.isAroundStopByDest || InterchangeSearch.isAroundStopBySource){
@@ -171,9 +177,9 @@ public class InterchangeResultActivity extends Activity implements OnClickListen
 
                     }else if(type == 2){//获得结果
                         //String result = jsonObject.getString("result");
-                        String routesStr = jsonObject.getJSONObject("result").getString("routes");
+                       // String routesStr = jsonObject.getJSONObject("result").getString("routes");
 
-                        JSONArray routeArray = jsonObject.getJSONObject("result").getJSONArray("routes");
+                        JSONArray routeArray = jsonObject.getJSONObject("result").getJSONArray("routes");//当没有换乘方案时，会抛出异常
 
                         for (int i = 0; i < routeArray.length(); i++) {
                             JSONObject schemeObject = routeArray.getJSONObject(i);
@@ -215,8 +221,16 @@ public class InterchangeResultActivity extends Activity implements OnClickListen
                             saveSearchFullHistory();
                         }
 
+
+
                     }
                 }catch (Exception e){
+                    //没有换乘信息提示
+                    if(schemeList == null || schemeList.size() == 0){
+                        hasRoutesContainer.setVisibility(GONE);
+                        noRoutesTip.setVisibility(VISIBLE);
+                    }
+
                     e.printStackTrace();
                 }
 
@@ -257,37 +271,6 @@ public class InterchangeResultActivity extends Activity implements OnClickListen
         return resultList;
     }
 
-    /**
-     * json解析，使用原始解析方法
-     * @param obj
-     * @return
-     */
-    public InterchangeScheme jsonToObject(JSONObject obj){
-        try {
-            InterchangeScheme scheme = new InterchangeScheme();
-            scheme.setDistance(obj.getInt("distance"));
-            scheme.setDuration(obj.getInt("duration"));
-            JSONArray stepJsonArray = obj.getJSONArray("steps").getJSONArray(0);
-            for (int i = 0; i < stepJsonArray.length(); i++) {
-                JSONObject stepObj = stepJsonArray.getJSONObject(i);
-                InterchangeStep step = new InterchangeStep();
-                step.setDuration(stepObj.getInt("duration"));
-                step.setDistance(stepObj.getInt("distance"));
-                step.setType(stepObj.getInt("type"));
-                InterchangeStepLocation orignLoc = JSON.parseObject(stepObj.getString("stepOriginLocation"), InterchangeStepLocation.class);
-                step.setStepOriginLocation(orignLoc);
-
-            }
-            //List<InterchangeStep> stepList =  JSON.parseArray(tempJsonString,InterchangeStep.class);
-            //scheme.setSteps(stepList);
-            return scheme;
-
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-        return null;
-
-    }
 
     @Override
     public void onClick(View v) {
@@ -425,10 +408,12 @@ public class InterchangeResultActivity extends Activity implements OnClickListen
         if(parent == recommendListView){
             Intent intent = new Intent(this,InterchangeResultDetailActivity.class);
             intent.putExtra("isRecommend",true);
+            intent.putExtra("currentIndex",position);
             startActivity(intent);
         }else if(parent == fastListView || parent == lessChangeListView || parent == lessStepListView){
             Intent intent = new Intent(this,InterchangeResultDetailActivity.class);
             intent.putExtra("isRecommend",false);
+            intent.putExtra("currentIndex",position);
             startActivity(intent);
         }
 

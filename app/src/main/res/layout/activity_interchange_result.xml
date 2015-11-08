@@ -34,7 +34,13 @@
         android:layout_height="110dp"
         android:visibility="gone"
         /><!-- 广告 -->
-
+<LinearLayout
+    android:id="@+id/hasRoutesContainer"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -108,5 +114,14 @@
         android:visibility="gone">
 
     </ListView>
+</LinearLayout>
+    <ImageView
+        android:id="@+id/noRoutesTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:src="@drawable/interchange_tip_noresult"
+        />
 
 </LinearLayout>

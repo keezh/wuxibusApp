@@ -2,6 +2,7 @@ package com.wuxibus.app.activity;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
@@ -24,7 +25,6 @@ import com.wuxibus.app.entity.InterchangeVehicle;
 import com.wuxibus.app.util.DensityUtil;
 import com.wuxibus.app.util.Tools;
 
-import org.apache.http.params.CoreConnectionPNames;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,24 +32,35 @@ import java.util.List;
 /**
  * Created by zhongkee on 15/11/1.
  */
-public class InterchangeResultDetailActivity extends Activity implements View.OnClickListener{
+public class InterchangeResultDetailActivity extends Activity implements View.OnClickListener,ViewPager.OnPageChangeListener{
 
     ViewPager detailViewPager;
     List<View> pageViews = new ArrayList<View>();
     ImageView backImageView;
+    LinearLayout pageControls;
+    int currentIndex;//当前选中状态
+    List<ImageView> pageControlViews = new ArrayList<ImageView>();
+    TextView titleTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.interchange_result_detail);
+        currentIndex = this.getIntent().getIntExtra("currentIndex",0);//获取那个page
         detailViewPager = (ViewPager) findViewById(R.id.detail_viewPager);
         backImageView = (ImageView) findViewById(R.id.back_imageview);
+        pageControls = (LinearLayout) findViewById(R.id.pageControls);
+        titleTextView = (TextView) findViewById(R.id.title_tv);
         backImageView.setOnClickListener(this);
 
         initPageView();
 
         InterchangeViewPagerAdapter adapter = new InterchangeViewPagerAdapter(pageViews);
         detailViewPager.setAdapter(adapter);
+        detailViewPager.setCurrentItem(currentIndex);
+        detailViewPager.setOnPageChangeListener(this);
+        titleTextView.setText("方案"+(currentIndex+1));
     }
 
     public void initPageView(){
@@ -71,8 +82,28 @@ public class InterchangeResultDetailActivity extends Activity implements View.On
             layoutStepDetail(steps,stepLayout);
 
             pageViews.add(view);
+        }
 
+        initPageControls();
 
+    }
+
+    public void initPageControls(){
+        List<InterchangeScheme> schemeList = InterchangeModel.getInstance().schemeList;
+        for (int i = 0; i < schemeList.size(); i++) {
+            ImageView imageView = new ImageView(this);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(10, 10));
+            if(i == currentIndex){
+                imageView.setImageResource(R.drawable.carousel_indicator_current_light);
+            }else{
+                imageView.setImageResource(R.drawable.carousel_indicator);
+            }
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            layoutParams.leftMargin = 5;
+            layoutParams.rightMargin = 5;
+            pageControls.addView(imageView,layoutParams);
+            pageControlViews.add(imageView);//保存对象应用，可以改变其是否是当前状态的图片
         }
 
     }
@@ -299,5 +330,29 @@ public class InterchangeResultDetailActivity extends Activity implements View.On
         if(v == backImageView){
             finish();
         }
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        for (int i = 0; i < pageControlViews.size(); i++) {
+            if(i == position){
+                pageControlViews.get(i).setImageResource(R.drawable.carousel_indicator_current_light);
+            }else{
+                pageControlViews.get(i).setImageResource(R.drawable.carousel_indicator);
+            }
+        }
+
+        titleTextView.setText("方案"+(position + 1));
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

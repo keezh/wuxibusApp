@@ -29,6 +29,10 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
         titleTextView = (TextView) findViewById(R.id.title_textview);
         webView = (WebView) findViewById(R.id.webview);
 
+        String ua = webView.getSettings().getUserAgentString();
+        webView.getSettings().setUserAgentString(ua+";wxbusapp");
+
+
         WebSettings setting = webView.getSettings();
         setting.setJavaScriptEnabled(true);//支持js
         backImageView = (ImageView) findViewById(R.id.back_imageview);
