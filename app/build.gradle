@@ -8,8 +8,8 @@ android {
         applicationId "com.wuxibus.app"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 12
-        versionName "1.1.3"
+        versionCode 13
+        versionName "1.1.4"
 
     }
 

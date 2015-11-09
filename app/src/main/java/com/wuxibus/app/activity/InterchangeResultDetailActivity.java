@@ -1,6 +1,7 @@
 package com.wuxibus.app.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
@@ -130,7 +131,7 @@ public class InterchangeResultDetailActivity extends Activity implements View.On
 
         for (int i = 0; i <stepList.size(); i++) {
 
-            InterchangeStep step = stepList.get(i).get(0);//
+            final InterchangeStep step = stepList.get(i).get(0);//
 
             int fontSize = 16;
 
@@ -189,6 +190,18 @@ public class InterchangeResultDetailActivity extends Activity implements View.On
                     upTip.setTextSize(fontSize);
                     lineName.setText(step.getVehicle().getName());
                     lineName.setTextColor(Color.argb(255, 220, 69, 69));
+                    //点击跳转到线路单程
+                    lineName.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            //SearchLineResultActivity
+                            Intent intent = new Intent(InterchangeResultDetailActivity.this,SearchLineResultActivity.class);
+                            intent.putExtra("lineName",step.getVehicle().getName());
+                            startActivity(intent);
+
+                        }
+                    });
                     startName.setText(step.getVehicle().getStart_name());
                     startName.setTextSize(fontSize);
 
