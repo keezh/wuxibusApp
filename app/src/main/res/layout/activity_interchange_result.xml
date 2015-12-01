@@ -121,7 +121,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone"
-        android:src="@drawable/interchange_tip_noresult"
+
         />
+    <!--//android:src="@drawable/interchange_tip_noresult"-->
 
 </LinearLayout>

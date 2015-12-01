@@ -219,14 +219,14 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
         favList.clear();
             queryFavLine();
 
-            new Handler().postDelayed(new Runnable(){
-            public void run() {
-                //execute the task
-                //延后3秒执行，否则会得不到经纬度
-            queryRouteAround();
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    //execute the task
+                    //延后3秒执行，否则会得不到经纬度
+                    queryRouteAround();
 
-            }
-        }, 2000);
+                }
+            }, 2000);
 
             AVAnalytics.onFragmentStart("home-fragment-start");
 
@@ -760,6 +760,14 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
             }
             HomeLineAdapter.ViewHolder viewHolder = (HomeLineAdapter.ViewHolder)view.getTag();
             HomeFavAroundRoute route = viewHolder.route;
+
+            //add by kee，是收藏线路时，先跳转到单程列表
+            if(route.getType() == AllConstants.FAV_FLAG){
+                Intent intent = new Intent(this.getActivity(),SearchLineResultActivity.class);
+                intent.putExtra("lineName",route.getLineTitle());
+                startActivity(intent);
+                return;
+            }
 
 
             Intent intent = new Intent(this.getActivity(), LineRealActivity.class);

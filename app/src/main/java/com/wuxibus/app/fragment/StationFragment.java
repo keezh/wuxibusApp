@@ -56,6 +56,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.greenrobot.event.EventBus;
+import github.chenupt.dragtoplayout.AttachUtil;
 import github.chenupt.dragtoplayout.DragTopLayout;
 
 /**
@@ -159,7 +160,20 @@ public class StationFragment extends Fragment implements View.OnClickListener,Ad
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                EventBus.getDefault().post(AttachUtil.isAdapterViewAttach(view));
 
+            }
+        });
+
+        history_listview.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                EventBus.getDefault().post(AttachUtil.isAdapterViewAttach(view));
             }
         });
 
@@ -192,6 +206,8 @@ public class StationFragment extends Fragment implements View.OnClickListener,Ad
 
             }
         }, 2000);
+
+
 
     }
 

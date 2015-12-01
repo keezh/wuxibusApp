@@ -1,6 +1,7 @@
 package com.wuxibus.app.activity;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -30,7 +31,20 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
         webView = (WebView) findViewById(R.id.webview);
 
         String ua = webView.getSettings().getUserAgentString();
-        webView.getSettings().setUserAgentString(ua+";wxbusapp");
+        //获取versionname,versioncode
+        String pkName = this.getPackageName();
+        String versionName = "";
+        int versionCode = 0;
+        try {
+            versionName = this.getPackageManager().getPackageInfo(
+                    pkName, 0).versionName;
+            versionCode = this.getPackageManager()
+                    .getPackageInfo(pkName, 0).versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        webView.getSettings().setUserAgentString(ua+" wxbusapp/"+versionName+"_"+versionCode);
 
 
         WebSettings setting = webView.getSettings();

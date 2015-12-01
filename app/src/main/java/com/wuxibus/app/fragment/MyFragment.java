@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.avos.avoscloud.AVAnalytics;
 import com.umeng.fb.FeedbackAgent;
+import com.umeng.update.UmengUpdateAgent;
 import com.wuxibus.app.R;
 import com.wuxibus.app.activity.MyFavActivity;
 import com.wuxibus.app.activity.WebViewActivity;
@@ -19,6 +20,7 @@ import com.wuxibus.app.adapter.MyItemAdapter;
 import com.wuxibus.app.customerView.MyListView;
 import com.wuxibus.app.entity.MyItem;
 import com.wuxibus.app.util.Tools;
+import com.wuxibus.app.volley.VolleyFileManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,13 +119,13 @@ public class MyFragment extends Fragment implements AdapterView.OnItemClickListe
         MyItem about1 = new MyItem(R.drawable.my_icon_about,"关于我们");
         MyItem about2 = new MyItem(R.drawable.my_icon_help,"使用帮助");
         MyItem about3 = new MyItem(R.drawable.my_icon_feedback,"意见反馈");
-//        MyItem about4 = new MyItem(R.drawable.my_icon_share,"推荐给朋友");
+        MyItem about4 = new MyItem(R.drawable.my_icon_share,"检测更新");
 //        MyItem about5 = new MyItem(R.drawable.my_icon_rate,"给我们打分");
 
         aboutList.add(about1);
         aboutList.add(about2);
         aboutList.add(about3);
-//        aboutList.add(about4);
+        aboutList.add(about4);
 //        aboutList.add(about5);
 
 
@@ -143,6 +145,7 @@ public class MyFragment extends Fragment implements AdapterView.OnItemClickListe
                 intent.putExtra("url",infoUrl);
                 startActivity(intent);
             }else if(item.getImgResId() == R.drawable.my_icon_clean){
+                VolleyFileManager.deleteFileCache();//清除缓存
                 Tools.showToast(this.getActivity(),"清除缓存成功!", Toast.LENGTH_SHORT);
 
             }
@@ -162,12 +165,8 @@ public class MyFragment extends Fragment implements AdapterView.OnItemClickListe
             }else if(item.getImgResId() == R.drawable.my_icon_feedback){
                 FeedbackAgent agent = new FeedbackAgent(this.getActivity());
                 agent.startFeedbackActivity();
-
-                //fb.startFeedbackActivity();
-//                Intent intent = new Intent(this.getActivity(), OnlineConfigHome.class);
-//                intent.putExtra("title","意见反馈");
-//                //intent.putExtra("url",helpUrl);
-//                startActivity(intent);
+            }else if(item.getImgResId() == R.drawable.my_icon_share){
+                UmengUpdateAgent.forceUpdate(this.getActivity());
             }
 
         }
@@ -179,12 +178,6 @@ public class MyFragment extends Fragment implements AdapterView.OnItemClickListe
         fb.sync();
         fb.openAudioFeedback();
         fb.openFeedbackPush();
-
-        //fb.setWelcomeInfo();
-        //  fb.setWelcomeInfo("Welcome to use umeng feedback app");
-//        FeedbackPush.getInstance(this).init(true);
-//        PushAgent.getInstance(this).setPushIntentServiceClass(MyPushIntentService.class);
-
 
         new Thread(new Runnable() {
             @Override

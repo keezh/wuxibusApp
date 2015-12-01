@@ -15,10 +15,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -74,6 +76,7 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
     //用户是否点击调过按钮
     boolean hasJump = false;
     String url;
+    long exitTime = 0;
 
     Handler myHander = new Handler(){
         @Override
@@ -505,12 +508,29 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
     }
 
     public void showHomeView(){
-//        View advContainer;
-//        View mainContentContainer;
-//        View tabContainer;
         advContainer.setVisibility(View.GONE);
         mainContentContainer.setVisibility(View.VISIBLE);
         tabContainer.setVisibility(View.VISIBLE);
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void exit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(getApplicationContext(), "再按一次退出程序",
+                    Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+            System.exit(0);
+        }
     }
 }

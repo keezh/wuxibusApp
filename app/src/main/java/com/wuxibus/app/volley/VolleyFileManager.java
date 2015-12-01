@@ -82,6 +82,21 @@ public class VolleyFileManager {
 			file.delete();
 			Log.i("Tag", "删除缓存=========>");
 		}
+		//add by kee
+		File cacheVolley = new File(getSDpath()+"/"+cache_volley);
+		if (cacheVolley.exists()){
+			cacheVolley.delete();
+		}
+		File cacheBibmap = new File(getSDpath()+"/"+cache_bitmap);
+		if (cacheBibmap.exists()){
+			cacheBibmap.delete();
+		}
+		File cacheTxt = new File(getSDpath()+"/"+cache_txt);
+		if (cacheTxt.exists()){
+			cacheTxt.delete();
+		}
+
+		Log.i("kee", "删除缓存=========>");
 	}
 
 	/**

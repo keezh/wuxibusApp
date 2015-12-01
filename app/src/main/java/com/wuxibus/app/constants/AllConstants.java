@@ -31,7 +31,7 @@ public class AllConstants {
     public static int SEARCH_STATIION_TYPE = 1;
     public static int SEARCH_PLACE_TYPE = 2;
 
-    public static int FAV_FLAG = 0;
+    public static int FAV_FLAG = 0; //首页收藏标志
     public static int AROUND_FLAG = 1;
 
     public static String AdvertiseUrl = "get_start_pic";

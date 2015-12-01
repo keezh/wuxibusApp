@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -20,6 +21,9 @@ import com.wuxibus.app.entity.Route;
 import com.wuxibus.app.sqlite.DBManager;
 
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
+import github.chenupt.dragtoplayout.AttachUtil;
 
 /**
  * Created by zhongkee on 15/6/17.
@@ -55,6 +59,17 @@ public class RouteStoreFragment extends Fragment implements AdapterView.OnItemCl
         listView = (ListView) view.findViewById(R.id.route_store_listview);
         tipFavImageView = (ImageView) view.findViewById(R.id.no_store_line);
         listView.setOnItemClickListener(this);
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                EventBus.getDefault().post(AttachUtil.isAdapterViewAttach(view));
+            }
+        });
 
         return view;
     }
@@ -77,36 +92,7 @@ public class RouteStoreFragment extends Fragment implements AdapterView.OnItemCl
 
     }
 
-//    public void queryLineFavList(){
-//        String url = AllConstants.ServerUrl;
-//
-//        url += "/?m=line_fav_list&device_token="+ AllConstants.DeviceIMEI;
-//
-//        VolleyManager.getJson(url, null, new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject jsonObject) {
-//
-//                        try{
-//                            if(jsonObject.getString("error").equals("1")){
-//                                List<FavoriteRoute> favList = JSON.parseArray(jsonObject.getString("result"), FavoriteRoute.class);
-//                                routeStoreAdapter = new RouteStoreAdapter(RouteStoreFragment.this.getActivity(),favList);
-//                                listView.setAdapter(routeStoreAdapter);
-//                            }
-//
-//                        }catch (Exception e){
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError volleyError) {
-//
-//                    }
-//                }
-//
-//        );
-//    }
+
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

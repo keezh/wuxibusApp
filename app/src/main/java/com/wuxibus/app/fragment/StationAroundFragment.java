@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -26,8 +27,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.greenrobot.event.EventBus;
+import github.chenupt.dragtoplayout.AttachUtil;
+
 /**
  * Created by zhongkee on 15/7/23.
+ * 该类没有被使用
  */
 public class StationAroundFragment extends Fragment implements  AdapterView.OnItemClickListener{
 
@@ -42,6 +47,18 @@ public class StationAroundFragment extends Fragment implements  AdapterView.OnIt
         around_stops_listview.setOnItemClickListener(this);
         //查询附近线路
         queryAroundStops();
+
+        around_stops_listview.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                EventBus.getDefault().post(AttachUtil.isAdapterViewAttach(view));
+            }
+        });
         return  view;
     }
 

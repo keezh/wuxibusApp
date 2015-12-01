@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -19,6 +20,9 @@ import com.wuxibus.app.entity.SearchHistory;
 import com.wuxibus.app.util.DBUtil;
 
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
+import github.chenupt.dragtoplayout.AttachUtil;
 
 /**
  * Created by zhongkee on 15/6/17.
@@ -42,6 +46,18 @@ public class RouteHistoryFragment extends Fragment implements AdapterView.OnItem
         listView = (ListView) view.findViewById(R.id.route_history_listview);
         listView.setOnItemClickListener(this);
         bgImageView = (ImageView) view.findViewById(R.id.route_history_none_bg);
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                EventBus.getDefault().post(AttachUtil.isAdapterViewAttach(view));
+            }
+        });
 
         return view;
     }

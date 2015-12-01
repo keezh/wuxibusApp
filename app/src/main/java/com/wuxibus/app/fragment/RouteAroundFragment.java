@@ -33,6 +33,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.greenrobot.event.EventBus;
+import github.chenupt.dragtoplayout.AttachUtil;
+
 /**
  * Created by zhongkee on 15/6/17.
  */
@@ -104,7 +107,7 @@ public class RouteAroundFragment extends Fragment implements AdapterView.OnItemC
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
+                EventBus.getDefault().post(AttachUtil.isAdapterViewAttach(view));
             }
         });
 
