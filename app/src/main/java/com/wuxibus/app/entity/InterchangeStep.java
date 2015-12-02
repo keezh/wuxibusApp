@@ -44,6 +44,7 @@ public class InterchangeStep implements Cloneable{
     private InterchangeStepLocation stepDestinationLocation;
     private String stepInstruction;
     private InterchangeVehicle vehicle;
+    private String path;
     /**
      * type = 3
      * type = 5
@@ -63,6 +64,13 @@ public class InterchangeStep implements Cloneable{
     }
 
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     public int getType() {
         return type;

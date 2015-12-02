@@ -33,6 +33,18 @@
             android:textColor="@color/white_text"
             android:layout_centerInParent="true"
             />
+        <TextView
+            android:id="@+id/map_interchange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:layout_marginTop="5dp"
+            android:textSize="14sp"
+            android:textColor="@color/white_text"
+            android:text="地图"
+            />
 
     </RelativeLayout>
         <LinearLayout

@@ -158,6 +158,7 @@
         <activity android:name=".activity.InterchangeLocationResetActivity"></activity>
         <activity android:name=".activity.MapLocationResetActivity"></activity>
         <activity android:name=".activity.InterchangeResultDetailActivity"></activity>
+        <activity android:name=".activity.InterchangeMapActivity"></activity>
 
     </application>
 

@@ -43,6 +43,7 @@ public class InterchangeResultDetailActivity extends Activity implements View.On
     int currentIndex;//当前选中状态
     List<ImageView> pageControlViews = new ArrayList<ImageView>();
     TextView titleTextView;
+    TextView mapTextView;
 
 
     @Override
@@ -54,7 +55,9 @@ public class InterchangeResultDetailActivity extends Activity implements View.On
         backImageView = (ImageView) findViewById(R.id.back_imageview);
         pageControls = (LinearLayout) findViewById(R.id.pageControls);
         titleTextView = (TextView) findViewById(R.id.title_tv);
+        mapTextView = (TextView) findViewById(R.id.map_interchange);
         backImageView.setOnClickListener(this);
+        mapTextView.setOnClickListener(this);
 
         initPageView();
 
@@ -160,10 +163,6 @@ public class InterchangeResultDetailActivity extends Activity implements View.On
                 lineContainer.addView(leftContainer);
                 lineContainer.addView(rightContainer);
                 container.addView(lineContainer);
-
-
-
-
 
             if(i == 0) {
 
@@ -350,6 +349,12 @@ public class InterchangeResultDetailActivity extends Activity implements View.On
     public void onClick(View v) {
         if(v == backImageView){
             finish();
+        }else if(v == mapTextView){
+
+            Intent intent = new Intent(this,InterchangeMapActivity.class);
+            intent.putExtra("currentIndex",currentIndex);
+            startActivity(intent);
+
         }
     }
 

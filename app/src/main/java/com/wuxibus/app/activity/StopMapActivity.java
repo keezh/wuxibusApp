@@ -128,9 +128,6 @@ public class StopMapActivity extends Activity implements View.OnClickListener{
             marker.setExtraInfo(bundle);
         }
 
-
-
-
     }
 
 
