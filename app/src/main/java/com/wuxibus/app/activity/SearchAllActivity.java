@@ -158,6 +158,8 @@ public class SearchAllActivity extends Activity implements SearchView.OnQueryTex
                     if(lines != null && lines.size() >0){
                         StringAdapter adapter = new StringAdapter(SearchAllActivity.this,lines);
                         lineListView.setAdapter(adapter);
+                        lineListView.setVisibility(View.VISIBLE);
+                        lineTextView.setVisibility(View.VISIBLE);
                     }else {
                         lineTextView.setVisibility(View.GONE);
                         lineListView.setVisibility(View.GONE);
@@ -166,6 +168,8 @@ public class SearchAllActivity extends Activity implements SearchView.OnQueryTex
                     if(stops != null && stops.size() > 0){
                         StringAdapter adapter = new StringAdapter(SearchAllActivity.this,stops);
                         stopListView.setAdapter(adapter);
+                        stopListView.setVisibility(View.VISIBLE);
+                        stopTextView.setVisibility(View.VISIBLE);
                     }else{
                         stopTextView.setVisibility(View.GONE);
                         stopListView.setVisibility(View.GONE);
@@ -174,6 +178,8 @@ public class SearchAllActivity extends Activity implements SearchView.OnQueryTex
                     if(places != null && places.size()>0){
                         SearchPlaceAdapter adapter = new SearchPlaceAdapter(SearchAllActivity.this,places);
                         placeListView.setAdapter(adapter);
+                        placeListView.setVisibility(View.VISIBLE);
+                        placeTextView.setVisibility(View.VISIBLE);
                     }else{
                         placeListView.setVisibility(View.GONE);
                         placeTextView.setVisibility(View.GONE);

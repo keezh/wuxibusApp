@@ -35,6 +35,7 @@ public class StopMapActivity extends Activity implements View.OnClickListener{
     MapView mapView;
     private BaiduMap mBaiduMap;
     List<StopInfoMap> list;
+    String stopName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class StopMapActivity extends Activity implements View.OnClickListener{
         backImageView = (ImageView) findViewById(R.id.back_imageview);
         backImageView.setOnClickListener(this);
         titleTextView = (TextView) findViewById(R.id.title_textview);
-        String stopName = this.getIntent().getExtras().getString("stopName");
+        stopName = this.getIntent().getExtras().getString("stopName");
         titleTextView.setText(stopName);
         mapView = (MapView) findViewById(R.id.bmapView);
 
@@ -55,13 +56,17 @@ public class StopMapActivity extends Activity implements View.OnClickListener{
             @Override
             public boolean onMarkerClick(Marker marker) {
                 InfoWindow infoWindow;
-                View view;
+                View view = View.inflate(getApplicationContext(),R.layout.stop_map_info,null);
                 String info = marker.getExtraInfo().getString("info");
-                TextView stopInfo = new TextView(getApplicationContext());
-                stopInfo.setBackgroundResource(R.drawable.map_tooltip);
-                stopInfo.setText(info);
-                //stopInfo.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                view = stopInfo;
+                TextView stopTitle = (TextView) view.findViewById(R.id.stop_title);
+                TextView lineInfo = (TextView) view.findViewById(R.id.line_info);
+                stopTitle.setText(stopName);
+                lineInfo.setText(info);
+//                TextView stopInfo = new TextView(getApplicationContext());
+//                stopInfo.setBackgroundResource(R.drawable.map_tooltip);
+//                stopInfo.setText(info);
+
+//                view = stopInfo;
 
                 final LatLng ll = marker.getPosition();
                 Point p = mBaiduMap.getProjection().toScreenLocation(ll);
