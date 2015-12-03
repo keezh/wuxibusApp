@@ -3,6 +3,7 @@ package com.wuxibus.app.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,6 +16,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -70,46 +72,121 @@ public class InterchangeMapActivity extends Activity implements View.OnClickList
         List<List<InterchangeStep>> steps = schemeList.get(currentIndex).getSteps();
         for (int i = 0; i < steps.size(); i++) {
             InterchangeStep step = steps.get(i).get(0);
+            Marker marker = null;
             if (i == 0){
                 BitmapDescriptor pinFrom = BitmapDescriptorFactory.fromResource(R.drawable.interchange_map_pin_from);
                 LatLng latlng = new LatLng(step.getStepOriginLocation().getLat(),step.getStepOriginLocation().getLng());
+                List<LatLng>footList = convertToLatLng(step.getPath());
+                if (footList!= null && footList.size()>0){
+                    latlng = footList.get(0);
+                }
+               // LatLng latLng =
 
                 OverlayOptions circleMarker = new MarkerOptions().position(latlng).icon(pinFrom)
                         .zIndex(5);
                 //mBaiduMap.addOverlay(circleMarker);
-                Marker marker = (Marker) (mBaiduMap.addOverlay(circleMarker));
+                marker = (Marker) (mBaiduMap.addOverlay(circleMarker));
             }else if(i == steps.size() - 1){
                 BitmapDescriptor pinFrom = BitmapDescriptorFactory.fromResource(R.drawable.interchange_map_pin_to);
                 LatLng latlng = new LatLng(step.getStepOriginLocation().getLat(),step.getStepOriginLocation().getLng());
                 OverlayOptions circleMarker = new MarkerOptions().position(latlng).icon(pinFrom)
                         .zIndex(5);
-                Marker marker = (Marker) (mBaiduMap.addOverlay(circleMarker));
+                 marker = (Marker) (mBaiduMap.addOverlay(circleMarker));
             }
 
-            if (step.getType() == 5){
-                BitmapDescriptor circle = BitmapDescriptorFactory.fromResource(R.drawable.interchange_detail_icon_walk);
+            if (step.getType() == 5){//步行图标
+                BitmapDescriptor circle = BitmapDescriptorFactory.fromResource(R.drawable.interchange_map_spot_walk);
                 LatLng latlng = new LatLng(step.getStepOriginLocation().getLat(),step.getStepOriginLocation().getLng());
-
+                List<LatLng>footList = convertToLatLng(step.getPath());
+                if (footList!= null && footList.size()>0){
+                    latlng = footList.get(0);
+                }
                 OverlayOptions circleMarker = new MarkerOptions().position(latlng).icon(circle)
                         .zIndex(5);
                 //mBaiduMap.addOverlay(circleMarker);
-                Marker marker = (Marker) (mBaiduMap.addOverlay(circleMarker));
+                 marker = (Marker) (mBaiduMap.addOverlay(circleMarker));
+            }
 
-
+            if (step.getType() == 3){//bus图标
+                BitmapDescriptor busIcon = BitmapDescriptorFactory.fromResource(R.drawable.interchange_map_spot_bus);
+                LatLng latlng = new LatLng(step.getStepOriginLocation().getLat(),step.getStepOriginLocation().getLng());
+                List<LatLng>footList = convertToLatLng(step.getPath());
+                if (footList!= null && footList.size()>0){
+                    latlng = footList.get(0);
+                }
+                OverlayOptions circleMarker = new MarkerOptions().position(latlng).icon(busIcon)
+                        .zIndex(5);
+                //mBaiduMap.addOverlay(circleMarker);
+                 marker = (Marker) (mBaiduMap.addOverlay(circleMarker));
             }
 
             //xian
             PolylineOptions polylineOptions = new PolylineOptions();
-            polylineOptions.color(Color.argb(150,0,0,255));
+            polylineOptions.color(Color.argb(150, 0, 0, 255));
             polylineOptions.width(10);
             List<LatLng> listPoints = convertToLatLng(step.getPath());
             polylineOptions.points(listPoints);
 
             mBaiduMap.addOverlay(polylineOptions);
 
+            if(step.getType() == 5 && marker != null){
+                Bundle bundle = new Bundle();
+                bundle.putInt("type", step.getType());
+                bundle.putString("footInfo",step.getStepInstruction());
+                marker.setExtraInfo(bundle);
+            }else if(step.getType() == 3 && marker != null){
+                Bundle bundle = new Bundle();
+                bundle.putInt("type",step.getType());
+                bundle.putString("lineName", step.getVehicle().getName());
+                bundle.putString("stopName",step.getVehicle().getStart_name());
+                marker.setExtraInfo(bundle);
+            }
+
+
+            mBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener(){
+
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    Bundle bundle = marker.getExtraInfo();
+
+                    InfoWindow infoWindow;
+                    View view;
+                    view = View.inflate(getApplicationContext(),R.layout.interchange_map_info,null);
+                    TextView title001 = (TextView) view.findViewById(R.id.title001);
+                    TextView title002 = (TextView) view.findViewById(R.id.title002);
+                    if(bundle == null){
+                        view.setVisibility(View.GONE);
+                        return false;
+                    }
+                    if(bundle.getInt("type") == 5){
+                        title002.setVisibility(View.GONE);
+                        title001.setText(bundle.getString("footInfo"));
+
+                    }else if(bundle.getInt("type")==3){
+                        title002.setVisibility(View.VISIBLE);
+                        title001.setText(bundle.getString("lineName"));
+                        title002.setText(bundle.getString("stopName"));
+
+                    }
+
+                    final LatLng ll = marker.getPosition();
+                    Point p = mBaiduMap.getProjection().toScreenLocation(ll);
+                    p.y -= 10;
+                    LatLng llInfo = mBaiduMap.getProjection().fromScreenLocation(p);
+                    //为弹出的InfoWindow添加点击事件
+                    infoWindow = new InfoWindow(view,llInfo,0);
+                    //显示InfoWindow
+                    mBaiduMap.showInfoWindow(infoWindow);
+
+                    return false;
+
+                }});
+
 
         }
     }
+
+
 
     /**
      * "path": "120.37036916347,31.57171524566;120.37062967207,31.571438358723;
