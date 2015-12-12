@@ -13,6 +13,9 @@ import android.widget.Toast;
 import com.avos.avoscloud.AVAnalytics;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
+import com.umeng.update.UpdateStatus;
 import com.wuxibus.app.R;
 import com.wuxibus.app.activity.MyFavActivity;
 import com.wuxibus.app.activity.WebViewActivity;
@@ -166,7 +169,30 @@ public class MyFragment extends Fragment implements AdapterView.OnItemClickListe
                 FeedbackAgent agent = new FeedbackAgent(this.getActivity());
                 agent.startFeedbackActivity();
             }else if(item.getImgResId() == R.drawable.my_icon_share){
-                UmengUpdateAgent.forceUpdate(this.getActivity());
+               // UmengUpdateAgent.forceUpdate(this.getActivity());
+
+                UmengUpdateAgent.setUpdateAutoPopup(false);
+                UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+                    @Override
+                    public void onUpdateReturned(int updateStatus,UpdateResponse updateInfo) {
+                        switch (updateStatus) {
+                            case UpdateStatus.Yes: // has update
+                                UmengUpdateAgent.showUpdateDialog(MyFragment.this.getActivity(), updateInfo);
+                                break;
+                            case UpdateStatus.No: // has no update
+                                Toast.makeText(MyFragment.this.getActivity(), "当前已经是最新版本", Toast.LENGTH_SHORT).show();
+                                break;
+                            case UpdateStatus.NoneWifi: // none wifi
+                                Toast.makeText(MyFragment.this.getActivity(), "没有wifi连接， 只在wifi下更新", Toast.LENGTH_SHORT).show();
+                                break;
+                            case UpdateStatus.Timeout: // time out
+                                Toast.makeText(MyFragment.this.getActivity(), "超时", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                });
+                UmengUpdateAgent.update(this.getActivity());
+
             }
 
         }

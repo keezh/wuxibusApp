@@ -25,6 +25,16 @@
             android:textColor="@color/white_text"
             android:layout_centerInParent="true"
             />
+        <TextView
+            android:id="@+id/share_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="分享"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white_text"
+            />
 
 
     </RelativeLayout>

@@ -294,7 +294,8 @@ public class StationFragment extends Fragment implements View.OnClickListener,Ad
         String url = AllConstants.ServerUrl;
         Map<String,String> paras = new HashMap<String,String>();
         paras.put("m","get_ad_list");
-        paras.put("flag","stop_search");
+        //paras.put("flag","stop_search");
+        paras.put("flag","stop_list");
         paras.put("k","");
         //服务器端程序返回接口不统一
         paras = AES7PaddingUtil.toAES7Padding(paras);
