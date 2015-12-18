@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_bg"
+    >
+
+    <github.chenupt.dragtoplayout.DragTopLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/drag_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
+            android:id="@+id/top_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/station_header"
+                >
+
+                <TextView
+                    android:id="@+id/search_button"
+                    android:layout_marginTop="90dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textAlignment="center"
+                    android:text="请输入站台名称"
+                    android:background="@drawable/search_textfield"
+                    />
+
+            </FrameLayout>
+
+
+            <android.support.v4.view.ViewPager
+                android:layout_marginTop="0dp"
+                android:id="@+id/adv_viewpage"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:background="@drawable/background_img"
+                />
+
+        </LinearLayout>
+
+        <!--content view drapTopView-->
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/drag_content_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.wuxibus.app.customerView.PagerSlidingTabStrip
+                android:layout_marginTop="0dp"
+                android:background="@color/home_bg"
+                style="@style/page_order_item"
+                android:id="@+id/sliding_tabs"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:pstsDividerColor="@android:color/transparent"
+                app:pstsDividerPadding="10dp"
+                app:pstsIndicatorColor="@color/actionbar_txt_color"
+                app:pstsIndicatorHeight="2dp"
+                app:pstsShouldExpand="true"
+                app:pstsTextAllCaps="true"
+                />
+            <!--<com.ogaclejapan.smarttablayout.SmartTabLayout-->
+                <!--android:id="@+id/viewpagertab"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="48dp"-->
+                <!--android:background="@android:color/white"-->
+                <!--app:stl_distributeEvenly="true"-->
+                <!--app:stl_dividerColor="@color/red"-->
+                <!--app:stl_dividerThickness="0dp"-->
+                <!--app:stl_indicatorColor="@color/red"-->
+                <!--app:stl_indicatorThickness="0dp"-->
+                <!--app:stl_underlineColor="@color/red"-->
+                <!--app:stl_underlineThickness="0dp"/>-->
+            <android.support.v4.view.ViewPager
+                android:layout_marginTop="0dp"
+                android:id="@+id/vp_main_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+    </github.chenupt.dragtoplayout.DragTopLayout>
+
+
+
+
+    <!--<RadioGroup-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:layout_marginTop="255dp"-->
+    <!--android:layout_gravity="center_horizontal"-->
+
+    <!-->-->
+    <!--<RadioButton-->
+    <!--android:id="@+id/home_btn"-->
+    <!--style="@style/tab_bar_item"-->
+    <!--android:text="附近站台"-->
+    <!--android:layout_width="80dp"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:checked="true"-->
+    <!--/>-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/route_btn"-->
+    <!--style="@style/tab_bar_item"-->
+    <!--android:text="查询历史"-->
+    <!--android:layout_width="80dp"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:layout_weight="1"-->
+    <!--/>-->
+
+    <!--</RadioGroup>-->
+
+
+
+
+
+</LinearLayout>

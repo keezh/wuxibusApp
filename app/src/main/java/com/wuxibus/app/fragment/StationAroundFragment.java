@@ -2,6 +2,7 @@ package com.wuxibus.app.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.wuxibus.app.adapter.AroundStopAdapter;
 import com.wuxibus.app.constants.AllConstants;
 import com.wuxibus.app.entity.GPS;
 import com.wuxibus.app.entity.StopNearby;
+import com.wuxibus.app.util.AES7PaddingUtil;
 import com.wuxibus.app.volley.VolleyManager;
 
 import org.json.JSONObject;
@@ -45,8 +47,8 @@ public class StationAroundFragment extends Fragment implements  AdapterView.OnIt
         View view = inflater.inflate(R.layout.station_aound_fragment, null);
         around_stops_listview = (ListView)view.findViewById(R.id.around_stops_listview);
         around_stops_listview.setOnItemClickListener(this);
-        //查询附近线路
-        queryAroundStops();
+
+//查询附近线路
 
         around_stops_listview.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -65,6 +67,7 @@ public class StationAroundFragment extends Fragment implements  AdapterView.OnIt
     @Override
     public void onResume() {
         super.onResume();
+        queryAroundStops();
 
     }
 
@@ -86,7 +89,7 @@ public class StationAroundFragment extends Fragment implements  AdapterView.OnIt
         params.put("radius","500");
         params.put(AllConstants.LongitudeBaidu, GPS.longitude+"");
         params.put(AllConstants.LatitudeBaidu,GPS.latitude+"");
-
+        params = AES7PaddingUtil.toAES7Padding(params);
 
         VolleyManager.getJson(AllConstants.ServerUrl, params, new Response.Listener<JSONObject>() {
             @Override

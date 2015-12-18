@@ -101,7 +101,9 @@ public class RouteFragment extends Fragment {
      * 初始化模型数据
      */
     public void initAdapte(){
-        LineViewPagerAdapter pagerAdapter = new LineViewPagerAdapter(this.getFragmentManager(),null,titles);
+        //重点问题，如果使用则会出现线路和站台其中之一的数据无法正常返回。被这个问题困扰了几天了，还是搜索处理的，相信网友的智慧啊。
+        //this.getFragmentManager();
+        LineViewPagerAdapter pagerAdapter = new LineViewPagerAdapter(this.getChildFragmentManager(),null,titles);
 
 
         viewPager.setAdapter(pagerAdapter);

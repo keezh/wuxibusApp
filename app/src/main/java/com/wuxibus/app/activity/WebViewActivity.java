@@ -17,6 +17,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.sso.SmsHandler;
 import com.umeng.socialize.sso.UMQQSsoHandler;
 import com.umeng.socialize.sso.UMSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
@@ -117,9 +118,13 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
 
         //config
         mController.getConfig().setPlatformOrder(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE,
-                SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
+                SHARE_MEDIA.SMS, SHARE_MEDIA.SINA);
         mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE,
-                SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
+                SHARE_MEDIA.SMS, SHARE_MEDIA.SINA);
+
+        configWeixin();
+        // 添加短信平台
+        addSMS();
 
 
     }
@@ -148,7 +153,7 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
        //         "http://www.baidu.com/img/bdlogo.png"));
 
 
-        shareWeixin();
+
         mController.openShare(this, false);
     }
 
@@ -169,7 +174,13 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
 
     }
 
-    public void shareWeixin(){
+//    无锡智慧公交
+//    AppID：wx89e0eb76583bdac4
+//    AppSecret：46219fc131e097e56db85485141d8cf6重置
+//            已通过
+
+
+    public void configWeixin(){
         String appID = "wx89e0eb76583bdac4";//wx89e0eb76583bdac4
         String appSecret = "46219fc131e097e56db85485141d8cf6";
 // 添加微信平台
@@ -181,12 +192,21 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
         wxCircleHandler.addToSocialSDK();
     }
 
-    public void shareQQ(){
-        //参数1为当前Activity，参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
-        UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, "100424468",
-                "c7394704798a158208a74ab60104f0ba");
-        qqSsoHandler.addToSocialSDK();
+    /**
+     * 添加短信平台</br>
+     */
+    private void addSMS() {
+        // 添加短信
+        SmsHandler smsHandler = new SmsHandler();
+        smsHandler.addToSocialSDK();
     }
+
+//    public void shareQQ(){
+//        //参数1为当前Activity，参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
+//        UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, "100424468",
+//                "c7394704798a158208a74ab60104f0ba");
+//        qqSsoHandler.addToSocialSDK();
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

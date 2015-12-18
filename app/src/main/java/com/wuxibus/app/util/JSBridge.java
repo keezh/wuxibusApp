@@ -45,6 +45,7 @@ public class JSBridge {
         Log.d("webview", text + " " + title + " " + imageUrl + " " + link);
         activity.callBackFromJs(text, title, imageUrl, link);
         //activity.shareTextView.setVisibility(View.VISIBLE);
+       // InitApplication.appLog.i(getDeviceInfo());
 
     }
 

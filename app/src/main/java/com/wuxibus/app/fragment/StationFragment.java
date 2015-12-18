@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,32 +14,29 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.avos.avoscloud.AVAnalytics;
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 import com.wuxibus.app.R;
-import com.wuxibus.app.activity.MainActivity;
 import com.wuxibus.app.activity.SearchStopActivity;
-import com.wuxibus.app.activity.SearchStopResultActivity;
-import com.wuxibus.app.activity.TestHistoryActivity;
 import com.wuxibus.app.activity.WebViewActivity;
 import com.wuxibus.app.adapter.AroundStopAdapter;
 import com.wuxibus.app.adapter.MyViewPagerAdapter;
 import com.wuxibus.app.adapter.StationViewPageAdapter;
-import com.wuxibus.app.adapter.StringAdapter;
 import com.wuxibus.app.adapter.StringStationAdapter;
 import com.wuxibus.app.constants.AllConstants;
-import com.wuxibus.app.customerView.ScrollSwipeRefreshLayout;
+import com.wuxibus.app.customerView.PagerSlidingTabStrip;
 import com.wuxibus.app.customerView.SmartImageView;
 import com.wuxibus.app.entity.AdvItem;
 import com.wuxibus.app.entity.GPS;
 import com.wuxibus.app.entity.SearchHistory;
 import com.wuxibus.app.entity.StopNearby;
-import com.wuxibus.app.sqlite.DBManager;
 import com.wuxibus.app.util.AES7PaddingUtil;
 import com.wuxibus.app.util.DBUtil;
 import com.wuxibus.app.util.DensityUtil;
@@ -73,60 +69,70 @@ public class StationFragment extends Fragment implements View.OnClickListener,Ad
 
     private String[] titles = new String[]{"附近站台", "查询历史"};
     private ViewPager advertiseViewPager;
+    PagerSlidingTabStrip slidingTabLayout;
+//    SmartTabLayout smartTabLayout;
 
     TextView search_button;
     ListView around_stops_listview;
     ListView history_listview;
-    RadioButton aroundBtn;
-    RadioButton historyBtn;
+//    RadioButton aroundBtn;
+//    RadioButton historyBtn;
     private DragTopLayout dragLayout;
     List<AdvItem> list;
-    ScrollSwipeRefreshLayout scrollSwipeRefreshLayout;
+//    ScrollSwipeRefreshLayout scrollSwipeRefreshLayout;
+    ViewPager viewPager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_station,null);
+        View view = inflater.inflate(R.layout.station_fragment_tab,null);
         search_button = (TextView) view.findViewById(R.id.search_button);
-        aroundBtn = (RadioButton) view.findViewById(R.id.around_btn);
-        historyBtn = (RadioButton) view.findViewById(R.id.history_btn);
+//        aroundBtn = (RadioButton) view.findViewById(R.id.around_btn);
+//        historyBtn = (RadioButton) view.findViewById(R.id.history_btn);
         advertiseViewPager = (ViewPager) view.findViewById(R.id.adv_viewpage);
 
-        around_stops_listview = (ListView) view.findViewById(R.id.around_stops_listview);
-        history_listview = (ListView) view.findViewById(R.id.history_stops_listview);
-        history_listview.setOnItemClickListener(this);
-        around_stops_listview.setOnItemClickListener(this);
+//        around_stops_listview = (ListView) view.findViewById(R.id.around_stops_listview);
+//        history_listview = (ListView) view.findViewById(R.id.history_stops_listview);
+//        history_listview.setOnItemClickListener(this);
+//        around_stops_listview.setOnItemClickListener(this);
         search_button.setOnClickListener(this);
-        aroundBtn.setOnClickListener(this);
-        historyBtn.setOnClickListener(this);
+//        aroundBtn.setOnClickListener(this);
+//        historyBtn.setOnClickListener(this);
         dragLayout = (DragTopLayout) view.findViewById(R.id.drag_layout);
         dragLayout.setOverDrag(false);
         dragLayout.openTopView(true);
 
-        scrollSwipeRefreshLayout = (ScrollSwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+//        scrollSwipeRefreshLayout = (ScrollSwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         ViewGroup viewGroup = (ViewGroup) view.findViewById(R.id.viewGroup);
 
-        scrollSwipeRefreshLayout.setViewGroup(viewGroup);
-        scrollSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                ((MainActivity)StationFragment.this.getActivity()).updateBaiduGps();
+        //tab
+        viewPager = (ViewPager)view.findViewById(R.id.vp_main_view);
+        slidingTabLayout = (PagerSlidingTabStrip) view.findViewById(R.id.sliding_tabs);
+//        smartTabLayout = (SmartTabLayout) view.findViewById(R.id.viewpagertab);
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        scrollSwipeRefreshLayout.setRefreshing(false);
-                        queryAroundStops();
-                    }
-                }, 500);
-            }
-        });
-        scrollSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_red_light,
-                android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
 
-        handleDownEvent();
+//        scrollSwipeRefreshLayout.setViewGroup(viewGroup);
+//        scrollSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                ((MainActivity)StationFragment.this.getActivity()).updateBaiduGps();
+//
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        scrollSwipeRefreshLayout.setRefreshing(false);
+//                        queryAroundStops();
+//                    }
+//                }, 500);
+//            }
+//        });
+//        scrollSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_red_light,
+     //           android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
+
+      //  handleDownEvent();
 
         //广告接口
         queryAdvList();
+        initAdapter();
 
 
         return view;
@@ -147,11 +153,11 @@ public class StationFragment extends Fragment implements View.OnClickListener,Ad
                         }
                         // 判断滚动到顶部
 
-                        if(around_stops_listview.getFirstVisiblePosition() == 0){
-                            scrollSwipeRefreshLayout.setEnabled(true);
-                        }else{
-                            scrollSwipeRefreshLayout.setEnabled(false);
-                        }
+//                        if(around_stops_listview.getFirstVisiblePosition() == 0){
+//                            scrollSwipeRefreshLayout.setEnabled(true);
+//                        }else{
+//                            scrollSwipeRefreshLayout.setEnabled(false);
+//                        }
 
                         break;
                 }
@@ -184,28 +190,33 @@ public class StationFragment extends Fragment implements View.OnClickListener,Ad
         dragLayout.setTouchMode(b);
     }
 
-//    public void initAdapter(){
-//        viewPager.setAdapter(new StationViewPageAdapter(this.getFragmentManager(),titles));
-//        viewPager.setCurrentItem(0);
-//
-//        slidingTabLayout.setViewPager(viewPager);
-//
-//       // slidingTabLayout.notifyDataSetChanged();
-//    }
+    public void initAdapter(){
+        viewPager.setAdapter(new StationViewPageAdapter(this.getFragmentManager(), titles));
+        viewPager.setCurrentItem(0);
+
+//        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+//                this.getChildFragmentManager(), FragmentPagerItems.with(this.getActivity())
+//                .add(titles[0], StationAroundFragment.class)
+//                .add(titles[1], StationHistoryFragment.class)
+//                .create());
+
+        //ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+//        viewPager.setAdapter(adapter);
+
+//        smartTabLayout.setViewPager(viewPager);
+
+        slidingTabLayout.setViewPager(viewPager);
+
+        slidingTabLayout.notifyDataSetChanged();
+    }
 
     @Override
     public void onResume() {
         super.onResume();
         EventBus.getDefault().register(this);
         AVAnalytics.onFragmentStart("station-frgment-start");
-        queryAroundStops();
+//        queryAroundStops();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        }, 2000);
 
 
 
@@ -223,17 +234,16 @@ public class StationFragment extends Fragment implements View.OnClickListener,Ad
         if(view == search_button){
             Intent intent = new Intent(this.getActivity(), SearchStopActivity.class);
             startActivity(intent);
-            //test
-//            Intent intent = new Intent(this.getActivity(), TestHistoryActivity.class);
-//            startActivity(intent);
-        }else if(view == aroundBtn){
-            around_stops_listview.setVisibility(View.VISIBLE);
-            history_listview.setVisibility(View.GONE);
-
-        }else if(view == historyBtn){
-            around_stops_listview.setVisibility(View.GONE);
-            history_listview.setVisibility(View.VISIBLE);
         }
+
+//        if(view == aroundBtn){
+//            around_stops_listview.setVisibility(View.VISIBLE);
+//            history_listview.setVisibility(View.GONE);
+//
+//        }else if(view == historyBtn){
+//            around_stops_listview.setVisibility(View.GONE);
+//            history_listview.setVisibility(View.VISIBLE);
+//        }
     }
 
     private void showHistory() {
@@ -244,10 +254,8 @@ public class StationFragment extends Fragment implements View.OnClickListener,Ad
             stationList.add(list.get(i).getLineName());
         }
 
-//            stationList.add("test");
-//            stationList.add("test2");
         StringStationAdapter adapter = new StringStationAdapter(this.getActivity(),stationList);
-        history_listview.setAdapter(adapter);
+//        history_listview.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
 
@@ -274,7 +282,8 @@ public class StationFragment extends Fragment implements View.OnClickListener,Ad
                     }
 
                     //test
-                    showHistory();
+                    //
+                    // showHistory();
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -294,8 +303,8 @@ public class StationFragment extends Fragment implements View.OnClickListener,Ad
         String url = AllConstants.ServerUrl;
         Map<String,String> paras = new HashMap<String,String>();
         paras.put("m","get_ad_list");
-        //paras.put("flag","stop_search");
-        paras.put("flag","stop_list");
+        paras.put("flag","stop_search");
+        //paras.put("flag","stop_list");
         paras.put("k","");
         //服务器端程序返回接口不统一
         paras = AES7PaddingUtil.toAES7Padding(paras);
@@ -367,20 +376,18 @@ public class StationFragment extends Fragment implements View.OnClickListener,Ad
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        if(adapterView == around_stops_listview){
-            AroundStopAdapter.ViewHolder viewHolder = (AroundStopAdapter.ViewHolder) view.getTag();
-            Intent intent = new Intent(this.getActivity(), SearchStopResultActivity.class);
-            intent.putExtra("stopName",viewHolder.stopNameTextView.getText().toString());
-            startActivity(intent);
-        }else if(adapterView == history_listview){
-
-            StringStationAdapter.ViewHolder viewHolder = (StringStationAdapter.ViewHolder) view.getTag();
-            Intent intent = new Intent(this.getActivity(), SearchStopResultActivity.class);
-            intent.putExtra("stopName",viewHolder.resultText.getText().toString());
-            startActivity(intent);
-
-
-
-        }
+//        if(adapterView == around_stops_listview){
+//            AroundStopAdapter.ViewHolder viewHolder = (AroundStopAdapter.ViewHolder) view.getTag();
+//            Intent intent = new Intent(this.getActivity(), SearchStopResultActivity.class);
+//            intent.putExtra("stopName",viewHolder.stopNameTextView.getText().toString());
+//            startActivity(intent);
+//        }else if(adapterView == history_listview){
+//
+//            StringStationAdapter.ViewHolder viewHolder = (StringStationAdapter.ViewHolder) view.getTag();
+//            Intent intent = new Intent(this.getActivity(), SearchStopResultActivity.class);
+//            intent.putExtra("stopName",viewHolder.resultText.getText().toString());
+//            startActivity(intent);
+//
+//        }
     }
 }
