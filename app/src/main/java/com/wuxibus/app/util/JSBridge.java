@@ -1,13 +1,10 @@
 package com.wuxibus.app.util;
 
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
-import android.view.View;
 import android.webkit.JavascriptInterface;
 
-import com.wuxibus.app.InitApplication;
 import com.wuxibus.app.activity.WebViewActivity;
 
 import org.json.JSONException;
@@ -43,9 +40,13 @@ public class JSBridge {
     public void bus_show_share_button(String text,String title,String imageUrl,String link){
 
         Log.d("webview", text + " " + title + " " + imageUrl + " " + link);
-        activity.callBackFromJs(text, title, imageUrl, link);
-        //activity.shareTextView.setVisibility(View.VISIBLE);
-       // InitApplication.appLog.i(getDeviceInfo());
+        activity.showShareButton(text, title, imageUrl, link);
+
+    }
+
+    @JavascriptInterface
+    public void bus_hide_share_button(){
+        activity.hideShareButton();
 
     }
 

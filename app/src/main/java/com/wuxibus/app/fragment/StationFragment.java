@@ -191,7 +191,7 @@ public class StationFragment extends Fragment implements View.OnClickListener,Ad
     }
 
     public void initAdapter(){
-        viewPager.setAdapter(new StationViewPageAdapter(this.getFragmentManager(), titles));
+        viewPager.setAdapter(new StationViewPageAdapter(this.getChildFragmentManager(), titles));
         viewPager.setCurrentItem(0);
 
 //        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.alibaba.fastjson.JSON;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.wuxibus.app.R;
+import com.wuxibus.app.activity.MainActivity;
 import com.wuxibus.app.activity.SearchStopResultActivity;
 import com.wuxibus.app.adapter.AroundStopAdapter;
 import com.wuxibus.app.constants.AllConstants;
@@ -39,21 +41,57 @@ import github.chenupt.dragtoplayout.AttachUtil;
 public class StationAroundFragment extends Fragment implements  AdapterView.OnItemClickListener{
 
     ListView around_stops_listview;
+    SwipeRefreshLayout swipeRefreshLayout;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
          super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.station_aound_fragment, null);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+
         around_stops_listview = (ListView)view.findViewById(R.id.around_stops_listview);
         around_stops_listview.setOnItemClickListener(this);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                ((MainActivity)StationAroundFragment.this.getActivity()).updateBaiduGps();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                        queryAroundStops();
+                    }
+                }, 500);
+            }
+        });
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_red_light,
+                android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
+
 
 //查询附近线路
 
         around_stops_listview.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
+                switch (scrollState) {
+                    // 当不滚动时
+                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
+                        // 判断滚动到底部
+                        if (around_stops_listview.getLastVisiblePosition() == (around_stops_listview.getCount() - 1)) {
+                        }
+                        // 判断滚动到顶部
 
+                        if(around_stops_listview.getFirstVisiblePosition() == 0){
+                            swipeRefreshLayout.setEnabled(true);
+                        }else{
+                            swipeRefreshLayout.setEnabled(false);
+                        }
+
+                        break;
+                }
             }
 
             @Override

@@ -102,7 +102,7 @@ public class RouteFragment extends Fragment {
      */
     public void initAdapte(){
         //重点问题，如果使用则会出现线路和站台其中之一的数据无法正常返回。被这个问题困扰了几天了，还是搜索处理的，相信网友的智慧啊。
-        //this.getFragmentManager();
+        //this.getFragmentManager();,使用getChildFragmentManager
         LineViewPagerAdapter pagerAdapter = new LineViewPagerAdapter(this.getChildFragmentManager(),null,titles);
 
 

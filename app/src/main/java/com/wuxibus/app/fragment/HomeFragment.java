@@ -446,11 +446,11 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 //15861681900
     //网络请求首页接口
     public void queryIndex() {
-        String url = "http://api.wxbus.com.cn/api/";
+        //String url = "http://api.wxbus.com.cn/api/";
         Map<String,String> params = new HashMap<String,String>();
         params.put("m","index");
         params = AES7PaddingUtil.toAES7Padding(params);
-        VolleyManager.getJson(AllConstants.ServerUrl, params, new Response.Listener<JSONObject>() {
+        VolleyManager.getJson(AllConstants.HomeIndexUrl, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 try {

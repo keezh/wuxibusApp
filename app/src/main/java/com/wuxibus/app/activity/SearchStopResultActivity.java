@@ -82,7 +82,7 @@ public class SearchStopResultActivity extends Activity implements View.OnClickLi
         Map<String,String> paras = new HashMap<String,String>();
         paras.put("m","get_ad_list");
         paras.put("flag","stop_list");
-        paras.put("k","");
+        paras.put("k",stopName);
         VolleyManager.getJsonArray(url, paras, new Response.Listener<JSONArray>() {
 
 

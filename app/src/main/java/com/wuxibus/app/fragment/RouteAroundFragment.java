@@ -249,7 +249,7 @@ public class RouteAroundFragment extends Fragment implements AdapterView.OnItemC
                 public void run() {
                     queryRouteAround();
                 }
-            },2000);
+            },1000);
 
 
         }

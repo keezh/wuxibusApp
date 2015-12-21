@@ -63,6 +63,8 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
                 case 1:
                     shareTextView.setVisibility(View.VISIBLE);
                     break;
+                case 2:shareTextView.setVisibility(View.GONE);
+                    break;
             }
         }
     };
@@ -75,7 +77,7 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
         webView = (WebView) findViewById(R.id.webview);
         shareTextView = (TextView) findViewById(R.id.share_textview);
         shareTextView.setOnClickListener(this);
-        shareTextView.setVisibility(View.GONE);
+//        shareTextView.setVisibility(View.GONE);
 
         String ua = webView.getSettings().getUserAgentString();
         //获取versionname,versioncode
@@ -104,7 +106,8 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
         url = getIntent().getExtras().getString("url");
         title = getIntent().getExtras().getString("title");
         titleTextView.setText(title);
-        //webView.loadUrl("file:///android_asset/index.html");
+        String testUrl = "http://www.wxbus.com.cn/view/code/test.html";
+//        webView.loadUrl(testUrl);
         webView.loadUrl(url);
         backImageView.setOnClickListener(this);
         webView.setWebViewClient(new WebViewClient() {
@@ -122,7 +125,6 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
         mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE,
                 SHARE_MEDIA.SMS, SHARE_MEDIA.SINA);
 
-        configWeixin();
         // 添加短信平台
         addSMS();
 
@@ -157,7 +159,7 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
         mController.openShare(this, false);
     }
 
-    public void callBackFromJs(String text,String title,String imgUrl,String link){
+    public void showShareButton(String text, String title, String imgUrl, String link){
         this.shareText = text;
         this.shareTitle = title;
         this.shareImgUrl = imgUrl;
@@ -171,6 +173,8 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
 
         mController.setShareContent(shareText);
         mController.setShareMedia(new UMImage(this, shareImgUrl));
+
+        configWeixin();
 
     }
 
@@ -186,10 +190,14 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
 // 添加微信平台
         UMWXHandler wxHandler = new UMWXHandler(this,appID,appSecret);
         wxHandler.addToSocialSDK();
+        wxHandler.setTargetUrl(this.url);
 // 添加微信朋友圈
         UMWXHandler wxCircleHandler = new UMWXHandler(this,appID,appSecret);
         wxCircleHandler.setToCircle(true);
         wxCircleHandler.addToSocialSDK();
+        wxCircleHandler.setTargetUrl(this.url);
+
+
     }
 
     /**
@@ -216,5 +224,16 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
         if(ssoHandler != null){
             ssoHandler.authorizeCallBack(requestCode, resultCode, data);
         }
+    }
+
+    /**
+     * 默认隐藏按钮
+     */
+    public void hideShareButton() {
+
+        Message msg = new Message();
+        msg.what = 2;
+        handler.sendMessage(msg);
+
     }
 }
