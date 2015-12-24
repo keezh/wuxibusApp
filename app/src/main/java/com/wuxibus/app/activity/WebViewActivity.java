@@ -190,13 +190,12 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
 // 添加微信平台
         UMWXHandler wxHandler = new UMWXHandler(this,appID,appSecret);
         wxHandler.addToSocialSDK();
-        wxHandler.setTargetUrl(this.url);
+        wxHandler.setTargetUrl(this.shareLink);
 // 添加微信朋友圈
         UMWXHandler wxCircleHandler = new UMWXHandler(this,appID,appSecret);
         wxCircleHandler.setToCircle(true);
         wxCircleHandler.addToSocialSDK();
-        wxCircleHandler.setTargetUrl(this.url);
-
+        wxCircleHandler.setTargetUrl(this.shareLink);
 
     }
 

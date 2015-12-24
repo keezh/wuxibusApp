@@ -360,7 +360,7 @@ public class InterchangeResultDetailActivity extends Activity implements View.On
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+            //currentIndex = position+1;
     }
 
     @Override
@@ -372,6 +372,7 @@ public class InterchangeResultDetailActivity extends Activity implements View.On
                 pageControlViews.get(i).setImageResource(R.drawable.carousel_indicator);
             }
         }
+        currentIndex = position;
 
         titleTextView.setText("方案"+(position + 1));
 

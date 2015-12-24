@@ -50,6 +50,7 @@ public class InterchangeMapActivity extends Activity implements View.OnClickList
     int currentIndex;
     MapView mapView;
     private BaiduMap mBaiduMap;
+    TextView titleTextView;
 
 
     @Override
@@ -59,7 +60,9 @@ public class InterchangeMapActivity extends Activity implements View.OnClickList
         mapView = (MapView) findViewById(R.id.bmapView);
         backImageView = (ImageView) findViewById(R.id.back_imageview);
         backImageView.setOnClickListener(this);
+        titleTextView = (TextView) findViewById(R.id.title_tv);
         currentIndex = getIntent().getIntExtra("currentIndex", 0);//传递过来的值
+        titleTextView.setText("方案"+(currentIndex+1));
         initTipInfo();
 
         initMapView();
@@ -125,6 +128,10 @@ public class InterchangeMapActivity extends Activity implements View.OnClickList
             polylineOptions.color(Color.argb(150, 0, 0, 255));
             polylineOptions.width(10);
             List<LatLng> listPoints = convertToLatLng(step.getPath());
+            //火车站---》宜家商场  crashbug
+            if (listPoints != null && listPoints.size() < 2){
+                continue;
+            }
             polylineOptions.points(listPoints);
 
             mBaiduMap.addOverlay(polylineOptions);
