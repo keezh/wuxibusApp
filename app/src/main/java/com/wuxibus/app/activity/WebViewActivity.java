@@ -3,10 +3,12 @@ package com.wuxibus.app.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -52,6 +54,10 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
     String shareTitle;
     String shareImgUrl;
     String shareLink;
+    String defaultTitle;
+
+    boolean isFirstIcon = true;
+    Bitmap firstIcon;
 
     // 首先在您的Activity中添加如下成员变量
     final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
@@ -106,11 +112,34 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
         url = getIntent().getExtras().getString("url");
         title = getIntent().getExtras().getString("title");
         titleTextView.setText(title);
-        String testUrl = "http://www.wxbus.com.cn/view/code/test.html";
+//        String testUrl = "http://www.wxbus.com.cn/view/code/test.html";
 //        webView.loadUrl(testUrl);
         webView.loadUrl(url);
         backImageView.setOnClickListener(this);
+
+        WebChromeClient wcc = new WebChromeClient(){
+            @Override
+            public void onReceivedTitle(WebView view, String title) {
+                super.onReceivedTitle(view, title);
+                defaultTitle = title;
+            }
+
+            @Override
+            public void onReceivedIcon(WebView view, Bitmap icon)
+            {
+                if(isFirstIcon){
+                    firstIcon = icon;
+                    isFirstIcon = false;
+                }
+            }
+
+
+        };
+
+        webView.setWebChromeClient(wcc);
         webView.setWebViewClient(new WebViewClient() {
+
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
@@ -155,8 +184,20 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
        //         "http://www.baidu.com/img/bdlogo.png"));
 
 
-
+        defaultShare();
         mController.openShare(this, false);
+    }
+
+    /**
+     * 设置默认分享参数
+     */
+    public void defaultShare(){
+        if(this.shareText == null || this.shareText.trim().equals("")){
+            mController.setShareContent(defaultTitle);
+            mController.setShareImage(new UMImage(this,firstIcon));
+            configWeixin();
+
+        }
     }
 
     public void showShareButton(String text, String title, String imgUrl, String link){
@@ -190,12 +231,22 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
 // 添加微信平台
         UMWXHandler wxHandler = new UMWXHandler(this,appID,appSecret);
         wxHandler.addToSocialSDK();
-        wxHandler.setTargetUrl(this.shareLink);
+        if(this.shareText == null || this.shareText.equals("")){
+            wxHandler.setTargetUrl(url);
+        }else{
+            wxHandler.setTargetUrl(this.shareLink);
+        }
 // 添加微信朋友圈
         UMWXHandler wxCircleHandler = new UMWXHandler(this,appID,appSecret);
         wxCircleHandler.setToCircle(true);
         wxCircleHandler.addToSocialSDK();
-        wxCircleHandler.setTargetUrl(this.shareLink);
+        wxCircleHandler.setTitle(shareText);
+        if(this.shareText == null || this.shareText.equals("")){
+            wxCircleHandler.setTargetUrl(url);wxCircleHandler.setTitle(defaultTitle);
+        }else{
+            wxCircleHandler.setTargetUrl(this.shareLink);
+
+        }
 
     }
 
