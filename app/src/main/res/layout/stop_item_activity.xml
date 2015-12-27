@@ -23,7 +23,7 @@
             <View
                 android:id="@+id/line_imageview"
                 android:layout_width="2dp"
-                android:layout_height="72dp"
+                android:layout_height="64dp"
                 android:layout_gravity="center"
                 android:background="@color/gray_shape"
 
@@ -34,7 +34,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/route_detail_icon_bus"
-
                 android:visibility="gone"
                 />
 
@@ -73,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:textColor="@color/stop_nearby_name"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:maxLines="1"
             android:ellipsize="end"
             />
@@ -98,6 +97,7 @@
                 android:ellipsize="end"
                 android:text="一元看电影"
                 android:textColor="@color/red"
+                android:textSize="15sp"
 
                 />
             </LinearLayout>
@@ -120,7 +120,7 @@
             android:layout_height="wrap_content"
 
             android:textColor="@color/stop_real_tip"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:visibility="gone"
             android:text="距离还有几站"
             />
@@ -137,20 +137,23 @@
                 android:layout_height="wrap_content"
                 android:text="最近一班车还有"
                 android:textColor="@color/stop_real_tip"
+                android:textSize="12sp"
                 />
             <TextView
                 android:id="@+id/howmany_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
                 android:text="3"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 android:textColor="@color/red"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="站到达此站"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:textColor="@color/stop_real_tip"
 
                 />
@@ -159,15 +162,16 @@
             android:id="@+id/stop_end_tip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="3dp"
             android:text="今日已经结束运营，谢谢使用。"
+            android:textSize="13sp"
             android:visibility="gone"
             />
         <Button
             android:id="@+id/stop_to_station"
             android:layout_width="wrap_content"
-            android:layout_height="34dp"
-            android:layout_margin="5dp"
+            android:layout_height="32dp"
+            android:layout_margin="3dp"
             android:text="途径公交线路"
             android:background="@drawable/route_station_btn"
             android:textColor="@color/stop_real_tip"

@@ -5,12 +5,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -179,6 +181,9 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
     }
 
 
+    /**
+     * 广告接口
+     */
     public void queryAdvList(){
         //["m":"get_ad_list","flag":flag,"k":k]
         String url = AllConstants.ServerUrl;
@@ -265,6 +270,9 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
         AVAnalytics.onPause(this);
     }
 
+    /**
+     * 查询线路的站台信息
+     */
     public void queryByLineId(){
 
 //        String url = AllConstants.ServerUrl;
@@ -393,8 +401,6 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
         final DBManager dbManager = new DBManager(this);
         boolean isSave = dbManager.get(lineId);
         if(isSave){//已经是收藏了，取消收藏
-//            String url = AllConstants.ServerUrl;
-//            url = url + "/?m=line_unfav&line_id="+lineId+"&device_token="+ DeviceTools.getDeviceIMEI(this);
             Map<String,String> params = new HashMap<String,String>();
             params.put("m","line_unfav");
             params.put("line_id",lineId);
@@ -502,11 +508,6 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
 
         final StopRealItemAdapter.ViewHolder viewHolder = (StopRealItemAdapter.ViewHolder) view.getTag();
 
-//        String url = AllConstants.ServerUrl;
-//        url += "/?m=bus_live&line_code="+viewHolder.line_code+"&stop_seq="+viewHolder.line_seq;
-
-        //?m=bus_live&line_code=33442308&stop_seq=30
-
         stopName = viewHolder.stopName.getText().toString();
 
         getCurrentStopSeq(stopName);//currentIndex
@@ -520,7 +521,7 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
     }
 
     /**
-     *
+     * 实时线路查询接口
      * @param i
      * @param line_code
      * @param line_seq
@@ -569,11 +570,28 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
 //
 //                        }
 
+                        //计算当前第一个可见的视图位置
+//                        int currentVisualItemY = stopListView.getFirstVisiblePosition() * (totalHeight/stopList.size());
+//                       final int  currentVisualItemY = (int)stopListView.getSelectedView().getScrollY();
+
                         //发现上面代码无效，通过scrollview来实现滚动效果
                         scrollView.post(new Runnable() {
                             @Override
                             public void run() {
-                                scrollView.scrollTo(0,currentStopScrollY);
+//                                TranslateAnimation translateAnimation = new TranslateAnimation(LineRealActivity.this);
+//                                scrollView.scrollTo(0,currentStopScrollY);
+                                scrollView.smoothScrollTo(0,currentStopScrollY);
+
+                                // 这个timer执行1000毫秒 每20毫秒回调一次
+//                                new CountDownTimer(2000, 20) {
+//                                    public void onTick(long millisUntilFinished) {
+//                                        scrollView.scrollTo(currentVisualItemY,(int)(currentStopScrollY - millisUntilFinished)); //更新位置
+//                                    }
+//                                    public void onFinish() {
+//                                        scrollView.scrollTo(currentVisualItemY,currentStopScrollY);  //可能会存在不精确的情况  校准一下
+//                                    }
+//                                }.start();
+
 
                             }
                         });

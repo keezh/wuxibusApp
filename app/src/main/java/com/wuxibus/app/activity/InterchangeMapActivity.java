@@ -106,7 +106,6 @@ public class InterchangeMapActivity extends Activity implements View.OnClickList
                 }
                 OverlayOptions circleMarker = new MarkerOptions().position(latlng).icon(circle)
                         .zIndex(5);
-                //mBaiduMap.addOverlay(circleMarker);
                  marker = (Marker) (mBaiduMap.addOverlay(circleMarker));
             }
 
@@ -119,7 +118,6 @@ public class InterchangeMapActivity extends Activity implements View.OnClickList
                 }
                 OverlayOptions circleMarker = new MarkerOptions().position(latlng).icon(busIcon)
                         .zIndex(5);
-                //mBaiduMap.addOverlay(circleMarker);
                  marker = (Marker) (mBaiduMap.addOverlay(circleMarker));
             }
 

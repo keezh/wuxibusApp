@@ -22,6 +22,7 @@ import com.wuxibus.app.volley.VolleyManager;
 import java.util.List;
 
 /**
+ * 实时列表中的单项
  * Created by zhongkee on 15/6/21.
  */
 public class StopRealItemAdapter extends BaseAdapter {
@@ -106,8 +107,6 @@ public class StopRealItemAdapter extends BaseAdapter {
                 viewHolder.wifiImageView.setVisibility(View.GONE);
             }
 
-            //viewHolder.lineImageView.setMaxHeight(70);
-
 
         }else{//此分支必须要，重置viewHolder中view中得值
             viewHolder.sortTextView.setVisibility(View.VISIBLE);
@@ -129,7 +128,7 @@ public class StopRealItemAdapter extends BaseAdapter {
             params.width = DensityUtil.dip2px(context,2);
             //此处，还不太合适固定数字，会存在适配问题，目前在1080p上是没有问题的
             //px = 330  1080p上
-            params.height = DensityUtil.dip2px(context,140);
+            params.height = DensityUtil.dip2px(context,120);
             viewHolder.lineView.setLayoutParams(params);
 
             viewHolder.sortTextView.setVisibility(View.GONE);
