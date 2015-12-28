@@ -4,8 +4,11 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
+import android.widget.Toast;
 
+import com.wuxibus.app.R;
 import com.wuxibus.app.activity.WebViewActivity;
+import com.wuxibus.app.volley.VolleyManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +51,16 @@ public class JSBridge {
     public void bus_hide_share_button(){
         activity.hideShareButton();
 
+    }
+
+    @JavascriptInterface
+    public void showFirstImg(String imgUrl){
+        //Tools.showToast(activity,"imgUrl"+imgUrl, Toast.LENGTH_LONG);
+        String lowerUrl = imgUrl.toLowerCase();
+        if (lowerUrl.endsWith("jpg") || lowerUrl.endsWith("png") || lowerUrl.endsWith("jpeg") ){
+            activity.defaultShareImgUrl = imgUrl;
+        }
+        //activity.loadShareImage(imgUrl);
     }
 
     /**

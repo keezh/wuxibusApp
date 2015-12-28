@@ -121,6 +121,7 @@ public class StopRealItemAdapter extends BaseAdapter {
         viewHolder.stopEndTip.setVisibility(View.GONE);
         viewHolder.howmanyContainer.setVisibility(View.GONE);
 
+
         if(stopList.get(i).isSelected()){
 
             //add by kee，重新计算左侧的高度
@@ -151,10 +152,6 @@ public class StopRealItemAdapter extends BaseAdapter {
                 viewHolder.stopEndTip.setText(stopInfo.getInfo());
             }
 
-//            if(stopInfo != null && stopInfo.getStop_limit() == 0){
-//                viewHolder.stopEndTip.setVisibility(View.VISIBLE);
-//            }
-
             viewHolder.stopToStation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -163,6 +160,8 @@ public class StopRealItemAdapter extends BaseAdapter {
                     context.startActivity(intent);
                 }
             });
+        }else if(stopList.get(i).getHasBus()){
+
         }
 
         //add adv show

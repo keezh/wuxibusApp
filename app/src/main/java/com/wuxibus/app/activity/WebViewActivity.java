@@ -1,6 +1,7 @@
 package com.wuxibus.app.activity;
 
 import android.app.Activity;
+import android.app.ExpandableListActivity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -25,6 +26,9 @@ import com.umeng.socialize.sso.UMSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 import com.wuxibus.app.R;
 import com.wuxibus.app.util.JSBridge;
+import com.wuxibus.app.volley.VolleyManager;
+
+import java.net.URLEncoder;
 
 
 /**
@@ -56,8 +60,8 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
     String shareLink;
     String defaultTitle;
 
-    boolean isFirstIcon = true;
     Bitmap firstIcon;
+    public String defaultShareImgUrl;//默认的分享图片url
 
     // 首先在您的Activity中添加如下成员变量
     final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
@@ -70,6 +74,9 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
                     shareTextView.setVisibility(View.VISIBLE);
                     break;
                 case 2:shareTextView.setVisibility(View.GONE);
+                    break;
+                case 3:
+
                     break;
             }
         }
@@ -127,12 +134,11 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
             @Override
             public void onReceivedIcon(WebView view, Bitmap icon)
             {
-                if(isFirstIcon){
+                if(firstIcon == null){
                     firstIcon = icon;
-                    isFirstIcon = false;
                 }
-            }
 
+            }
 
         };
 
@@ -144,6 +150,37 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return true;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+
+                //document.getElementsByTagName('img')[0].src
+//                view.loadUrl("javascript:window.android.showFirstImg(document.getElementsByTagName('img')[0].src);");
+//                view.loadUrl("javascript:window.android.showFirstImg(function(){" +
+//                        "var images = document.getElementsByTagName('img');" +
+//                        "alert('test');"+
+//                        "for(i = 0;i<images.length;i++){"+
+//                        " if(images[i].src != '')"+
+//                        " return images[i].src;"+
+//                        "}"+
+//                        ");");
+                String jsData = "<script>var images = document.getElementsByTagName('img'); " +
+                        "for(i = 0;i<images.length;i++){" +
+                        "if(images[i].src != ''){" +
+                        "window.android.showFirstImg(images[i].src);" +
+                        "}" +
+                        "}</script>";
+                try {
+//                    view.loadUrl(jsData);
+                    view.loadUrl("javascript:window.android.showFirstImg(document.getElementsByTagName('img')[0].src);");
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+//                super.onPageFinished(view, url);
+
             }
         });
 
@@ -194,10 +231,28 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
     public void defaultShare(){
         if(this.shareText == null || this.shareText.trim().equals("")){
             mController.setShareContent(defaultTitle);
-            mController.setShareImage(new UMImage(this,firstIcon));
+            if (defaultShareImgUrl != null){
+                mController.setShareImage(new UMImage(this,defaultShareImgUrl));
+            }else{
+                mController.setShareImage(new UMImage(this,firstIcon));
+
+            }
+
             configWeixin();
 
         }
+    }
+
+    public void loadShareImage(final String imgUrl){
+//                     Message msg = new Message();
+//                msg.what = 3;   //获取默认的图片      h
+//                handler.sendMessage(msg);
+                             this.defaultShareImgUrl = imgUrl;
+
+               // mController.setShareMedia(new UMImage(this, imgUrl));
+
+
+
     }
 
     public void showShareButton(String text, String title, String imgUrl, String link){
