@@ -165,31 +165,61 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
 //                        " return images[i].src;"+
 //                        "}"+
 //                        ");");
-                String jsData = "<script>var images = document.getElementsByTagName('img'); " +
-                        "for(i = 0;i<images.length;i++){" +
-                        "if(images[i].src != ''){" +
-                        "window.android.showFirstImg(images[i].src);" +
-                        "}" +
-                        "}</script>";
+//                String jsContent = "var images = document.getElementsByTagName('img'); " +
+//                        "for(i = 0;i<images.length;i++){" +
+//                        "if(images[i].src != ''){" +
+//                        "window.android.showFirstImg(images[i].src);break;" +
+//                        "}" +
+//                        "}";
+                String jsContent = "var defaultImg = 'http://www.wxbus.com.cn/images/shareicon.png';" +
+                        "          var img_url = defaultImg;" +
+                        "          var imgs = document.getElementsByTagName('img');" +
+                        "          var getImg = function(i) {" +
+                        "            if (i < imgs.length) {" +
+                        " if(imgs[i].src != ''){"+
+                        "              var img = new Image();" +
+                        "              img.src = imgs[i].src;" +
+                        "              img.onload = function() {" +
+                        "                if (img.width >= 300 || img.height >= 300) {" +
+                        "                  img_url = img.src;" +
+                        "                  " +
+                        "                  window.android.showFirstImg(img_url);" +
+                        "                } else {" +
+                        "                  getImg(++i);" +
+                        "                }" +
+
+                        "              };" +
+                        "}else{" +
+                        "getImg(++i);}" +
+                        "            } else {" +
+                        "            window.android.showFirstImg(img_url); " +
+                        "              " +
+                        "            }" +
+                        "          };" +
+                        "          if (imgs.length > 0) {" +
+                        "            getImg(0);" +
+                        "          } else {" +
+                        "            window.android.showFirstImg(img_url);" +
+                        "          }";
+
                 try {
-//                    view.loadUrl(jsData);
-                    view.loadUrl("javascript:window.android.showFirstImg(document.getElementsByTagName('img')[0].src);");
+                    view.loadUrl("javascript:"+jsContent);
+
+//                    view.loadUrl("javascript:window.android.showFirstImg(document.getElementsByTagName('img')[0].src);");
+
 
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-
-//                super.onPageFinished(view, url);
-
             }
         });
 
 
         //config
         mController.getConfig().setPlatformOrder(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE,
-                SHARE_MEDIA.SMS, SHARE_MEDIA.SINA);
+                SHARE_MEDIA.SINA, SHARE_MEDIA.SMS);
         mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE,
-                SHARE_MEDIA.SMS, SHARE_MEDIA.SINA);
+                SHARE_MEDIA.SINA, SHARE_MEDIA.SMS);
 
         // 添加短信平台
         addSMS();
@@ -201,7 +231,9 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
     public void onClick(View view) {
         if(backImageView == view){
 
-            if(webView.getOriginalUrl() == null || webView.getOriginalUrl().equals(url)){
+            String originalUrl = webView.getOriginalUrl();
+
+            if(webView.getOriginalUrl() == null || webView.getOriginalUrl().equals(url) || originalUrl.equals(url+"/")){
                 this.finish();
             }else{
                 webView.goBack();
@@ -286,6 +318,16 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
 // 添加微信平台
         UMWXHandler wxHandler = new UMWXHandler(this,appID,appSecret);
         wxHandler.addToSocialSDK();
+        wxHandler.setTitle(shareTitle);
+        //设置分享的url，如果没有source=share,并且要对？
+        if(!url.contains("source=wxbusapp")){
+            if (url.contains("?")){
+                url += "&source=wxbusapp";
+            }else{
+                url+="?source=wxbusapp";
+            }
+
+        }
         if(this.shareText == null || this.shareText.equals("")){
             wxHandler.setTargetUrl(url);
         }else{

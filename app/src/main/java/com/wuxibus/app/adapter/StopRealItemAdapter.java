@@ -64,7 +64,6 @@ public class StopRealItemAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.stopName = (TextView) view.findViewById(R.id.stop_title_textview);
             viewHolder.sortTextView = (TextView) view.findViewById(R.id.stop_seq_state_shape);
-            //viewHolder.lineImageView = (ImageView) view.findViewById(R.id.line_imageview);
             viewHolder.adContainer = view.findViewById(R.id.adv_container);
             viewHolder.advTextView = (TextView) view.findViewById(R.id.adv_title);
 
@@ -76,6 +75,12 @@ public class StopRealItemAdapter extends BaseAdapter {
             viewHolder.stopToStation = (Button) view.findViewById(R.id.stop_to_station);
 
             viewHolder.lineView = view.findViewById(R.id.line_imageview);
+            //kee 设置默认的高度
+            ViewGroup.LayoutParams params = viewHolder.lineView.getLayoutParams();
+            params.width = DensityUtil.dip2px(context,2);
+            params.height = DensityUtil.dip2px(context,48);
+            viewHolder.lineView.setLayoutParams(params);
+
             viewHolder.wifiImageView = (ImageView) view.findViewById(R.id.wifi_4g_imageview);
 
             view.setTag(viewHolder);
@@ -94,6 +99,11 @@ public class StopRealItemAdapter extends BaseAdapter {
         viewHolder.sortTextView.setText(i+1+ "");
 
         if(stopList.get(i).getHasBus()){
+            //kee 设置默认的高度
+            ViewGroup.LayoutParams params = viewHolder.lineView.getLayoutParams();
+            params.width = DensityUtil.dip2px(context,2);
+            params.height = DensityUtil.dip2px(context,66);
+            viewHolder.lineView.setLayoutParams(params);
             viewHolder.sortTextView.setVisibility(View.GONE);
             viewHolder.liveIconImageView.setVisibility(View.VISIBLE);
             viewHolder.stopDetailTextView.setVisibility(View.VISIBLE);
@@ -129,7 +139,7 @@ public class StopRealItemAdapter extends BaseAdapter {
             params.width = DensityUtil.dip2px(context,2);
             //此处，还不太合适固定数字，会存在适配问题，目前在1080p上是没有问题的
             //px = 330  1080p上
-            params.height = DensityUtil.dip2px(context,120);
+            params.height = DensityUtil.dip2px(context,110);
             viewHolder.lineView.setLayoutParams(params);
 
             viewHolder.sortTextView.setVisibility(View.GONE);

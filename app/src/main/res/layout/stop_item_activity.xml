@@ -18,15 +18,14 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-
             >
+            <!--                 android:layout_height="64dp"-->
             <View
                 android:id="@+id/line_imageview"
                 android:layout_width="2dp"
-                android:layout_height="64dp"
+                android:layout_height="58dp"
                 android:layout_gravity="center"
                 android:background="@color/gray_shape"
-
                 />
             <ImageView
                 android:id="@+id/live_icon_imageview"
