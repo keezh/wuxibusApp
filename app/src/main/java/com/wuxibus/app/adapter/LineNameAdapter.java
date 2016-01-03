@@ -115,7 +115,7 @@ public class LineNameAdapter extends BaseAdapter implements View.OnClickListener
                                 Bundle bundle = new Bundle();
                                 bundle.putString("line_id",route.getLine_id());
                                 bundle.putString("direction",route.getDirection()+"");
-                                bundle.putString("line_title",route.getLine_title());
+                                bundle.putString("line_name",route.getLine_name());
                                 bundle.putString("stop_start",route.getStop_start());
                                 bundle.putString("stop_end",route.getStop_end());
                                 bundle.putString("time_start_end",route.getTime_start_end());

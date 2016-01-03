@@ -233,7 +233,8 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
 
             String originalUrl = webView.getOriginalUrl();
 
-            if(webView.getOriginalUrl() == null || webView.getOriginalUrl().equals(url) || originalUrl.equals(url+"/")){
+            if(webView.getOriginalUrl() == null || webView.getOriginalUrl().equals(url) || originalUrl.equals(url+"/")
+                    || url.contains(webView.getOriginalUrl())){
                 this.finish();
             }else{
                 webView.goBack();

@@ -103,7 +103,8 @@ public class SearchLineResultActivity extends Activity implements AdapterView.On
         Bundle bundle = new Bundle();
         bundle.putString("line_id",route.getLine_id());
         bundle.putString("direction",route.getDirection()+"");
-        bundle.putString("line_title",route.getLine_title());
+        //bundle.putString("line_title",route.getLine_title());
+        bundle.putString("line_name",route.getLine_name());
         bundle.putString("stop_start",route.getStop_start());
         bundle.putString("stop_end",route.getStop_end());
         bundle.putString("line_code",route.getLine_code());

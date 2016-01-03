@@ -102,6 +102,8 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
 
     ImageView refreshImageView;
 
+    TextView titleTextView;//bug 选择方向后，需要从接口中改变该值
+
 //    String currentStopLineCode;
 //    String currentStopSeq;
 //    int currentItem;
@@ -142,13 +144,15 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
 
     public void initHeadView(){
         Bundle bundle = this.getIntent().getExtras();
-        TextView titleTextView = (TextView) findViewById(R.id.title_textview);
+        titleTextView = (TextView) findViewById(R.id.title_textview);
         startTextView = (TextView) findViewById(R.id.stop_start_textview);
         endTextView = (TextView) findViewById(R.id.stop_end_textview);
         startEndTextView = (TextView) findViewById(R.id.start_end_textview);
 
-        lineTitle = bundle.getString("line_title");
-        titleTextView.setText(bundle.getString("line_title"));
+//        lineTitle = bundle.getString("line_title"); //kee by 1-3
+        lineTitle = bundle.getString("line_name");
+
+        titleTextView.setText(bundle.getString("line_name"));
         startTextView.setText(bundle.getString("stop_start"));
         endTextView.setText(bundle.getString("stop_end"));
 //        startEndTextView.setText(bundle.getString("time_start_end"));
@@ -297,6 +301,7 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
                             routeList = JSON.parseArray(strMap.get("result"),Route.class);
 
                             if(routeList!= null && routeList.size()>0){
+                                titleTextView.setText(routeList.get(routeIndex).getLine_name());
                                 startEndTextView.setText(routeList.get(routeIndex).getTime_start_end());//add by kee
                                 stopList = routeList.get(routeIndex).getStops();
                                 StopRealItemAdapter stopItemAdapter = new StopRealItemAdapter(LineRealActivity.this,stopInfo,stopList,-1);
@@ -351,7 +356,8 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
         }else if(view == favoriteButton){
             routeFavorite();
         }else if(view == mapImageView){
-            String lineTitle = this.getIntent().getExtras().getString("line_title");
+//            String lineTitle = this.getIntent().getExtras().getString("line_name");
+            String lineTitle = titleTextView.getText().toString();
             String startStop = routeList.get(routeIndex).getStop_start();
             String endStop = routeList.get(routeIndex).getStop_end();
             String startEndTime = routeList.get(routeIndex).getTime_start_end();
@@ -489,6 +495,7 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
             routeIndex = 0;
         }
 //重置标题
+        titleTextView.setText(routeList.get(routeIndex).getLine_name());
         startTextView.setText(routeList.get(routeIndex).getStop_start());
         endTextView.setText(routeList.get(routeIndex).getStop_end());
         startEndTextView.setText(routeList.get(routeIndex).getTime_start_end());

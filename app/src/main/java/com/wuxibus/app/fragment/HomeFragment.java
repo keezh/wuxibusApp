@@ -775,7 +775,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
             bundle.putString("line_id",route.getLineId());
             //bundle.putString("stopName",);
             bundle.putString("direction",route.getDirection()+"");
-            bundle.putString("line_title",route.getLineTitle());
+            bundle.putString("line_name",route.getLineTitle());
             bundle.putString("line_code",route.getLineCode());
             bundle.putString("stop_seq",route.getStopSeq());
             bundle.putString("stop_start",route.getStartStop());

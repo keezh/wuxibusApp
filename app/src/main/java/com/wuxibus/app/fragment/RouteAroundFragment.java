@@ -141,7 +141,7 @@ public class RouteAroundFragment extends Fragment implements AdapterView.OnItemC
 //        intent.putExtras(bundle);
 //        startActivity(intent);
         Bundle bundle = new Bundle();
-        bundle.putString("line_title",lineName);
+        bundle.putString("line_name",lineName);
         bundle.putString("stop_start",viewHolder.startTextView.getText().toString());
         bundle.putString("stop_end",viewHolder.endTextView.getText().toString());
         bundle.putString("time_start_end",viewHolder.timeStartEnd);
