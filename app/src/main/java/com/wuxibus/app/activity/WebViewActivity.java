@@ -26,6 +26,7 @@ import com.umeng.socialize.sso.UMSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 import com.wuxibus.app.R;
 import com.wuxibus.app.util.JSBridge;
+import com.wuxibus.app.util.WebviewJumpUtil;
 import com.wuxibus.app.volley.VolleyManager;
 
 import java.net.URLEncoder;
@@ -148,29 +149,16 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
+                if(WebviewJumpUtil.jumpTo(url,WebViewActivity.this)){
+                    view.loadUrl(url);
+                    return false;
+                }
                 return true;
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
-
-                //document.getElementsByTagName('img')[0].src
-//                view.loadUrl("javascript:window.android.showFirstImg(document.getElementsByTagName('img')[0].src);");
-//                view.loadUrl("javascript:window.android.showFirstImg(function(){" +
-//                        "var images = document.getElementsByTagName('img');" +
-//                        "alert('test');"+
-//                        "for(i = 0;i<images.length;i++){"+
-//                        " if(images[i].src != '')"+
-//                        " return images[i].src;"+
-//                        "}"+
-//                        ");");
-//                String jsContent = "var images = document.getElementsByTagName('img'); " +
-//                        "for(i = 0;i<images.length;i++){" +
-//                        "if(images[i].src != ''){" +
-//                        "window.android.showFirstImg(images[i].src);break;" +
-//                        "}" +
-//                        "}";
+                //该处js，获得在webview中注入一个js，获取一个图片，并且图片大小大于300X300
                 String jsContent = "var defaultImg = 'http://www.wxbus.com.cn/images/shareicon.png';" +
                         "          var img_url = defaultImg;" +
                         "          var imgs = document.getElementsByTagName('img');" +
@@ -203,10 +191,7 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
                         "          }";
 
                 try {
-                    view.loadUrl("javascript:"+jsContent);
-
-//                    view.loadUrl("javascript:window.android.showFirstImg(document.getElementsByTagName('img')[0].src);");
-
+                    view.loadUrl("javascript:"+jsContent);//注意：一定要加javascript:被这个bug折磨了好久
 
                 }catch (Exception e){
                     e.printStackTrace();
