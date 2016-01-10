@@ -393,6 +393,10 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
     private void initReadFavorite(){
         DBManager dbManager = new DBManager(this);
 
+        //i
+        if(lineId == null){
+            return;
+        }
         boolean isSave = dbManager.get(lineId);
             if(isSave){
                 favoriteButton.setBackgroundResource(R.drawable.route_btn_favorite_active);

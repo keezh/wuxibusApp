@@ -35,6 +35,8 @@ import java.net.URLEncoder;
 /**
  * Created by zhongkee on 15/8/5.
  *
+ * http://www.wxbus.com.cn/view/code/test.html  分享测试连接
+ *
  * view-source:http://www.wxbus.com.cn/view/info-347.html  新闻url
  var shareData = {
  text: '周末玩啥进入2015最后一个月啦，大家最期待的，最新、最全、最优惠的无锡各大银行信用卡活动大全来啦！',
@@ -141,6 +143,7 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
 
             }
 
+
         };
 
         webView.setWebChromeClient(wcc);
@@ -149,6 +152,7 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                //wxbusapp://连接处理
                 if(WebviewJumpUtil.jumpTo(url,WebViewActivity.this)){
                     view.loadUrl(url);
                     return false;

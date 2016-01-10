@@ -2,10 +2,17 @@ package com.wuxibus.app.util;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.PoiInfo;
+import com.umeng.fb.FeedbackAgent;
 import com.wuxibus.app.activity.InterchangeResultActivity;
+import com.wuxibus.app.activity.LineRealActivity;
+import com.wuxibus.app.activity.SearchLineActivity;
+import com.wuxibus.app.activity.SearchLineResultActivity;
+import com.wuxibus.app.activity.SearchStopActivity;
+import com.wuxibus.app.activity.SearchStopResultActivity;
 import com.wuxibus.app.entity.GPS;
 import com.wuxibus.app.entity.InterchangeSearch;
 
@@ -41,8 +48,11 @@ import java.util.Map;
  */
 public class WebviewJumpUtil {
 
+    public static String Home = "wxbusapp://home/";
+    public static String Line = "wxbusapp://line/";
     public static String LineSearch = "wxbusapp://line/search";
     public static String LineDetail = "wxbusapp://line/detail";
+    public static String Stop = "wxbusapp://stop/";
     public static String StopSearch = "wxbusapp://stop/search";
     public static String StopDetail = "wxbusapp://stop/detail";
     public static String StopNearby = "wxbusapp://stop/nearby";
@@ -64,30 +74,57 @@ public class WebviewJumpUtil {
                 return true;
             }
 
-            if(urlPage.startsWith(LineSearch)){
+            if (urlPage.equals(Home)){
+                //Intent intent = new Intent(activity,)
+
+            }else if(urlPage.startsWith(LineSearch) || urlPage.equals(Line)){
+                Intent intent = new Intent(activity, SearchLineActivity.class);
+                activity.startActivity(intent);
 
             }else if(urlPage.startsWith(LineDetail)){
+                Intent intent = new Intent(activity, SearchLineResultActivity.class);
+                intent.putExtra("lineName",params.get("line_name"));
+                intent.putExtra("direction",params.get("direction"));
+                intent.putExtra("stop_seq",params.get("stop_seq"));
+                activity.startActivity(intent);
+            }else if(urlPage.startsWith(StopSearch) || urlPage.equals(Stop)){
 
-            }else if(urlPage.startsWith(StopSearch)){
-
+                Intent intent = new Intent(activity, SearchStopActivity.class);
+                activity.startActivity(intent);
             }else if(urlPage.startsWith(StopDetail)){
-
+                Intent intent = new Intent(activity, SearchStopResultActivity.class);
+                intent.putExtra("stop_name",params.get("stop_name"));
+                intent.putExtra("stop_id",params.get("stop_id"));
+                activity.startActivity(intent);
             }else if(urlPage.startsWith(StopNearby)){
 
             }else if(urlPage.startsWith(Webs)){
+                String internUrl = params.get("url");
+                Uri uri = Uri.parse(internUrl);
+                Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                activity.startActivity(intent);
 
             }else if(urlPage.startsWith(Feedback)){
+                FeedbackAgent agent = new FeedbackAgent(activity);
+                agent.startFeedbackActivity();
 
-            }else if(urlPage.startsWith(TransferSchems)){
-
-            }else if(urlPage.startsWith(TransferGoto)){
+            }else if(urlPage.startsWith(TransferSchems)){//
                 if (params!= null){
+                    String start_coordinate = params.get("start_coordinate");
                     String end_coordinate = params.get("end_coordinate");
                     String []points = end_coordinate.split(",");
-                    if(points != null && points.length == 2){
+                    String startPoints[] = start_coordinate.split(",");
+                    if(points != null && points.length == 2 && start_coordinate == null){
                         Intent intent = new Intent(activity, InterchangeResultActivity.class);
                         InterchangeSearch.sourceInfo = new PoiInfo();
                         InterchangeSearch.sourceInfo.location = new LatLng(GPS.latitude,GPS.longitude);
+                        InterchangeSearch.destinationInfo = new PoiInfo();
+                        InterchangeSearch.destinationInfo.location = new LatLng(Double.parseDouble(points[0]),Double.parseDouble(points[1]));
+                        activity.startActivity(intent);
+                    }else if(startPoints != null){
+                        Intent intent = new Intent(activity, InterchangeResultActivity.class);
+                        InterchangeSearch.sourceInfo = new PoiInfo();
+                        InterchangeSearch.sourceInfo.location = new LatLng(Double.parseDouble(startPoints[0]),Double.parseDouble(startPoints[1]));
                         InterchangeSearch.destinationInfo = new PoiInfo();
                         InterchangeSearch.destinationInfo.location = new LatLng(Double.parseDouble(points[0]),Double.parseDouble(points[1]));
                         activity.startActivity(intent);
@@ -95,7 +132,33 @@ public class WebviewJumpUtil {
 
                 }
 
-            }else if(urlPage == TransferStart){
+            }else if(urlPage.startsWith(TransferGoto) || urlPage.equals(TransferStart)){
+                if (params!= null){
+                    String start_coordinate = params.get("start_coordiante");//服务器错误
+                    String end_coordinate = params.get("end_coordinate");
+                    String []points = null ;
+                    String startPoints[] = null;
+                    if (end_coordinate != null)
+                        points = end_coordinate.split(",");
+                    if (start_coordinate != null)
+                        startPoints = start_coordinate.split(",");
+                    if(points != null && points.length == 2 && start_coordinate == null){
+                        Intent intent = new Intent(activity, InterchangeResultActivity.class);
+                        InterchangeSearch.sourceInfo = new PoiInfo();
+                        InterchangeSearch.sourceInfo.location = new LatLng(GPS.latitude,GPS.longitude);
+                        InterchangeSearch.destinationInfo = new PoiInfo();
+                        InterchangeSearch.destinationInfo.location = new LatLng(Double.parseDouble(points[0]),Double.parseDouble(points[1]));
+                        activity.startActivity(intent);
+                    }else if(startPoints != null){
+                        Intent intent = new Intent(activity, InterchangeResultActivity.class);
+                        InterchangeSearch.sourceInfo = new PoiInfo();
+                        InterchangeSearch.sourceInfo.location = new LatLng(Double.parseDouble(startPoints[0]),Double.parseDouble(startPoints[1]));
+                        InterchangeSearch.destinationInfo = new PoiInfo();
+                        InterchangeSearch.destinationInfo.location = new LatLng(Double.parseDouble(points[0]),Double.parseDouble(points[1]));
+                        activity.startActivity(intent);
+                    }
+
+                }
 
             }
 
@@ -116,7 +179,7 @@ public class WebviewJumpUtil {
      */
     public static String getUrlPage(String strURL)
     {
-        String strPage=null;
+        String strPage=strURL;
         String[] arrSplit=null;
         strURL=strURL.trim().toLowerCase();
         arrSplit=strURL.split("[?]");
