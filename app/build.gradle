@@ -5,6 +5,7 @@ android {
     buildToolsVersion '21.1.2'
 
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.wuxibus.app"
         minSdkVersion 15
         targetSdkVersion 21
@@ -60,9 +61,19 @@ dependencies {
     compile 'info.hoang8f:android-segmented:1.0.5'
     compile 'com.github.chenupt.android:dragtoplayout:1.2.1@aar'
     compile 'de.greenrobot:eventbus:2.4.0'
-    compile 'com.android.support:support-v4:23.+'
+    compile 'com.android.support:support-v4:21.+'
     compile 'com.ogaclejapan.smarttablayout:library:1.6.0@aar'
     compile 'com.ogaclejapan.smarttablayout:utils-v4:1.6.0@aar'
+
+    //lean 推送
+
+    compile 'cn.leancloud.android:avoscloud-sdk:v3.7.1'
+
+    compile 'cn.leancloud.android:avoscloud-push:v3.7.1@aar'
+    compile 'cn.leancloud.android:Java-WebSocket:1.2.0-leancloud'
+
+    compile 'cn.leancloud.android:avoscloud-statistics:v3.7.1@aar'
+
     //    compile 'com.ogaclejapan.smarttablayout:library:1.6.0@aar'
 
     //    //Optional: see how to use the utility.

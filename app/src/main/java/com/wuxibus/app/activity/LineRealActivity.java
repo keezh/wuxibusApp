@@ -478,9 +478,6 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
 
         }
 
-
-
-
     }
 
     private void routeReverse() {
