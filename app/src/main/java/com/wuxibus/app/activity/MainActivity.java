@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -52,11 +53,13 @@ import com.wuxibus.app.volley.BitmapCache;
 import com.wuxibus.app.volley.VolleyManager;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class MainActivity extends ActionBarActivity implements RadioGroup.OnCheckedChangeListener,BDLocationListener,View.OnClickListener {
@@ -125,8 +128,32 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
         initAdvImageView();
 
         leancloundPush();//推送
+        testPush();
     }
 
+    public void testPush(){
+        String TAG = "push";
+        try {
+            Intent intent = this.getIntent();
+            //String action = intent.getAction();
+            //String channel = intent.getExtras().getString("com.avos.avoscloud.Channel");
+            //获取消息内容
+            if(intent == null || intent.getExtras() == null ||
+                    intent.getExtras().getString("com.avos.avoscloud.Data") == null){
+                return;
+            }
+            JSONObject json = new JSONObject(intent.getExtras().getString("com.avos.avoscloud.Data"));
+
+            //Log.d(TAG, "got action " + action + " on channel " + channel + " with:");
+            Iterator itr = json.keys();
+            while (itr.hasNext()) {
+                String key = (String) itr.next();
+                Log.d(TAG, "..." + key + " => " + json.getString(key));
+            }
+        } catch (JSONException e) {
+            Log.d(TAG, "JSONException: " + e.getMessage());
+        }
+    }
     public void updateBaiduGps(){
         //if(!mLocationClient.isStarted()){
             mLocationClient.start();
