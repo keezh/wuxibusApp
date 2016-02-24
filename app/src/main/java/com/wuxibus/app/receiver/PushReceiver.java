@@ -1,5 +1,6 @@
 package com.wuxibus.app.receiver;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -9,8 +10,10 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.avos.avoscloud.AVOSCloud;
+import com.wuxibus.app.InitApplication;
 import com.wuxibus.app.R;
 import com.wuxibus.app.activity.MainActivity;
+import com.wuxibus.app.util.WebviewJumpUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,36 +31,43 @@ public class PushReceiver extends BroadcastReceiver {
         try {
   //          String action = intent.getAction();
 //            String channel = intent.getExtras().getString("com.avos.avoscloud.Channel");
+            if(intent.getExtras() == null || intent.getExtras().getString("com.avos.avoscloud.Data")==null){
+                return;
+            }
+            //String jsonData = intent.getExtras().getString("com.avos.avoscloud.Data");
             //获取消息内容
             JSONObject json = new JSONObject(intent.getExtras().getString("com.avos.avoscloud.Data"));
+            String urlValue = json.getString("url");
+//            InitApplication.appLog.d(urlValue);
+            Log.d(TAG,urlValue);
+            WebviewJumpUtil.jumpFromPush(urlValue,(Activity) context);
 
-            //Log.d(TAG, "got action " + action + " on channel " + channel + " with:");
-            Iterator itr = json.keys();
-            while (itr.hasNext()) {
-                String key = (String) itr.next();
-                Log.d(TAG, "..." + key + " => " + json.getString(key));
-            }
+//            Iterator itr = json.keys();
+//            while (itr.hasNext()) {
+//                String key = (String) itr.next();
+//                Log.d(TAG, "..." + key + " => " + json.getString(key));
+//            }
 
-            final String message = json.getString("alert");
-            Intent resultIntent = new Intent(AVOSCloud.applicationContext, MainActivity.class);
-            PendingIntent pendingIntent =
-                    PendingIntent.getActivity(AVOSCloud.applicationContext, 0, resultIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT);
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(AVOSCloud.applicationContext)
-                            .setContentTitle(
-                                    AVOSCloud.applicationContext.getResources().getString(R.string.app_name))
-                            .setContentText(message)
-                            .setTicker(message);
-            mBuilder.setContentIntent(pendingIntent);
-            mBuilder.setAutoCancel(true);
-
-            int mNotificationId = 10086;
-            NotificationManager mNotifyMgr =
-                    (NotificationManager) AVOSCloud.applicationContext
-                            .getSystemService(
-                                    Context.NOTIFICATION_SERVICE);
-            mNotifyMgr.notify(mNotificationId, mBuilder.build());
+//            final String message = json.getString("alert");
+//            Intent resultIntent = new Intent(AVOSCloud.applicationContext, MainActivity.class);
+//            PendingIntent pendingIntent =
+//                    PendingIntent.getActivity(AVOSCloud.applicationContext, 0, resultIntent,
+//                            PendingIntent.FLAG_UPDATE_CURRENT);
+//            NotificationCompat.Builder mBuilder =
+//                    new NotificationCompat.Builder(AVOSCloud.applicationContext)
+//                            .setContentTitle(
+//                                    AVOSCloud.applicationContext.getResources().getString(R.string.app_name))
+//                            .setContentText(message)
+//                            .setTicker(message);
+//            mBuilder.setContentIntent(pendingIntent);
+//            mBuilder.setAutoCancel(true);
+//
+//            int mNotificationId = 10086;
+//            NotificationManager mNotifyMgr =
+//                    (NotificationManager) AVOSCloud.applicationContext
+//                            .getSystemService(
+//                                    Context.NOTIFICATION_SERVICE);
+//            mNotifyMgr.notify(mNotificationId, mBuilder.build());
         } catch (JSONException e) {
             Log.d(TAG, "JSONException: " + e.getMessage());
         }

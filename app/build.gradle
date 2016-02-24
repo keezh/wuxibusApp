@@ -9,8 +9,8 @@ android {
         applicationId "com.wuxibus.app"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 18
-        versionName "1.1.18"
+        versionCode 21
+        versionName "1.1.21"
 
     }
 
@@ -41,6 +41,10 @@ android {
         }
 
     }
+
+//    dexOptions {
+//        incremental true
+//    }
 
     lintOptions{
         abortOnError false

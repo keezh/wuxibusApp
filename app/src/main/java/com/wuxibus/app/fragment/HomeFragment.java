@@ -27,6 +27,7 @@ import com.alibaba.fastjson.JSON;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.avos.avoscloud.AVAnalytics;
+import com.wuxibus.app.InitApplication;
 import com.wuxibus.app.R;
 import com.wuxibus.app.activity.LineRealActivity;
 import com.wuxibus.app.activity.MainActivity;
@@ -614,6 +615,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
             //比例：16：9
             int height = (int)(AllConstants.Width * 9/16.0f);
             imgUrl += "/"+AllConstants.Width+"x"+height;
+            //InitApplication.appLog.d("news-imgurl"+imgUrl);
 
             boolean flag = BitmapCache.getInstern().getSDCardBitmap(imgUrl, imageView, new BitmapCache.CallBackSDcardImg() {
                 @Override

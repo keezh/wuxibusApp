@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -45,21 +44,16 @@ import com.wuxibus.app.fragment.InterchangeFragment;
 import com.wuxibus.app.fragment.MyFragment;
 import com.wuxibus.app.fragment.RouteFragment;
 import com.wuxibus.app.fragment.StationFragment;
-import com.wuxibus.app.util.AES;
 import com.wuxibus.app.util.AES7PaddingUtil;
 import com.wuxibus.app.util.DeviceTools;
-import com.wuxibus.app.util.StringUtil;
+import com.wuxibus.app.util.WebviewJumpUtil;
 import com.wuxibus.app.volley.BitmapCache;
 import com.wuxibus.app.volley.VolleyManager;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class MainActivity extends ActionBarActivity implements RadioGroup.OnCheckedChangeListener,BDLocationListener,View.OnClickListener {
@@ -128,10 +122,13 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
         initAdvImageView();
 
         leancloundPush();//推送
-        testPush();
+        checkLeanCloudPush();
     }
 
-    public void testPush(){
+    /**
+     * 判断是否从推送，调整过来的，并对推送过来的url进行调整逻辑判断
+     */
+    public void checkLeanCloudPush(){
         String TAG = "push";
         try {
             Intent intent = this.getIntent();
@@ -143,13 +140,23 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
                 return;
             }
             JSONObject json = new JSONObject(intent.getExtras().getString("com.avos.avoscloud.Data"));
-
-            //Log.d(TAG, "got action " + action + " on channel " + channel + " with:");
-            Iterator itr = json.keys();
-            while (itr.hasNext()) {
-                String key = (String) itr.next();
-                Log.d(TAG, "..." + key + " => " + json.getString(key));
+            String urlValue = json.getString("url");
+            if(urlValue != null && !urlValue.trim().equals("")){
+                //处理调整业务逻辑
+                WebviewJumpUtil.jumpFromPush(urlValue,MainActivity.this);
             }
+            //判断当前MainActivity 是否已经打开，已经打开，则finish,bug
+            //每次当应用打开了，就会重新把MainActivity入栈
+            if(intent.resolveActivity(getPackageManager()) != null) {
+                // 说明系统中不存在这个activity
+                this.finish();
+            }
+
+//            Iterator itr = json.keys();
+//            while (itr.hasNext()) {
+//                String key = (String) itr.next();
+//                Log.d(TAG, "..." + key + " => " + json.getString(key));
+//            }
         } catch (JSONException e) {
             Log.d(TAG, "JSONException: " + e.getMessage());
         }
@@ -236,6 +243,9 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
     }
 
 
+    /**
+     * 首页广告图片
+     */
     public void initAdvImageView(){
         Map<String,String> paras = new HashMap<String,String>();
         paras.put("m","get_start_pic");
@@ -255,8 +265,52 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
 
                 String index_pic;
                 try {
-                    if (!jsonString.equals("{}")) {//具有广告图
-                         duration = jsonObject.getString("duration");
+//                    if(!jsonString.equals("{}")) {//具有广告图
+//                         duration = jsonObject.getString("duration");
+//                        title = jsonObject.getString("title");
+//                        String def = jsonObject.getString("def");//1:强制显示,0可跳过
+//                        if(def.equals("1")){
+//                            jumpTextView.setEnabled(false);
+//                        }else{
+//                            jumpTextView.setEnabled(true);
+//                        }
+//                         url = jsonObject.getString("url");
+//                         index_pic = jsonObject.getString("index_pic");
+//                        //测试环境
+//
+////                        index_pic = "http://img2.3lian.com/img2007/10/28/123.jpg";
+//
+//                        //int height = (int)(AllConstants.Width * 946/720.0f);
+//                        int height = AllConstants.Height - (int)(AllConstants.Width * 29.0/75.0) - 20;
+//                        String imgUrl = index_pic +"/"+AllConstants.Width+"x"+height;
+////                        imgUrl = "http://img2.3lian.com/img2007/10/28/123.jpg";
+////                        imgUrl = "http://www.5djpg.com/uploads/allimg/141024/1-1410241A200.jpg";
+////                        http://www.5djpg.com/uploads/allimg/141024/1-1410241A200.jpg
+//                        float ratio = (float) (AllConstants.Width*1.0/height);
+//                        advImageView.setRatio(ratio);
+//                        boolean flag = BitmapCache.getInstern().getSDCardBitmap(index_pic, advImageView, new BitmapCache.CallBackSDcardImg() {
+//                            @Override
+//                            public void setImgToView(Bitmap bitmap, ImageView imgView) {
+//                                new ObjectAnimator().ofFloat(imgView, "alpha", 0.3f, 1.0f).setDuration(350).start();
+//                                imgView.setImageBitmap(bitmap);
+//                            }
+//                        });
+//                        if (!flag) {
+//                            VolleyManager.loadImage(advImageView, index_pic, R.drawable.background_img);
+//                        }
+//                        advImageView.setVisibility(View.VISIBLE);
+//                    }else
+
+                    if(jsonString.equals("{}")){//720x946
+                        //advImageView.setRatio(720/946.0f);
+                        int height = AllConstants.Height - (int)(AllConstants.Width * 29.0/75.0) - 20;
+                        float ratio = (float) (AllConstants.Width*1.0/height);
+                        advImageView.setRatio(ratio);
+                        advImageView.setImageResource(R.drawable.launch_ad);
+                        advImageView.setVisibility(View.VISIBLE);
+                        advImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    }else{
+                        duration = jsonObject.getString("duration");
                         title = jsonObject.getString("title");
                         String def = jsonObject.getString("def");//1:强制显示,0可跳过
                         if(def.equals("1")){
@@ -264,11 +318,20 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
                         }else{
                             jumpTextView.setEnabled(true);
                         }
-                         url = jsonObject.getString("url");
-                         index_pic = jsonObject.getString("index_pic");
-                        int height = (int)(AllConstants.Width * 946/720.0f);
-                        height = AllConstants.Height - (int)(AllConstants.Width * 29.0/75.0) - 20;
+                        url = jsonObject.getString("url");
+                        index_pic = jsonObject.getString("index_pic");
+                        //测试环境
+
+//                        index_pic = "http://img2.3lian.com/img2007/10/28/123.jpg";
+
+                        //int height = (int)(AllConstants.Width * 946/720.0f);
+                        int height = AllConstants.Height - (int)(AllConstants.Width * 29.0/75.0) - 20;
                         String imgUrl = index_pic +"/"+AllConstants.Width+"x"+height;
+//                        imgUrl = "http://img2.3lian.com/img2007/10/28/123.jpg";
+//                        imgUrl = "http://www.5djpg.com/uploads/allimg/141024/1-1410241A200.jpg";
+//                        http://www.5djpg.com/uploads/allimg/141024/1-1410241A200.jpg
+                        float ratio = (float) (AllConstants.Width*1.0/height);
+                        advImageView.setRatio(ratio);
                         boolean flag = BitmapCache.getInstern().getSDCardBitmap(imgUrl, advImageView, new BitmapCache.CallBackSDcardImg() {
                             @Override
                             public void setImgToView(Bitmap bitmap, ImageView imgView) {
@@ -279,25 +342,14 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
                         if (!flag) {
                             VolleyManager.loadImage(advImageView, imgUrl, R.drawable.background_img);
                         }
-
-                       // VolleyManager.loadImage(advImageView,imgUrl,R.drawable.background_img);
                         advImageView.setVisibility(View.VISIBLE);
-                    }else if(jsonString.endsWith("{}")){//720x946
-                        //advImageView.setRatio(720/946.0f);
-                        int height = AllConstants.Height - (int)(AllConstants.Width * 29.0/75.0) - 20;
-                        float ratio = (float) (AllConstants.Width*1.0/height);
-                        advImageView.setRatio(ratio);
-
-
-                        advImageView.setImageResource(R.drawable.launch_ad);
-                        advImageView.setVisibility(View.VISIBLE);
-
                         advImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     }
 
                     jumpSeconds(duration);
 
                 }catch (Exception e){
+                    jumpSeconds(duration);
 
                 }
 
@@ -575,6 +627,7 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
                 if (e == null) {
                     // 保存成功
                     String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
+                    AllConstants.PushInstallationID = installationId;
                     InitApplication.appLog.d("installationId:"+installationId);
                     // 关联  installationId 到用户表等操作……
                 } else {

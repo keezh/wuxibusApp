@@ -122,6 +122,9 @@ public class SearchStopResultActivity extends Activity implements View.OnClickLi
                     });
 
                 }
+                if(list == null || list.size() == 0){
+                    adViewPager.setVisibility(View.GONE);
+                }
                 adViewPager.setAdapter(new MyViewPagerAdapter(imageList));
                 adViewPager.setCurrentItem(list.size() * 100);
 

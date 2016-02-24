@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -150,14 +151,20 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
         webView.setWebViewClient(new WebViewClient() {
 
 
+            /**
+             * 通俗的说，当返回true时，你点任何链接都是失效的，需要你自己跳转。return false时webview会自己跳转。
+             */
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 //wxbusapp://连接处理
                 if(WebviewJumpUtil.jumpTo(url,WebViewActivity.this)){
-                    view.loadUrl(url);
-                    return false;
+                    return true;
                 }
-                return true;
+                if(url.toLowerCase().startsWith("http")){
+                    return false;
+                    //view.loadUrl(url);
+                }
+                return false;
             }
 
             @Override
@@ -221,15 +228,36 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
         if(backImageView == view){
 
             String originalUrl = webView.getOriginalUrl();
+            //获取历史列表
+            WebBackForwardList mWebBackForwardList = webView.copyBackForwardList();
+            int currentIndex = mWebBackForwardList.getCurrentIndex();
+            if(currentIndex == 0){
+                this.finish();
+            }
 
             if(webView.getOriginalUrl() == null || webView.getOriginalUrl().equals(url) || originalUrl.equals(url+"/")
                     || url.contains(webView.getOriginalUrl())){
-                this.finish();
+                //this.finish();
             }else{
                 webView.goBack();
             }
         }else if(shareTextView == view){
             shareUmeng();
+        }
+    }
+
+    /**
+     * 处理回退事件，
+     */
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        WebBackForwardList mWebBackForwardList = webView.copyBackForwardList();
+        int currentIndex = mWebBackForwardList.getCurrentIndex();
+        if(currentIndex == 0){
+            this.finish();
+        }else{
+            webView.goBack();
         }
     }
 
@@ -327,9 +355,10 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
         UMWXHandler wxCircleHandler = new UMWXHandler(this,appID,appSecret);
         wxCircleHandler.setToCircle(true);
         wxCircleHandler.addToSocialSDK();
-        wxCircleHandler.setTitle(shareText);
+        wxCircleHandler.setTitle(shareTitle);
         if(this.shareText == null || this.shareText.equals("")){
-            wxCircleHandler.setTargetUrl(url);wxCircleHandler.setTitle(defaultTitle);
+            wxCircleHandler.setTargetUrl(url);
+            wxCircleHandler.setTitle(defaultTitle);
         }else{
             wxCircleHandler.setTargetUrl(this.shareLink);
 

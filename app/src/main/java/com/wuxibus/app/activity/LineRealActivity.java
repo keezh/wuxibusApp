@@ -382,9 +382,6 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
             }else{
                 busLive(currentStopIndex,lineCode,stopSeq);
             }
-
-
-
         }
     }
 

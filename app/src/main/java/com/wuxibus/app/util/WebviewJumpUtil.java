@@ -13,6 +13,7 @@ import com.wuxibus.app.activity.SearchLineActivity;
 import com.wuxibus.app.activity.SearchLineResultActivity;
 import com.wuxibus.app.activity.SearchStopActivity;
 import com.wuxibus.app.activity.SearchStopResultActivity;
+import com.wuxibus.app.activity.WebViewActivity;
 import com.wuxibus.app.entity.GPS;
 import com.wuxibus.app.entity.InterchangeSearch;
 
@@ -63,6 +64,12 @@ public class WebviewJumpUtil {
     public static String TransferStart = "wxbusapp://transfer/";
 
 
+    /**
+     * 该函数仅仅用于webview loadUrl中
+     * @param url
+     * @param activity
+     * @return
+     */
     public static boolean jumpTo(String url,Activity activity){
 
         try {
@@ -70,8 +77,8 @@ public class WebviewJumpUtil {
 
             String urlPage = getUrlPage(urlDecoder);
             Map<String,String>params = getParams(urlDecoder);
-            if(urlPage != null && !urlPage.equals("") &&!urlPage.startsWith("wxbusapp://")){//当不是这个开头的url，就直接忽略
-                return true;
+            if(urlPage != null && !urlPage.equals("") && !urlPage.startsWith("wxbusapp://")){//当不是这个开头的url，就直接忽略
+                return false;
             }
 
             if (urlPage.equals(Home)){
@@ -166,11 +173,32 @@ public class WebviewJumpUtil {
             e.printStackTrace();
         }
 
-
-
-        return false;
+        return true;
 
     }
+
+    /**
+     * 推送调整，逻辑函数
+     * @param url
+     * @param activity
+     * @return
+     */
+    public static boolean jumpFromPush(String url,Activity activity){
+        if(url == null && url.trim().equals("")){
+           return false;
+        }
+        if (url.toLowerCase().startsWith("http") || url.toLowerCase().startsWith("https")){
+            Intent intent = new Intent(activity, WebViewActivity.class);
+            intent.putExtra("url",url);
+            intent.putExtra("title","");
+            activity.startActivity(intent);
+        }else{
+            jumpTo(url,activity);
+        }
+
+        return true;
+    }
+
 
     /**
      * 解析出url请求的路径，包括页面

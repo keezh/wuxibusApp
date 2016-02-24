@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.wuxibus.app.R;
 import com.wuxibus.app.activity.WebViewActivity;
+import com.wuxibus.app.constants.AllConstants;
 import com.wuxibus.app.volley.VolleyManager;
 
 import org.json.JSONException;
@@ -92,7 +93,8 @@ public class JSBridge {
         String device_token = DeviceTools.getDeviceIMEI(activity);
 
         String deviceInfo = "{ program_name:'"+program_name+"',program_version:'"+program_version+"',"
-                +"types:'"+types+"',system:'"+system+"',device_token:'"+device_token+"'}";
+                +"types:'"+types+"',system:'"+system+"',device_token:'"+device_token+"',installation_id:'"
+                + AllConstants.PushInstallationID + "'}";
 
         return deviceInfo;
     }

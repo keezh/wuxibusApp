@@ -45,6 +45,7 @@ public class AllConstants {
 
     public static int Width;
     public static int Height;
+    public static String PushInstallationID;//leancloud推送注册的id
     public static String City = "无锡";
 
     public static String HomeCompanyXml = "home_company";
