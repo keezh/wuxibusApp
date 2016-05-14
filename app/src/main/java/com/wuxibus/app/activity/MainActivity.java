@@ -104,7 +104,7 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
         setContentView(R.layout.activity_app_main);
         //umeng
         UmengUpdateAgent.update(this);
-        UmengUpdateAgent.setUpdateOnlyWifi(false);
+        UmengUpdateAgent.setUpdateOnlyWifi(true);
 
         advImageView = (SmartImageView) findViewById(R.id.adv_imageview);
         jumpTextView = (TextView) findViewById(R.id.jump_textview);
@@ -345,7 +345,6 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
                         advImageView.setVisibility(View.VISIBLE);
                         advImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     }
-
                     jumpSeconds(duration);
 
                 }catch (Exception e){
@@ -487,10 +486,6 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
 
     }
 
-
-
-
-
     /**
      * 将所有的Fragment都置为隐藏状态。
      *
@@ -552,20 +547,6 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
             }
         });
     }
-
-
-//    @Override
-//    public void onLocationChanged(Location location) {
-//
-//        if(location != null){
-//            GPS.latitude = location.getLatitude();
-//            GPS.longitude = location.getLongitude();
-//            InitApplication.appLog.i("kee latitude:"+GPS.latitude + ": longititude:"+GPS.longitude);
-//        }
-//
-//    }
-
-
 
     @Override
     public void onReceiveLocation(BDLocation bdLocation) {
