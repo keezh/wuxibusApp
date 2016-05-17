@@ -5,6 +5,7 @@ import android.app.ExpandableListActivity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -163,6 +164,17 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
                 if(url.toLowerCase().startsWith("http")){
                     return false;
                     //view.loadUrl(url);
+                }
+                if(url.startsWith("weixin://") || url.startsWith("alipay")){
+//                    String qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin=1642084864";
+//                    String weixinUrl = "weixin://wap/pay?appid%3Dwx2421b1c4370ec43b%26noncestr%3D3e84679af4efab5f32ee9ea01b2ec290%26package%3DWAP%26prepayid%3Dwx20160504154919fdacd7" +
+//                            "bc0d0127918780%26timestamp%3D1462348159%26sign%3DC40DC4BB970049D6830BA567189B463B";
+//                    qqUrl = "weixin://dl/moments";
+//                    String alipayUrl = "alipayqr://platformapi/startapp?saId=10000007&clientVersion=3.7.0.0718&qrcode=https%3A%2F% \n" +
+//                            "2Fqr.alipay.com%2Ftdq0whxyrrt917bs7e%3F_s%3Dweb-other";
+
+                    view.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                    //return true;
                 }
                 return false;
             }

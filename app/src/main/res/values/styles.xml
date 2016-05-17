@@ -3,11 +3,27 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:windowAnimationStyle">@style/Animation.Activity.Translucent.Style</item>
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
+
     </style>
+    <!--<style name="AcitivityTheme">-->
+        <!--<item name="@android:activityOpenEnterAnimation">@anim/act_enter</item>-->
+        <!--<item name="android:background">@color/stop_detail_bg</item>-->
+    <!--</style>-->
+    <!--@android:style/Animation.Activity-->
+    <!--Theme.AppCompat.Light.NoActionBar-->
+
+    <style name="Animation.Activity.Translucent.Style" parent="@android:style/Animation.Translucent">
+        <item name="android:windowEnterAnimation">@anim/in_from_right</item>
+        <item name="android:windowExitAnimation">@anim/out_from_right</item>
+    </style>
+    <!--<style name="anim_activity" parent="Theme.AppCompat.Light.NoActionBar">-->
+        <!--<item name="android:activityOpenEnterAnimation">@anim/in_from_right</item>-->
+        <!--<item name="android:activityOpenExitAnimation">@anim/out_from_right</item>-->
+        <!--&lt;!&ndash;<item name="android:activityCloseEnterAnimation">@anim/in_from_right</item>&ndash;&gt;-->
+        <!--&lt;!&ndash;<item name="android:activityCloseExitAnimation">@anim/out_from_left</item>&ndash;&gt;-->
+    <!--</style>-->
 
     <!--TabHost导航栏的样式-->
     <style name="page_order_item">
