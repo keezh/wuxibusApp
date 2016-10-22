@@ -257,7 +257,7 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
 //        高：屏幕高度-顶部状态栏高-底部虚拟按键高-(屏幕宽度 * 29.0 / 75.0)
 
     //    {"duration":"5","title":"测试启动广告","def":"0","url":"http:\/\/www.wuxibus.com\/","index_pic":"http:\/\/img.wxbus.com.cn\/attachment\/2015\/08\/1438826839.jpg"}
-        VolleyManager.getJson(AllConstants.ServerUrl, paras, new Response.Listener<JSONObject>() {
+        VolleyManager.getJson(AllConstants.HomeAdvertiseUrl, paras, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 String jsonString = jsonObject.toString();

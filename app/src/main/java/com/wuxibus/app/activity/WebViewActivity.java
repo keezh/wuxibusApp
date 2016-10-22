@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.webkit.DownloadListener;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -129,6 +130,9 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
         webView.loadUrl(url);
         backImageView.setOnClickListener(this);
 
+        //在内容进行下载内容
+        webView.setDownloadListener(new WebViewDownloadListener());
+
         WebChromeClient wcc = new WebChromeClient(){
             @Override
             public void onReceivedTitle(WebView view, String title) {
@@ -174,7 +178,7 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
 //                            "2Fqr.alipay.com%2Ftdq0whxyrrt917bs7e%3F_s%3Dweb-other";
 
                     view.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-                    //return true;
+                    return true;
                 }
                 return false;
             }
@@ -245,13 +249,15 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
             int currentIndex = mWebBackForwardList.getCurrentIndex();
             if(currentIndex == 0){
                 this.finish();
+            }else{
+                webView.goBack();
             }
 
             if(webView.getOriginalUrl() == null || webView.getOriginalUrl().equals(url) || originalUrl.equals(url+"/")
                     || url.contains(webView.getOriginalUrl())){
-                //this.finish();
+
             }else{
-                webView.goBack();
+               // webView.goBack();
             }
         }else if(shareTextView == view){
             shareUmeng();
@@ -264,6 +270,10 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
+        goToBack();
+    }
+
+    private void goToBack() {
         WebBackForwardList mWebBackForwardList = webView.copyBackForwardList();
         int currentIndex = mWebBackForwardList.getCurrentIndex();
         if(currentIndex == 0){
@@ -413,5 +423,18 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
         msg.what = 2;
         handler.sendMessage(msg);
 
+    }
+
+    /**
+     * 调用系统默认的浏览器进行下载
+     */
+    class WebViewDownloadListener implements DownloadListener{
+
+        @Override
+        public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+            Uri uri = Uri.parse(url);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
     }
 }
