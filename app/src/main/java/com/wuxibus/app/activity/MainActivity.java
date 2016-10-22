@@ -102,6 +102,9 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_main);
+
+        //设置进场动画
+//        overridePendingTransition(R.anim.in,0);
         //umeng
         UmengUpdateAgent.update(this);
         UmengUpdateAgent.setUpdateOnlyWifi(true);

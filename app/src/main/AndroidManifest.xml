@@ -54,9 +54,6 @@
 
 
 
-
-
-
     <application
         android:name=".InitApplication"
         android:allowBackup="true"

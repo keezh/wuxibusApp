@@ -17,6 +17,10 @@
     <style name="Animation.Activity.Translucent.Style" parent="@android:style/Animation.Translucent">
         <item name="android:windowEnterAnimation">@anim/in_from_right</item>
         <item name="android:windowExitAnimation">@anim/out_from_right</item>
+        <!--<item name="android:activityOpenEnterAnimation">@android:anim/slide_in_left</item>-->
+        <!--<item name="android:activityOpenExitAnimation">@android:anim/slide_out_right</item>-->
+        <!--<item name="android:activityCloseEnterAnimation">@anim/in_from_right</item>-->
+        <!--<item name="android:activityCloseExitAnimation">@anim/out_from_right</item>-->
     </style>
     <!--<style name="anim_activity" parent="Theme.AppCompat.Light.NoActionBar">-->
         <!--<item name="android:activityOpenEnterAnimation">@anim/in_from_right</item>-->
