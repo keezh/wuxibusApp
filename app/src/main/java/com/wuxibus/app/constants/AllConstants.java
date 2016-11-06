@@ -21,6 +21,8 @@ public class AllConstants {
     public static String Baidu_ak = "RUC7z2D4GYlihrOhwwOC76w5";
     public static String HomeIndexUrl = "http://api.wxbus.com.cn/api/main/";//首页单独的url，
     public static String HomeAdvertiseUrl = "http://api.wxbus.com.cn/api/main/";
+
+    public static String RealBusUrl = "http://api.wxbus.com.cn/api/real/";
     /* 线路搜索 */
     public static String RouteSearchUrl ="/?m=line_search&k=";
     //public static String

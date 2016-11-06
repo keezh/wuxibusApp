@@ -541,7 +541,7 @@ public class LineRealActivity extends Activity implements View.OnClickListener,A
         map.put("stop_seq",line_seq);
         //实时公交接口
         map = AES7PaddingUtil.toAES7Padding(map);
-        VolleyManager.getJson(AllConstants.ServerUrl, map, new Response.Listener<JSONObject>() {
+        VolleyManager.getJson(AllConstants.RealBusUrl, map, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 try {

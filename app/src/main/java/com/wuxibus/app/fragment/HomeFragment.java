@@ -119,6 +119,8 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     boolean isRun = true;//线程是否在运行
     boolean isFlag = true;//线程只创建一个
 
+    boolean isSpcialFirst = true;//bug 首次广告间隔是少于5妙，因为在广告也已经开始了
+
     //收藏线路
     List<Route> routeFavList;
     List<HomeFavAroundRoute> favList = new ArrayList<HomeFavAroundRoute>();
@@ -241,7 +243,14 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
             public void run() {
                 while(isRun) {//该线程不会结束
                     try {
-                        Thread.sleep(5000);//
+                        //bug 首次进入home页面，广告也间隔少于5秒，因为页面在首页广告页时就开始计时了，
+                        //当前人为的把第一次延后3秒，为8秒，其他为5妙轮转
+                        if(isSpcialFirst){
+                            Thread.sleep(8000);
+                            isSpcialFirst = false;
+                        }else{
+                            Thread.sleep(5000);//
+                        }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -414,7 +423,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
 
     /**
-     *
+     *  实时公交
      * @param list
      * @return
      */
@@ -434,7 +443,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
             if(allList.get(i).getType() == AllConstants.FAV_FLAG && !allList.get(i).isFavIsHere())
                 continue;
 
-            VolleyManager.getJson(AllConstants.ServerUrl, map, list.get(i), new Response.ErrorListener() {
+            VolleyManager.getJson(AllConstants.RealBusUrl, map, list.get(i), new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
 
