@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.WebBackForwardList;
@@ -19,6 +20,8 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alipay.sdk.app.PayTask;
+import com.alipay.sdk.util.H5PayResultModel;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
@@ -50,6 +53,14 @@ import java.net.URLEncoder;
  if (window.bus_show_share_button) {
  bus_show_share_button(shareData);
  }
+
+ ///支付
+ //                    String qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin=1642084864";
+ //                    String weixinUrl = "weixin://wap/pay?appid%3Dwx2421b1c4370ec43b%26noncestr%3D3e84679af4efab5f32ee9ea01b2ec290%26package%3DWAP%26prepayid%3Dwx20160504154919fdacd7" +
+ //                            "bc0d0127918780%26timestamp%3D1462348159%26sign%3DC40DC4BB970049D6830BA567189B463B";
+ //                    qqUrl = "weixin://dl/moments";
+ //                    String alipayUrl = "alipayqr://platformapi/startapp?saId=10000007&clientVersion=3.7.0.0718&qrcode=https%3A%2F% \n" +
+ //                            "2Fqr.alipay.com%2Ftdq0whxyrrt917bs7e%3F_s%3Dweb-other";
  */
 public class WebViewActivity extends Activity implements View.OnClickListener{
 
@@ -112,6 +123,10 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
             e.printStackTrace();
         }
 
+        //bug  kfc 网页无法加载问题,不加下面函数测无法加载
+        //https://order.kfc.com.cn/mwos/?portalSource=wxzhgj
+        initWebViewCache();
+
         webView.getSettings().setUserAgentString(ua + " wxbusapp/" + versionName + "_" + versionCode);
 
 
@@ -125,10 +140,7 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
         url = getIntent().getExtras().getString("url");
         title = getIntent().getExtras().getString("title");
         titleTextView.setText(title);
-//        String testUrl = "http://www.wxbus.com.cn/view/code/test.html";
-//        webView.loadUrl(testUrl);
-        webView.loadUrl(url);
-        backImageView.setOnClickListener(this);
+
 
         //在内容进行下载内容
         webView.setDownloadListener(new WebViewDownloadListener());
@@ -160,22 +172,39 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
              * 通俗的说，当返回true时，你点任何链接都是失效的，需要你自己跳转。return false时webview会自己跳转。
              */
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            public boolean shouldOverrideUrlLoading(final WebView view, String url) {
                 //wxbusapp://连接处理
                 if(WebviewJumpUtil.jumpTo(url,WebViewActivity.this)){
                     return true;
                 }
+
+                //
+//                final PayTask task = new PayTask(WebViewActivity.this);
+//
+//                //处理订单信息
+//                final String ex = task.fetchOrderInfoFromH5PayUrl(url);
+//                if (!TextUtils.isEmpty(ex)) {
+//                    //调用支付接口进行支付
+//                    new Thread(new Runnable() {
+//                        public void run() {
+//                            H5PayResultModel result = task.h5Pay(ex, true);
+//                            //处理返回结果
+//                            if (!TextUtils.isEmpty(result.getReturnUrl())) {
+//                                view.loadUrl(result.getReturnUrl());
+//                            }
+//                        }
+//                    }).start();
+//                } else {
+//                    view.loadUrl(url);
+//                    return false;
+//                }
+//                return true;
+
+
                 if(url.toLowerCase().startsWith("http")){
                     return false;
-                    //view.loadUrl(url);
                 }
-                if(url.startsWith("weixin://") || url.startsWith("alipay")){
-//                    String qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin=1642084864";
-//                    String weixinUrl = "weixin://wap/pay?appid%3Dwx2421b1c4370ec43b%26noncestr%3D3e84679af4efab5f32ee9ea01b2ec290%26package%3DWAP%26prepayid%3Dwx20160504154919fdacd7" +
-//                            "bc0d0127918780%26timestamp%3D1462348159%26sign%3DC40DC4BB970049D6830BA567189B463B";
-//                    qqUrl = "weixin://dl/moments";
-//                    String alipayUrl = "alipayqr://platformapi/startapp?saId=10000007&clientVersion=3.7.0.0718&qrcode=https%3A%2F% \n" +
-//                            "2Fqr.alipay.com%2Ftdq0whxyrrt917bs7e%3F_s%3Dweb-other";
+                if(url.startsWith("weixin://") || url.startsWith("alipay") || url.startsWith("tel:")){
 
                     view.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                     return true;
@@ -236,6 +265,26 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
         // 添加短信平台
         addSMS();
 
+        //        String testUrl = "http://www.wxbus.com.cn/view/code/test.html";
+//        webView.loadUrl("https://order.kfc.com.cn/mwos/?portalSource=wxzhgj");
+        webView.loadUrl(url);
+        backImageView.setOnClickListener(this);
+
+
+    }
+
+    /**
+     * 设置webview支持缓存
+     */
+    private void initWebViewCache(){
+        webView.getSettings().setJavaScriptEnabled(true);
+//        webView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);  //设置 缓存模式
+        // 开启 DOM storage API 功能
+        webView.getSettings().setDomStorageEnabled(true);
+        //开启 database storage API 功能
+        webView.getSettings().setDatabaseEnabled(true);
+        webView.getSettings().setAppCacheEnabled(true);
 
     }
 
