@@ -12,6 +12,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.DownloadListener;
+import android.webkit.GeolocationPermissions;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -161,6 +162,15 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
 
             }
 
+            //配置权限（同样在WebChromeClient中实现）
+            //webview 支持gps 定位
+            @Override
+            public void onGeolocationPermissionsShowPrompt(String origin,
+                                                           GeolocationPermissions.Callback callback) {
+                callback.invoke(origin, true, false);
+                super.onGeolocationPermissionsShowPrompt(origin, callback);
+            }
+
 
         };
 
@@ -211,6 +221,8 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
                 }
                 return false;
             }
+
+
 
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -285,6 +297,7 @@ public class WebViewActivity extends Activity implements View.OnClickListener{
         //开启 database storage API 功能
         webView.getSettings().setDatabaseEnabled(true);
         webView.getSettings().setAppCacheEnabled(true);
+
 
     }
 

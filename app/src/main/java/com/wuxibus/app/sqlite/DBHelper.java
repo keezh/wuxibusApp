@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = "line.db";
-	private static final int DATABASE_VERSION = 9;
+	//每次修改需要更改该参数,当用户是通过更新apk,时也必须要重新初始化数据库
+	private static final int DATABASE_VERSION = 10;
 	
 	public DBHelper(Context context) {
 		//CursorFactory设置为null,使用默认值
