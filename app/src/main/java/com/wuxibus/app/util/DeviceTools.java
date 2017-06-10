@@ -19,13 +19,14 @@ public class DeviceTools {
     public static  String  getDeviceIMEI(Activity activity){
         TelephonyManager tm = (TelephonyManager) activity.getSystemService(Activity.TELEPHONY_SERVICE);
         return tm.getDeviceId();
-        //return "fc0b1c7bee761ff8f10775e8992697fc6a1e857d94d357e0ef5d1facd0bb3400";
+        //bug fix ,临时处理,三星手机 s7 报权限错误。
+        //return "fc0b00";
     }
 
 
 
 
-    public static GPS getGPS(Activity activity){
+    public static GPS getGPS(Activity activity) throws SecurityException{
         LocationManager locationManager = (LocationManager)activity.getSystemService(Context.LOCATION_SERVICE);
         if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
